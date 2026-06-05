@@ -1,12 +1,41 @@
 import { Routes, Route } from 'react-router'
+import Layout from './components/Layout'
 import Home from './pages/Home'
-import Login from "./pages/Login"
-import NotFound from "./pages/NotFound"
+import Store from './pages/Store'
+import ProductDetail from './pages/ProductDetail'
+import Cart from './pages/Cart'
+import Checkout from './pages/Checkout'
+import OrderTracking from './pages/OrderTracking'
+import About from './pages/About'
+import Blog from './pages/Blog'
+import ArticleDetail from './pages/ArticleDetail'
+import Dealers from './pages/Dealers'
+import Contact from './pages/Contact'
+import Dashboard from './pages/Dashboard'
+import AdminDashboard from './pages/AdminDashboard'
+import Login from './pages/Login'
+import NotFound from './pages/NotFound'
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route element={<Layout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/store" element={<Store />} />
+        <Route path="/store/:slug" element={<ProductDetail />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/track" element={<OrderTracking />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<ArticleDetail />} />
+        <Route path="/dealers" element={<Dealers />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard/:tab" element={<Dashboard />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/:tab" element={<AdminDashboard />} />
+      </Route>
       <Route path="/login" element={<Login />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

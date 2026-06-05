@@ -1,20 +1,27 @@
-import { useState } from 'react'
-import '../App.css'
+import HeroSection from '@/sections/HeroSection'
+import FeaturedProducts from '@/sections/FeaturedProducts'
+import RankSystem from '@/sections/RankSystem'
+import HowItWorks from '@/sections/HowItWorks'
+import SubscriptionPlans from '@/sections/SubscriptionPlans'
+import AffiliateCTA from '@/sections/AffiliateCTA'
+import LoyaltyProgram from '@/sections/LoyaltyProgram'
+import Testimonials from '@/sections/Testimonials'
+import DealerMapPreview from '@/sections/DealerMapPreview'
+import EducationalPreview from '@/sections/EducationalPreview'
 
 export default function Home() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
+      <HeroSection />
+      <FeaturedProducts />
+      <RankSystem />
+      <HowItWorks />
+      <SubscriptionPlans />
+      <AffiliateCTA />
+      <LoyaltyProgram />
+      <Testimonials />
+      <DealerMapPreview />
+      <EducationalPreview />
     </>
   )
 }
