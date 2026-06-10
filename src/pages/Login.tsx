@@ -127,9 +127,12 @@ export default function Login() {
             <a href="#" className="text-[#01D7D5] hover:underline">Sign Up</a>
           </p>
 
-          <div className="text-center mt-6">
-            <Link to="/" className="text-[#484F58] text-sm hover:text-[#8B949E] transition-colors">
+          <div className="text-center mt-6 space-y-2">
+            <Link to="/" className="text-[#484F58] text-sm hover:text-[#8B949E] transition-colors block">
               ← Back to Home
+            </Link>
+            <Link to="/setup" className="text-[#484F58] text-sm hover:text-[#01D7D5] transition-colors block">
+              🔧 Admin Setup
             </Link>
           </div>
         </div>

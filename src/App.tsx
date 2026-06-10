@@ -15,6 +15,7 @@ import Dealers from './pages/Dealers'
 import Contact from './pages/Contact'
 import Dashboard from './pages/Dashboard'
 import AdminDashboard from './pages/AdminDashboard'
+import AdminSetup from './pages/AdminSetup'
 import Login from './pages/Login'
 import NotFound from './pages/NotFound'
 
@@ -37,6 +38,7 @@ export default function App() {
         <Route path="/dashboard/:tab" element={<MarketerGuard><Dashboard /></MarketerGuard>} />
         <Route path="/admin" element={<AdminGuard><AdminDashboard /></AdminGuard>} />
         <Route path="/admin/:tab" element={<AdminGuard><AdminDashboard /></AdminGuard>} />
+        <Route path="/setup" element={<AdminSetup />} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="*" element={<NotFound />} />
