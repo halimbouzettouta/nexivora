@@ -61,6 +61,13 @@ export default function Login() {
           <h1 className="text-white font-semibold text-2xl mb-1">Welcome Back</h1>
           <p className="text-[#8B949E] text-sm mb-8">Sign in to your account to continue</p>
 
+          {/* Admin access hint */}
+          <div className="bg-[rgba(1,215,213,0.05)] border border-[#30363D] rounded-lg p-3 mb-6">
+            <p className="text-[#8B949E] text-xs">
+              <span className="text-[#01D7D5] font-medium">Note:</span> Admin users can access the admin panel at <Link to="/admin" className="text-[#01D7D5] hover:underline">/admin</Link> after signing in.
+            </p>
+          </div>
+
           {/* Sign In with Kimi */}
           <button
             onClick={() => { window.location.href = getOAuthUrl(); }}

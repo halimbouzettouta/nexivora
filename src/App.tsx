@@ -1,5 +1,7 @@
 import { Routes, Route } from 'react-router'
 import Layout from './components/Layout'
+import AdminGuard from './components/AdminGuard'
+import MarketerGuard from './components/MarketerGuard'
 import Home from './pages/Home'
 import Store from './pages/Store'
 import ProductDetail from './pages/ProductDetail'
@@ -31,10 +33,10 @@ export default function App() {
         <Route path="/blog/:slug" element={<ArticleDetail />} />
         <Route path="/dealers" element={<Dealers />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/dashboard/:tab" element={<Dashboard />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/:tab" element={<AdminDashboard />} />
+        <Route path="/dashboard" element={<MarketerGuard><Dashboard /></MarketerGuard>} />
+        <Route path="/dashboard/:tab" element={<MarketerGuard><Dashboard /></MarketerGuard>} />
+        <Route path="/admin" element={<AdminGuard><AdminDashboard /></AdminGuard>} />
+        <Route path="/admin/:tab" element={<AdminGuard><AdminDashboard /></AdminGuard>} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="*" element={<NotFound />} />
