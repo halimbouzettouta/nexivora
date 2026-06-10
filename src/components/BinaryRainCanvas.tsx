@@ -65,7 +65,7 @@ export default function BinaryRainCanvas() {
       scene.add(mesh)
     }
 
-    // Mouse plane for raycaster
+    // Mouse interaction
     const mousePlaneGeo = new THREE.PlaneGeometry(100, 100)
     const mousePlaneMat = new THREE.MeshBasicMaterial({ visible: false })
     const mousePlane = new THREE.Mesh(mousePlaneGeo, mousePlaneMat)
@@ -79,7 +79,6 @@ export default function BinaryRainCanvas() {
       const rect = container.getBoundingClientRect()
       mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1
       mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1
-
       raycaster.setFromCamera(mouse, camera)
       const intersects = raycaster.intersectObject(mousePlane)
       if (intersects.length > 0) {

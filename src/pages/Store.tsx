@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { trpc } from '@/providers/trpc'
 import ProductCard3D from '@/components/ProductCard3D'
+import { useToastStore } from '@/hooks/useToast'
 import { ShoppingCart, Search } from 'lucide-react'
 import { useCart } from '@/hooks/useCart'
 
@@ -43,6 +44,8 @@ export default function Store() {
     setSearchParams(searchParams)
   }
 
+  const addToast = useToastStore((s) => s.addToast)
+
   const handleAddToCart = (product: NonNullable<typeof data>['items'][0]) => {
     const image = productImages[product.name] || '/product-ebike-premium.jpg'
     addItem({
@@ -52,6 +55,7 @@ export default function Store() {
       image,
       quantity: 1,
     })
+    addToast({ title: 'Added to Cart', message: `${product.name} has been added to your cart.`, type: 'success' })
   }
 
   const parseSpecs = (specs: unknown) => {

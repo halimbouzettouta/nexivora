@@ -1,9 +1,11 @@
 import { Link } from 'react-router'
 import { useCart } from '@/hooks/useCart'
+import { useToastStore } from '@/hooks/useToast'
 import { Minus, Plus, X, ShoppingBag } from 'lucide-react'
 
 export default function Cart() {
   const { items, totalPrice, updateQuantity, removeItem } = useCart()
+  const addToast = useToastStore((s) => s.addToast)
 
   return (
     <div className="min-h-screen bg-black pt-[70px]">
@@ -48,7 +50,10 @@ export default function Cart() {
                   </div>
                   <div className="text-right">
                     <p className="text-white font-semibold">{(item.price * item.quantity).toLocaleString()} DZD</p>
-                    <button onClick={() => removeItem(item.id)} className="text-[#484F58] hover:text-[#EF4444] transition-colors mt-1">
+                    <button onClick={() => {
+                      removeItem(item.id)
+                      addToast({ title: 'Item removed', message: `${item.name} removed from cart`, type: 'info' })
+                    }} className="text-[#484F58] hover:text-[#EF4444] transition-colors mt-1">
                       <X size={16} />
                     </button>
                   </div>

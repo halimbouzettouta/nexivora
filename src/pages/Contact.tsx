@@ -1,14 +1,17 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
+import { useToastStore } from '@/hooks/useToast'
 import { MapPin, Phone, Mail, Clock, Instagram, Facebook, Youtube, Send, Check } from 'lucide-react'
 
 export default function Contact() {
   const [sent, setSent] = useState(false)
+  const addToast = useToastStore((s) => s.addToast)
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: 'General Inquiry', message: '' })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setSent(true)
+    addToast({ title: 'Message Sent!', message: 'We\'ll get back to you within 24 hours.', type: 'success' })
     setTimeout(() => setSent(false), 4000)
     setForm({ name: '', email: '', phone: '', subject: 'General Inquiry', message: '' })
   }

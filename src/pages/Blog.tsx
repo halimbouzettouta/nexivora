@@ -5,10 +5,10 @@ import { trpc } from '@/providers/trpc'
 const categoryFilters = ['All', 'Battery Care', 'Maintenance', 'Safety', 'Technology', 'News']
 
 const articleImages: Record<string, string> = {
-  'How to Extend Your Battery Life': '/product-ebike-premium.jpg',
-  'Best Charging Practices for E-Scooters': '/product-escooter-city.jpg',
-  'Safety Tips for Riding in Algerian Cities': '/escooter-lifestyle.jpg',
-  'Understanding Your E-Bike Motor': '/product-ebike-mountain.jpg',
+  'How to Extend Your Battery Life': '/article-battery.jpg',
+  'Best Charging Practices for E-Scooters': '/article-charging.jpg',
+  'Safety Tips for Riding in Algerian Cities': '/article-safety.jpg',
+  'Understanding Your E-Bike Motor': '/article-motor.jpg',
 }
 
 const categoryColors: Record<string, string> = {

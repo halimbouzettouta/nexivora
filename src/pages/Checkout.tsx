@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useCart } from '@/hooks/useCart'
+import { useToastStore } from '@/hooks/useToast'
 import { CreditCard, Banknote, Smartphone, Check, Truck } from 'lucide-react'
 
 export default function Checkout() {
   const navigate = useNavigate()
   const { items, totalPrice, clearCart } = useCart()
+  const addToast = useToastStore((s) => s.addToast)
   const [step, setStep] = useState<1 | 2 | 3>(1)
   const [orderNumber, setOrderNumber] = useState('')
   const [form, setForm] = useState({
@@ -33,6 +35,7 @@ export default function Checkout() {
     setOrderNumber(orderNum)
     setStep(3)
     clearCart()
+    addToast({ title: 'Order Placed!', message: `Your order ${orderNum} has been placed successfully.`, type: 'success' })
   }
 
   return (

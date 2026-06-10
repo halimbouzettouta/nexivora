@@ -36,8 +36,13 @@ export default function About() {
       {/* Our Story */}
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-[5vw] py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="aspect-[4/3] rounded-xl overflow-hidden bg-[#161B22] border border-[#30363D]">
-            <img src="/escooter-lifestyle.jpg" alt="E-Ride Team" className="w-full h-full object-cover" />
+          <div className="space-y-4">
+            <div className="aspect-[4/3] rounded-xl overflow-hidden bg-[#161B22] border border-[#30363D]">
+              <img src="/about-warehouse.jpg" alt="E-Ride Warehouse" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+            </div>
+            <div className="aspect-[16/9] rounded-xl overflow-hidden bg-[#161B22] border border-[#30363D]">
+              <img src="/escooter-lifestyle.jpg" alt="E-Ride Lifestyle" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+            </div>
           </div>
           <div>
             <h2 className="text-white font-semibold text-3xl mb-6">Our Story</h2>
@@ -48,8 +53,8 @@ export default function About() {
             </div>
             <div className="grid grid-cols-3 gap-6 mt-8">
               {stats.map((s) => (
-                <div key={s.label}>
-                  <p className="text-[#01D7D5] font-semibold text-2xl">{s.value}</p>
+                <div key={s.label} className="bg-[#161B22] border border-[#30363D] rounded-xl p-4 text-center">
+                  <p className="text-[#01D7D5] font-semibold text-xl">{s.value}</p>
                   <p className="text-[#8B949E] text-xs mt-1">{s.label}</p>
                 </div>
               ))}
