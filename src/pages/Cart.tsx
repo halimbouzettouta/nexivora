@@ -39,7 +39,7 @@ export default function Cart() {
                   <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded-lg" />
                   <div className="flex-1 min-w-0">
                     <p className="text-white font-medium text-sm">{item.name}</p>
-                    <p className="text-[#8B949E] text-xs mb-2">Unit price: {item.price.toLocaleString()} DZD</p>
+                    <p className="text-[#8B949E] text-xs mb-2">{t('nav.home') === 'الرئيسية' ? 'سعر الوحدة:' : 'Unit price:'} {item.price.toLocaleString()} DZD</p>
                     <div className="flex items-center gap-2">
                       <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="w-7 h-7 flex items-center justify-center border border-[#30363D] rounded text-[#8B949E]">
                         <Minus size={14} />
@@ -54,7 +54,7 @@ export default function Cart() {
                     <p className="text-white font-semibold">{(item.price * item.quantity).toLocaleString()} DZD</p>
                     <button onClick={() => {
                       removeItem(item.id)
-                      addToast({ title: 'Item removed', message: `${item.name} removed from cart`, type: 'info' })
+                      addToast({ title: t('nav.home') === 'الرئيسية' ? 'تمت الإزالة' : 'Item removed', message: t('nav.home') === 'الرئيسية' ? `${item.name} تمت إزالته من السلة` : `${item.name} removed from cart`, type: 'info' })
                     }} className="text-[#484F58] hover:text-[#EF4444] transition-colors mt-1">
                       <X size={16} />
                     </button>
@@ -66,7 +66,7 @@ export default function Cart() {
             {/* Order Summary */}
             <div className="lg:col-span-1">
               <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-6 sticky top-24">
-                <h3 className="text-white font-semibold text-lg mb-4">Order Summary</h3>
+                <h3 className="text-white font-semibold text-lg mb-4">{t('checkout.summary')}</h3>
                 <div className="space-y-3 mb-4">
                   <div className="flex justify-between text-sm">
                     <span className="text-[#8B949E]">{t('cart.subtotal')}</span>
@@ -74,7 +74,7 @@ export default function Cart() {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-[#8B949E]">{t('cart.shipping')}</span>
-                    <span className="text-[#8B949E]">{t('checkout.title')}</span>
+                    <span className="text-[#8B949E]">{t('nav.home') === 'الرئيسية' ? 'يحسب عند الدفع' : 'Calculated at checkout'}</span>
                   </div>
                 </div>
                 <div className="border-t border-[#30363D] pt-4 mb-4">
@@ -88,11 +88,11 @@ export default function Cart() {
                 <div className="flex gap-2 mb-4">
                   <input
                     type="text"
-                    placeholder="Enter promo code"
+                    placeholder={t('nav.home') === 'الرئيسية' ? 'أدخل كود الخصم...' : 'Enter promo code'}
                     className="flex-1 bg-[#0A0A0A] border border-[#30363D] text-white text-sm rounded-lg px-3 py-2 focus:border-[#01D7D5] focus:outline-none"
                   />
                   <button className="px-4 py-2 bg-[#30363D] text-white text-sm rounded-lg hover:bg-[#484F58] transition-colors">
-                    Apply
+                    {t('nav.home') === 'الرئيسية' ? 'تطبيق' : 'Apply'}
                   </button>
                 </div>
 
@@ -107,7 +107,7 @@ export default function Cart() {
                 </Link>
 
                 <div className="mt-4 p-3 bg-[rgba(1,215,213,0.1)] rounded-lg text-center">
-                  <p className="text-[#01D7D5] text-xs">You&apos;ll earn {Math.floor(totalPrice / 10)} loyalty points</p>
+                  <p className="text-[#01D7D5] text-xs">{t('nav.home') === 'الرئيسية' ? `ستجمع ${Math.floor(totalPrice / 10)} نقطة ولاء` : `You'll earn ${Math.floor(totalPrice / 10)} loyalty points`}</p>
                 </div>
               </div>
             </div>

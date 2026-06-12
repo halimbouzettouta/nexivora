@@ -22,7 +22,7 @@ export default function CartDrawer() {
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-[#30363D]">
           <h2 className="text-white font-semibold text-lg">
-            Shopping Cart ({items.length})
+            {t('nav.home') === 'الرئيسية' ? 'سلة التسوق' : 'Shopping Cart'} ({items.length})
           </h2>
           <button
             onClick={closeCart}
@@ -38,7 +38,7 @@ export default function CartDrawer() {
             <div className="flex flex-col items-center justify-center h-full text-center">
               <ShoppingBag size={48} className="text-[#30363D] mb-4" />
               <p className="text-white font-medium">{t('cart.empty')}</p>
-              <p className="text-[#8B949E] text-sm mt-1">Browse our products and find your perfect ride.</p>
+              <p className="text-[#8B949E] text-sm mt-1">{t('nav.home') === 'الرئيسية' ? 'تصفح منتجاتنا واعثر على دراجتك المثالية.' : 'Browse our products and find your perfect ride.'}</p>
               <Link
                 to="/store"
                 onClick={closeCart}

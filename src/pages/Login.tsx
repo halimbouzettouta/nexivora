@@ -33,7 +33,7 @@ export default function Login() {
 
   const handleAdminLogin = async () => {
     if (!adminPassword) {
-      setLoginError('Please enter a password')
+      setLoginError(t('nav.home') === 'الرئيسية' ? 'الرجاء إدخال كلمة المرور' : 'Please enter a password')
       return
     }
     setLoggingIn(true)
@@ -45,7 +45,7 @@ export default function Login() {
       window.location.href = '/#/admin'
       window.location.reload()
     } else {
-      setLoginError(`Wrong password. Try: "${DEFAULT_PASSWORD}"`)
+      setLoginError(t('nav.home') === 'الرئيسية' ? 'كلمة المرور خاطئة' : `Wrong password. Try: "${DEFAULT_PASSWORD}"`)
       setLoggingIn(false)
     }
   }
@@ -54,7 +54,7 @@ export default function Login() {
     // Reset to default password by clearing the stored hash
     localStorage.removeItem('eride-admin-pwd-hash')
     setLoginError('')
-    setPwdSuccess('Password reset to default. Try logging in again.')
+    setPwdSuccess(t('nav.home') === 'الرئيسية' ? 'تم إعادة تعيين كلمة المرور. حاول تسجيل الدخول مرة أخرى.' : 'Password reset to default. Try logging in again.')
     setAdminPassword(DEFAULT_PASSWORD)
   }
 
@@ -135,7 +135,7 @@ export default function Login() {
 
               {/* Password hint */}
               <p className="text-[#484F58] text-xs">
-                Default password: <span className="text-[#8B949E] font-mono">{DEFAULT_PASSWORD}</span>
+                {t('nav.home') === 'الرئيسية' ? 'كلمة المرور الافتراضية:' : 'Default password:'} <span className="text-[#8B949E] font-mono">{DEFAULT_PASSWORD}</span>
               </p>
 
               <input
@@ -173,7 +173,7 @@ export default function Login() {
                 className="w-full flex items-center justify-center gap-1.5 text-[#484F58] text-xs hover:text-[#F59E0B] transition-colors pt-1"
               >
                 <RotateCcw size={12} />
-                Forgot password? Reset to default
+                {t('nav.home') === 'الرئيسية' ? 'نسيت كلمة المرور؟ إعادة تعيين' : 'Forgot password? Reset to default'}
               </button>
             </div>
           )}

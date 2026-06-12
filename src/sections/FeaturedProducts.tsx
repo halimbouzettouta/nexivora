@@ -50,7 +50,7 @@ export default function FeaturedProducts() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-baseline gap-2">
                         <span className="text-[#01D7D5] font-semibold">DZD {parseInt(product.salePrice || product.price).toLocaleString()}</span>
-                        {product.salePrice && <span className="text-[#484F58] text-xs line-through">{parseInt(product.price).toLocaleString()}</span>}
+                        {product.salePrice && parseInt(String(product.salePrice)) < parseInt(String(product.price)) && <span className="text-[#484F58] text-xs line-through">{parseInt(product.price).toLocaleString()}</span>}
                       </div>
                       <div className="flex items-center gap-1">
                         <span className="text-yellow-500 text-xs">★</span>

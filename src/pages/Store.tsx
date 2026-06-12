@@ -5,10 +5,13 @@ import { useCart } from '@/hooks/useCart'
 import { useLanguage } from '@/hooks/useLanguage'
 import { ShoppingCart, Search } from 'lucide-react'
 
-const categoryTabs = ['All', 'E-Bikes', 'E-Scooters', 'Accessories', 'Parts']
-const CAT_SLUG: Record<string, string> = {
-  'E-Bikes': 'e-bikes', 'E-Scooters': 'e-scooters',
-  'Accessories': 'accessories', 'Parts': 'parts',
+const getCategoryTabs = (isAr: boolean) => isAr
+  ? ['الكل', 'دراجات كهربائية', 'سكوترات كهربائية', 'إكسسوارات', 'قطع غيار']
+  : ['All', 'E-Bikes', 'E-Scooters', 'Accessories', 'Parts']
+
+const CAT_TAB_SLUG: Record<string, string> = {
+  'All': 'all', 'E-Bikes': 'e-bikes', 'E-Scooters': 'e-scooters', 'Accessories': 'accessories', 'Parts': 'parts',
+  'الكل': 'all', 'دراجات كهربائية': 'e-bikes', 'سكوترات كهربائية': 'e-scooters', 'إكسسوارات': 'accessories', 'قطع غيار': 'parts',
 }
 
 export default function Store() {
@@ -17,8 +20,10 @@ export default function Store() {
   const { products } = useProducts()
   const addItem = useCart((s) => s.addItem)
 
+  const isAr = t('nav.home') === 'الرئيسية'
+  const categoryTabs = getCategoryTabs(isAr)
   const activeCatSlug = searchParams.get('category') || 'all'
-  const activeTab = activeCatSlug === 'e-bikes' ? 'E-Bikes' : activeCatSlug === 'e-scooters' ? 'E-Scooters' : activeCatSlug === 'accessories' ? 'Accessories' : activeCatSlug === 'parts' ? 'Parts' : 'All'
+  const activeTab = activeCatSlug === 'e-bikes' ? (isAr ? 'دراجات كهربائية' : 'E-Bikes') : activeCatSlug === 'e-scooters' ? (isAr ? 'سكوترات كهربائية' : 'E-Scooters') : activeCatSlug === 'accessories' ? (isAr ? 'إكسسوارات' : 'Accessories') : activeCatSlug === 'parts' ? (isAr ? 'قطع غيار' : 'Parts') : (isAr ? 'الكل' : 'All')
 
   const [search, setSearch] = useState('')
   const [sortBy, setSortBy] = useState('featured')
@@ -36,7 +41,7 @@ export default function Store() {
   })
 
   const handleCategoryChange = (tab: string) => {
-    const slug = CAT_SLUG[tab] || 'all'
+    const slug = CAT_TAB_SLUG[tab] || 'all'
     if (slug === 'all') { searchParams.delete('category') } else { searchParams.set('category', slug) }
     setSearchParams(searchParams)
   }
@@ -52,7 +57,7 @@ export default function Store() {
           <Link to="/" className="hover:text-[#01D7D5]">{t('nav.home')}</Link><span>/</span><span className="text-[#8B949E]">{t('nav.store')}</span>
         </div>
         <h1 className="text-white font-semibold text-4xl md:text-5xl mb-2">{t('nav.store')}</h1>
-        <p className="text-[#8B949E] text-sm">{filtered.length} {t('nav.home') === 'الرئيسية' ? 'منتج' : 'products'}</p>
+        <p className="text-[#8B949E] text-sm">{filtered.length} {isAr ? 'منتج' : 'products'}</p>
       </div>
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-[5vw] pb-20">
@@ -64,10 +69,10 @@ export default function Store() {
           </div>
           <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}
             className="bg-[#161B22] border border-[#30363D] text-white text-sm rounded-lg px-4 py-2.5 focus:border-[#01D7D5] focus:outline-none">
-            <option value="featured">Sort: Featured</option>
-            <option value="price_asc">Price: Low → High</option>
-            <option value="price_desc">Price: High → Low</option>
-            <option value="rating">Highest Rated</option>
+            <option value="featured">{isAr ? 'الأكثر رواجاً' : 'Sort: Featured'}</option>
+            <option value="price_asc">{isAr ? 'السعر: من الأقل للأعلى' : 'Price: Low → High'}</option>
+            <option value="price_desc">{isAr ? 'السعر: من الأعلى للأقل' : 'Price: High → Low'}</option>
+            <option value="rating">{isAr ? 'الأعلى تقييماً' : 'Highest Rated'}</option>
           </select>
         </div>
 
@@ -98,7 +103,7 @@ export default function Store() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-baseline gap-2">
                         <span className="text-[#01D7D5] font-semibold">DZD {parseInt(product.salePrice || product.price).toLocaleString()}</span>
-                        {product.salePrice && <span className="text-[#484F58] text-xs line-through">{parseInt(product.price).toLocaleString()}</span>}
+                        {product.salePrice && parseInt(product.salePrice) < parseInt(product.price) && <span className="text-[#484F58] text-xs line-through">{parseInt(product.price).toLocaleString()}</span>}
                       </div>
                       <div className="flex items-center gap-1">
                         <span className="text-yellow-500 text-xs">★</span>

@@ -209,9 +209,9 @@ export default function Checkout() {
             <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-6 h-fit">
               <h3 className="text-white font-medium mb-4">{t('checkout.summary')}</h3>
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between"><span className="text-[#8B949E]">Subtotal</span><span className="text-white">{totalPrice.toLocaleString()} DZD</span></div>
-                <div className="flex justify-between"><span className="text-[#8B949E]">Shipping</span><span className="text-white">{shippingCost.toLocaleString()} DZD</span></div>
-                <div className="flex justify-between font-semibold pt-2 border-t border-[#30363D]"><span className="text-white">Total</span><span className="text-[#01D7D5]">{(totalPrice + shippingCost).toLocaleString()} DZD</span></div>
+                <div className="flex justify-between"><span className="text-[#8B949E]">{t('cart.subtotal')}</span><span className="text-white">{totalPrice.toLocaleString()} DZD</span></div>
+                <div className="flex justify-between"><span className="text-[#8B949E]">{t('cart.shipping')}</span><span className="text-white">{shippingCost.toLocaleString()} DZD</span></div>
+                <div className="flex justify-between font-semibold pt-2 border-t border-[#30363D]"><span className="text-white">{t('cart.total')}</span><span className="text-[#01D7D5]">{(totalPrice + shippingCost).toLocaleString()} DZD</span></div>
               </div>
             </div>
           </div>

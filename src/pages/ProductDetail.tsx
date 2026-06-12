@@ -73,7 +73,7 @@ export default function ProductDetail() {
 
             <div className="flex items-center gap-3 mb-4">
               <span className="text-[#01D7D5] font-semibold text-3xl">{price.toLocaleString()} DZD</span>
-              {product.salePrice && (
+              {product.salePrice && parseInt(product.salePrice) < parseInt(product.price) && (
                 <span className="text-[#484F58] text-xl line-through">{parseInt(product.price).toLocaleString()} DZD</span>
               )}
             </div>

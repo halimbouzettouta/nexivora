@@ -77,22 +77,27 @@ const MOCK_ARTICLES: Article[] = [
   },
 ]
 
-const categories = ['All Categories', 'Guides', 'Maintenance', 'Industry News', 'Marketing', 'Safety']
+const getCategories = (isAr: boolean) => isAr
+  ? ['جميع الفئات', 'أدلة', 'صيانة', 'أخبار الصناعة', 'تسويق', 'سلامة']
+  : ['All Categories', 'Guides', 'Maintenance', 'Industry News', 'Marketing', 'Safety']
 
 export default function Blog() {
   const { t } = useLanguage()
   const [search, setSearch] = useState('')
-  const [activeCategory, setActiveCategory] = useState('All Categories')
+  const isAr = t('nav.home') === 'الرئيسية'
+  const categories = getCategories(isAr)
+  const [activeCategory, setActiveCategory] = useState(isAr ? 'جميع الفئات' : 'All Categories')
 
   const featured = MOCK_ARTICLES[0]
 
   const filtered = useMemo(() => {
+    const allCategoriesLabel = isAr ? 'جميع الفئات' : 'All Categories'
     return MOCK_ARTICLES.filter((a) => {
-      if (activeCategory !== 'All Categories' && a.category !== activeCategory) return false
+      if (activeCategory !== allCategoriesLabel && a.category !== activeCategory) return false
       if (search && !a.title.toLowerCase().includes(search.toLowerCase()) && !a.excerpt.toLowerCase().includes(search.toLowerCase())) return false
       return true
     })
-  }, [activeCategory, search])
+  }, [activeCategory, search, isAr])
 
   return (
     <div className="min-h-screen bg-black pt-[70px]">
@@ -118,10 +123,10 @@ export default function Blog() {
               </div>
               <div className="p-6 lg:p-8 flex flex-col justify-center">
                 <span className="inline-block bg-[rgba(1,215,213,0.1)] text-[#01D7D5] text-[10px] font-bold px-3 py-1 rounded-full mb-3 w-fit">{t('nav.home') === 'الرئيسية' ? 'مميز' : 'FEATURED'}</span>
-                <span className="text-[#484F58] text-xs mb-2">{featured.category} · {featured.date}</span>
+                <span className="text-[#484F58] text-xs mb-2">{featured.category} &middot; {featured.date}</span>
                 <h2 className="text-white font-semibold text-2xl mb-3 group-hover:text-[#01D7D5] transition-colors">{featured.title}</h2>
                 <p className="text-[#8B949E] text-sm leading-relaxed mb-4">{featured.excerpt}</p>
-                <span className="text-[#01D7D5] text-sm flex items-center gap-1">{t('articles.readMore')} →</span>
+                <span className="text-[#01D7D5] text-sm flex items-center gap-1">{t('articles.readMore')} &rarr;</span>
               </div>
             </div>
           </Link>
@@ -148,7 +153,7 @@ export default function Blog() {
                 <p className="text-[#8B949E] text-xs leading-relaxed mb-3 line-clamp-2">{article.excerpt}</p>
                 <div className="flex items-center justify-between">
                   <span className="text-[#484F58] text-[10px] flex items-center gap-1"><Clock size={10} /> {article.readTime} {t('blog.readTime')}</span>
-                  <span className="text-[#01D7D5] text-[10px]">{t('articles.readMore')} →</span>
+                  <span className="text-[#01D7D5] text-[10px]">{t('articles.readMore')} &rarr;</span>
                 </div>
               </div>
             </Link>
