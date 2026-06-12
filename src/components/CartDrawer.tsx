@@ -1,9 +1,11 @@
 import { Link } from 'react-router'
-import { X, Minus, Plus, ShoppingBag } from 'lucide-react'
+import { X, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react'
 import { useCart } from '@/hooks/useCart'
+import { useLanguage } from '@/hooks/useLanguage'
 
 export default function CartDrawer() {
-  const { items, isOpen, closeCart, totalPrice, updateQuantity } = useCart()
+  const { t } = useLanguage()
+  const { items, isOpen, closeCart, totalPrice, updateQuantity, removeItem } = useCart()
 
   if (!isOpen) return null
 
@@ -35,14 +37,14 @@ export default function CartDrawer() {
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center">
               <ShoppingBag size={48} className="text-[#30363D] mb-4" />
-              <p className="text-white font-medium">Your cart is empty</p>
+              <p className="text-white font-medium">{t('cart.empty')}</p>
               <p className="text-[#8B949E] text-sm mt-1">Browse our products and find your perfect ride.</p>
               <Link
                 to="/store"
                 onClick={closeCart}
                 className="mt-6 px-6 py-2.5 bg-[#01D7D5] text-black font-medium rounded-lg text-sm"
               >
-                Start Shopping
+                {t('hero.shop')}
               </Link>
             </div>
           ) : (
@@ -57,7 +59,10 @@ export default function CartDrawer() {
                   className="w-20 h-20 object-cover rounded-lg"
                 />
                 <div className="flex-1 min-w-0">
-                  <p className="text-white text-sm font-medium truncate">{item.name}</p>
+                  <div className="flex items-center justify-between">
+                    <p className="text-white text-sm font-medium truncate">{item.name}</p>
+                    <button onClick={() => removeItem(item.id)} className="text-[#484F58] hover:text-[#EF4444] transition-colors p-1 ml-2"><Trash2 size={14} /></button>
+                  </div>
                   <p className="text-[#01D7D5] font-semibold mt-1">
                     {item.price.toLocaleString()} DZD
                   </p>
@@ -86,7 +91,7 @@ export default function CartDrawer() {
         {items.length > 0 && (
           <div className="p-5 border-t border-[#30363D] space-y-4">
             <div className="flex justify-between items-center">
-              <span className="text-[#8B949E]">Subtotal</span>
+              <span className="text-[#8B949E]">{t('cart.subtotal')}</span>
               <span className="text-white font-semibold text-lg">
                 {totalPrice.toLocaleString()} DZD
               </span>
@@ -97,14 +102,14 @@ export default function CartDrawer() {
                 onClick={closeCart}
                 className="flex-1 py-3 text-center border border-[#30363D] text-white rounded-lg text-sm font-medium hover:border-[#01D7D5] transition-colors"
               >
-                View Cart
+                {t('cart.title')}
               </Link>
               <Link
                 to="/checkout"
                 onClick={closeCart}
                 className="flex-1 py-3 text-center bg-[#01D7D5] text-black rounded-lg text-sm font-medium hover:shadow-[0_0_20px_rgba(1,215,213,0.4)] transition-shadow"
               >
-                Checkout
+                {t('cart.checkout')}
               </Link>
             </div>
           </div>

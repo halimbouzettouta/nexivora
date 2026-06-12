@@ -1,6 +1,9 @@
 import { Link } from 'react-router'
 
+import { useLanguage } from '@/hooks/useLanguage'
+
 export default function AffiliateCTA() {
+  const { t } = useLanguage()
   return (
     <section className="w-full bg-[#0A0A0A] py-24 px-4 sm:px-6 lg:px-[5vw] text-center">
       <h2
@@ -17,7 +20,7 @@ export default function AffiliateCTA() {
           to="/dashboard"
           className="px-10 py-4 bg-[#01D7D5] text-black font-medium rounded-lg hover:shadow-[0_0_30px_rgba(1,215,213,0.4)] hover:-translate-y-0.5 transition-all duration-300"
         >
-          Become a Marketer
+          {t('hero.join')}
         </Link>
         <Link
           to="/about"

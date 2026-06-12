@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
+import { useLanguage } from '@/hooks/useLanguage'
 import { Search, Check, Package, Truck, Home, Clock } from 'lucide-react'
 
 const mockOrder = {
@@ -19,6 +20,7 @@ const timeline = [
 ]
 
 export default function OrderTracking() {
+  const { t } = useLanguage()
   const [orderNum, setOrderNum] = useState('')
   const [searched, setSearched] = useState(false)
 
@@ -32,9 +34,9 @@ export default function OrderTracking() {
         <div className="flex items-center gap-2 text-sm text-[#484F58] mb-6">
           <Link to="/" className="hover:text-[#01D7D5]">Home</Link>
           <span>/</span>
-          <span className="text-[#8B949E]">Track Order</span>
+          <span className="text-[#8B949E]">{t('track.button')}</span>
         </div>
-        <h1 className="text-white font-semibold text-3xl mb-8">Track Your Order</h1>
+        <h1 className="text-white font-semibold text-3xl mb-8">{t('track.title')}</h1>
 
         <div className="flex gap-3 mb-10">
           <input

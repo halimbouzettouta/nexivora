@@ -1,9 +1,11 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router'
 import BinaryRainCanvas from '@/components/BinaryRainCanvas'
+import { useLanguage } from '@/hooks/useLanguage'
 
 export default function HeroSection() {
   const contentRef = useRef<HTMLDivElement>(null)
+  const { t } = useLanguage()
 
   useEffect(() => {
     const el = contentRef.current
@@ -41,32 +43,32 @@ export default function HeroSection() {
 
       <div ref={contentRef} className="relative z-10 max-w-[1000px] mx-auto px-4 sm:px-6 text-center">
         <p className="font-mono text-xs tracking-[0.2em] text-[#484F58] uppercase mb-6">
-          ⚡ ALGERIA&apos;S ELECTRIC FUTURE
+          {t('hero.badge')}
         </p>
         <h1
           className="text-white font-semibold leading-none tracking-[-0.03em] mb-6"
           style={{ fontSize: 'clamp(42px, 8vw, 96px)' }}
         >
-          Ride the Future
+          {t('hero.title')}
         </h1>
         <p
           className="text-[#8B949E] leading-relaxed max-w-[520px] mx-auto mb-10"
           style={{ fontSize: 'clamp(16px, 1.8vw, 20px)' }}
         >
-          Premium electric bikes and scooters. Join our referral program and earn commissions on every sale.
+          {t('hero.subtitle')}
         </p>
         <div className="flex items-center justify-center gap-4 flex-wrap">
           <Link
             to="/store"
             className="px-9 py-3.5 bg-[#01D7D5] text-black font-medium rounded-lg hover:shadow-[0_0_30px_rgba(1,215,213,0.4)] hover:-translate-y-0.5 transition-all duration-300"
           >
-            Shop Now
+            {t('hero.shop')}
           </Link>
           <Link
             to="/dashboard"
             className="px-9 py-3.5 border border-[#30363D] text-white font-medium rounded-lg hover:border-[#01D7D5] hover:text-[#01D7D5] transition-all duration-300"
           >
-            Become a Marketer
+            {t('hero.join')}
           </Link>
         </div>
       </div>

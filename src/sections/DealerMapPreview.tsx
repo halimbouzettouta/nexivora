@@ -1,23 +1,26 @@
 import { Link } from 'react-router'
 import { trpc } from '@/providers/trpc'
 
+import { useLanguage } from '@/hooks/useLanguage'
+
 export default function DealerMapPreview() {
+  const { t } = useLanguage()
   const { data: dealersList } = trpc.dealer.list.useQuery()
 
   return (
     <section id="dealers" className="w-full bg-black py-20 px-4 sm:px-6 lg:px-[5vw]">
       <div className="max-w-[1200px] mx-auto text-center">
         <p className="font-mono text-xs tracking-[0.2em] text-[#484F58] uppercase mb-4">
-          FIND A DEALER
+          {t('dealers.title')}
         </p>
         <h2
           className="text-white font-semibold leading-tight tracking-[-0.02em] mb-3"
           style={{ fontSize: 'clamp(28px, 5vw, 60px)' }}
         >
-          Authorized Dealers Across Algeria
+          {t('dealers.subtitle')}
         </h2>
         <p className="text-[#8B949E] leading-relaxed max-w-[560px] mx-auto mb-10" style={{ fontSize: 'clamp(16px, 1.8vw, 20px)' }}>
-          Visit our network of dealers for test rides, purchases, and service.
+          {t('dealers.desc')}
         </p>
 
         <div className="w-full h-[400px] rounded-xl overflow-hidden border border-[#30363D] mb-8 bg-[#161B22]">
@@ -92,7 +95,7 @@ export default function DealerMapPreview() {
           to="/dealers"
           className="inline-flex items-center gap-2 px-6 py-3 border border-[#01D7D5] text-[#01D7D5] rounded-lg text-sm font-medium hover:bg-[#01D7D5] hover:text-black transition-all duration-300"
         >
-          View Full Map
+          {t('dealers.viewMap')}
         </Link>
       </div>
     </section>

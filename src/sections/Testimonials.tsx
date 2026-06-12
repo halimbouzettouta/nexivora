@@ -19,7 +19,10 @@ const rankColors: Record<string, string> = {
 
 const marketerNames = ['Ahmed Benali', 'Karim Hadj', 'Yasmine Djebbar', 'Omar Khalef', 'Sofia Mansouri', 'Nadia Berrahal', 'Farid Taleb', 'Amel Chenouf', 'Rachid Meziane', 'Lina Bouzid']
 
+import { useLanguage } from '@/hooks/useLanguage'
+
 export default function Testimonials() {
+  const { t } = useLanguage()
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -41,13 +44,13 @@ export default function Testimonials() {
     <section className="w-full bg-[#0A0A0A] py-20 px-4 sm:px-6 lg:px-[5vw] overflow-hidden">
       <div className="max-w-[1200px] mx-auto">
         <p className="font-mono text-xs tracking-[0.2em] text-[#484F58] uppercase mb-4 text-center">
-          SUCCESS STORIES
+          {t('testimonials.title')}
         </p>
         <h2
           className="text-white font-semibold leading-tight tracking-[-0.02em] mb-12 text-center"
           style={{ fontSize: 'clamp(28px, 5vw, 60px)' }}
         >
-          What Our Marketers Say
+          {t('testimonials.subtitle')}
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">

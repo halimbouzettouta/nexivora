@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router'
 import { useCart } from '@/hooks/useCart'
 import { useToastStore } from '@/hooks/useToast'
 import { CreditCard, Banknote, Smartphone, Check, Truck } from 'lucide-react'
+import { useLanguage } from '@/hooks/useLanguage'
 
 export default function Checkout() {
   const navigate = useNavigate()
+  const { t } = useLanguage()
   const { items, totalPrice, clearCart } = useCart()
   const addToast = useToastStore((s) => s.addToast)
   const [step, setStep] = useState<1 | 2 | 3>(1)
@@ -21,9 +23,9 @@ export default function Checkout() {
     return (
       <div className="min-h-screen bg-black pt-[70px] flex items-center justify-center">
         <div className="text-center">
-          <h3 className="text-white font-semibold text-xl mb-2">Your cart is empty</h3>
+          <h3 className="text-white font-semibold text-xl mb-2">{t('cart.empty')}</h3>
           <button onClick={() => navigate('/store')} className="px-6 py-3 bg-[#01D7D5] text-black rounded-lg mt-4">
-            Browse Products
+            {t('hero.shop')}
           </button>
         </div>
       </div>
@@ -41,14 +43,14 @@ export default function Checkout() {
   return (
     <div className="min-h-screen bg-black pt-[70px]">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-[5vw] py-12">
-        <h1 className="text-white font-semibold text-3xl mb-8">Checkout</h1>
+        <h1 className="text-white font-semibold text-3xl mb-8">{t('checkout.title')}</h1>
 
         {/* Progress */}
         <div className="flex items-center gap-4 mb-10">
           {[
-            { n: 1 as const, label: 'Shipping' },
-            { n: 2 as const, label: 'Payment' },
-            { n: 3 as const, label: 'Confirm' },
+            { n: 1 as const, label: t('checkout.shipping') },
+            { n: 2 as const, label: t('checkout.payment') },
+            { n: 3 as const, label: t('nav.home') === 'الرئيسية' ? 'تأكيد' : 'Confirm' },
           ].map((s, idx) => (
             <div key={s.n} className="flex items-center gap-2">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
@@ -65,11 +67,11 @@ export default function Checkout() {
         {step === 1 && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-6">
-              <h3 className="text-white font-medium text-lg">Shipping Information</h3>
+              <h3 className="text-white font-medium text-lg">{t('checkout.shipping')}</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {(['fullName', 'phone', 'email', 'postalCode'] as const).map((field) => (
                   <div key={field} className={field === 'email' ? 'sm:col-span-2' : ''}>
-                    <label className="text-[#8B949E] text-sm mb-1 block capitalize">{field === 'fullName' ? 'Full Name' : field === 'postalCode' ? 'Postal Code' : field}</label>
+                    <label className="text-[#8B949E] text-sm mb-1 block">{field === 'fullName' ? t('checkout.name') : field === 'postalCode' ? (t('nav.home') === 'الرئيسية' ? 'الرمز البريدي' : 'Postal Code') : field === 'phone' ? t('checkout.phone') : t('checkout.email')}</label>
                     <input
                       type={field === 'email' ? 'email' : 'text'}
                       value={form[field]}
@@ -79,7 +81,7 @@ export default function Checkout() {
                   </div>
                 ))}
                 <div className="sm:col-span-2">
-                  <label className="text-[#8B949E] text-sm mb-1 block">Address</label>
+                  <label className="text-[#8B949E] text-sm mb-1 block">{t('checkout.address')}</label>
                   <textarea
                     value={form.address}
                     onChange={(e) => setForm({ ...form, address: e.target.value })}
@@ -87,13 +89,13 @@ export default function Checkout() {
                   />
                 </div>
                 <div>
-                  <label className="text-[#8B949E] text-sm mb-1 block">City</label>
+                  <label className="text-[#8B949E] text-sm mb-1 block">{t('checkout.city')}</label>
                   <select
                     value={form.city}
                     onChange={(e) => setForm({ ...form, city: e.target.value })}
                     className="w-full bg-[#161B22] border border-[#30363D] text-white rounded-lg px-4 py-3 focus:border-[#01D7D5] focus:outline-none"
                   >
-                    <option value="">Select City</option>
+                    <option value="">{t('checkout.city')}</option>
                     <option value="Algiers">Algiers</option>
                     <option value="Oran">Oran</option>
                     <option value="Constantine">Constantine</option>
@@ -105,11 +107,11 @@ export default function Checkout() {
               </div>
 
               {/* Shipping Method */}
-              <h3 className="text-white font-medium text-lg mt-8">Shipping Method</h3>
+              <h3 className="text-white font-medium text-lg mt-8">{t('checkout.shipping')}</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {([
-                  { id: 'standard' as const, label: 'Standard Delivery', price: 2500, time: '3-5 business days' },
-                  { id: 'express' as const, label: 'Express Delivery', price: 5000, time: '1-2 business days' },
+                  { id: 'standard' as const, label: t('nav.home') === 'الرئيسية' ? 'توصيل عادي' : 'Standard Delivery', price: 2500, time: t('nav.home') === 'الرئيسية' ? '3-5 أيام عمل' : '3-5 business days' },
+                  { id: 'express' as const, label: t('nav.home') === 'الرئيسية' ? 'توصيل سريع' : 'Express Delivery', price: 5000, time: t('nav.home') === 'الرئيسية' ? '1-2 يوم عمل' : '1-2 business days' },
                 ]).map((m) => (
                   <button
                     key={m.id}
@@ -132,13 +134,13 @@ export default function Checkout() {
                 onClick={() => setStep(2)}
                 className="w-full py-4 bg-[#01D7D5] text-black font-medium rounded-lg hover:shadow-[0_0_20px_rgba(1,215,213,0.4)] transition-all"
               >
-                Continue to Payment
+                {t('checkout.order')}
               </button>
             </div>
 
             {/* Summary */}
             <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-6 h-fit sticky top-24">
-              <h3 className="text-white font-medium mb-4">Order Summary</h3>
+              <h3 className="text-white font-medium mb-4">{t('checkout.summary')}</h3>
               {items.map((item) => (
                 <div key={item.id} className="flex items-center gap-3 mb-3">
                   <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded" />
@@ -151,15 +153,15 @@ export default function Checkout() {
               ))}
               <div className="border-t border-[#30363D] pt-4 space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-[#8B949E]">Subtotal</span>
+                  <span className="text-[#8B949E]">{t('cart.subtotal')}</span>
                   <span className="text-white">{totalPrice.toLocaleString()} DZD</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-[#8B949E]">Shipping</span>
+                  <span className="text-[#8B949E]">{t('cart.shipping')}</span>
                   <span className="text-white">{shippingCost.toLocaleString()} DZD</span>
                 </div>
                 <div className="flex justify-between font-semibold pt-2 border-t border-[#30363D]">
-                  <span className="text-white">Total</span>
+                  <span className="text-white">{t('cart.total')}</span>
                   <span className="text-[#01D7D5]">{(totalPrice + shippingCost).toLocaleString()} DZD</span>
                 </div>
               </div>
@@ -170,11 +172,11 @@ export default function Checkout() {
         {step === 2 && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-6">
-              <h3 className="text-white font-medium text-lg">Payment Method</h3>
+              <h3 className="text-white font-medium text-lg">{t('checkout.payment')}</h3>
               <div className="space-y-3">
                 {([
-                  { id: 'card' as const, label: 'Credit/Debit Card', icon: <CreditCard size={20} /> },
-                  { id: 'cod' as const, label: 'Cash on Delivery', icon: <Banknote size={20} /> },
+                  { id: 'card' as const, label: t('checkout.card'), icon: <CreditCard size={20} /> },
+                  { id: 'cod' as const, label: t('checkout.cod'), icon: <Banknote size={20} /> },
                   { id: 'baridimob' as const, label: 'BaridiMob', icon: <Smartphone size={20} /> },
                 ]).map((m) => (
                   <button
@@ -194,18 +196,18 @@ export default function Checkout() {
                   onClick={() => setStep(1)}
                   className="flex-1 py-4 border border-[#30363D] text-white rounded-lg hover:border-[#01D7D5] transition-colors"
                 >
-                  Back
+                  {t('login.back').replace('← ', '')}
                 </button>
                 <button
                   onClick={handlePlaceOrder}
                   className="flex-1 py-4 bg-[#01D7D5] text-black font-medium rounded-lg hover:shadow-[0_0_20px_rgba(1,215,213,0.4)] transition-all"
                 >
-                  Place Order
+                  {t('checkout.order')}
                 </button>
               </div>
             </div>
             <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-6 h-fit">
-              <h3 className="text-white font-medium mb-4">Order Summary</h3>
+              <h3 className="text-white font-medium mb-4">{t('checkout.summary')}</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between"><span className="text-[#8B949E]">Subtotal</span><span className="text-white">{totalPrice.toLocaleString()} DZD</span></div>
                 <div className="flex justify-between"><span className="text-[#8B949E]">Shipping</span><span className="text-white">{shippingCost.toLocaleString()} DZD</span></div>
@@ -220,15 +222,15 @@ export default function Checkout() {
             <div className="w-20 h-20 bg-[rgba(1,215,213,0.15)] rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse-glow">
               <Check size={40} className="text-[#01D7D5]" />
             </div>
-            <h2 className="text-white font-semibold text-3xl mb-2">Order Placed Successfully!</h2>
+            <h2 className="text-white font-semibold text-3xl mb-2">{t('success')}</h2>
             <p className="text-[#01D7D5] font-semibold text-xl mb-4">{orderNumber}</p>
-            <p className="text-[#8B949E] mb-8">Thank you for your purchase. You will receive a confirmation shortly.</p>
+            <p className="text-[#8B949E] mb-8">{t('contact.reply')}</p>
             <div className="flex gap-4 justify-center">
               <button onClick={() => navigate('/track')} className="px-8 py-3 bg-[#01D7D5] text-black font-medium rounded-lg">
-                Track Your Order
+                {t('track.title')}
               </button>
               <button onClick={() => navigate('/store')} className="px-8 py-3 border border-[#30363D] text-white rounded-lg hover:border-[#01D7D5] transition-colors">
-                Continue Shopping
+                {t('cart.continue')}
               </button>
             </div>
           </div>

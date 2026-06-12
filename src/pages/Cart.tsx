@@ -2,8 +2,10 @@ import { Link } from 'react-router'
 import { useCart } from '@/hooks/useCart'
 import { useToastStore } from '@/hooks/useToast'
 import { Minus, Plus, X, ShoppingBag } from 'lucide-react'
+import { useLanguage } from '@/hooks/useLanguage'
 
 export default function Cart() {
+  const { t } = useLanguage()
   const { items, totalPrice, updateQuantity, removeItem } = useCart()
   const addToast = useToastStore((s) => s.addToast)
 
@@ -12,20 +14,20 @@ export default function Cart() {
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-[5vw] py-12">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-[#484F58] mb-6">
-          <Link to="/" className="hover:text-[#01D7D5]">Home</Link>
+          <Link to="/" className="hover:text-[#01D7D5]">{t('nav.home')}</Link>
           <span>/</span>
-          <span className="text-[#8B949E]">Cart</span>
+          <span className="text-[#8B949E]">{t('cart.title')}</span>
         </div>
-        <h1 className="text-white font-semibold text-3xl mb-1">Shopping Cart</h1>
-        <p className="text-[#8B949E] text-sm mb-8">{items.length} items</p>
+        <h1 className="text-white font-semibold text-3xl mb-1">{t('cart.title')}</h1>
+        <p className="text-[#8B949E] text-sm mb-8">{items.length} {t('nav.home') === 'الرئيسية' ? 'منتج' : 'items'}</p>
 
         {items.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-center">
             <ShoppingBag size={96} className="text-[#30363D] mb-6" />
-            <h3 className="text-white font-semibold text-xl mb-2">Your cart is empty</h3>
-            <p className="text-[#8B949E] mb-6">Browse our products and find your perfect ride.</p>
+            <h3 className="text-white font-semibold text-xl mb-2">{t('cart.empty')}</h3>
+            <p className="text-[#8B949E] mb-6">{t('cart.continue')}</p>
             <Link to="/store" className="px-8 py-3 bg-[#01D7D5] text-black font-medium rounded-lg">
-              Start Shopping
+              {t('hero.shop')}
             </Link>
           </div>
         ) : (
@@ -67,17 +69,17 @@ export default function Cart() {
                 <h3 className="text-white font-semibold text-lg mb-4">Order Summary</h3>
                 <div className="space-y-3 mb-4">
                   <div className="flex justify-between text-sm">
-                    <span className="text-[#8B949E]">Subtotal</span>
+                    <span className="text-[#8B949E]">{t('cart.subtotal')}</span>
                     <span className="text-white">{totalPrice.toLocaleString()} DZD</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-[#8B949E]">Shipping</span>
-                    <span className="text-[#8B949E]">Calculated at checkout</span>
+                    <span className="text-[#8B949E]">{t('cart.shipping')}</span>
+                    <span className="text-[#8B949E]">{t('checkout.title')}</span>
                   </div>
                 </div>
                 <div className="border-t border-[#30363D] pt-4 mb-4">
                   <div className="flex justify-between">
-                    <span className="text-white font-semibold">Total</span>
+                    <span className="text-white font-semibold">{t('cart.total')}</span>
                     <span className="text-[#01D7D5] font-semibold text-xl">{totalPrice.toLocaleString()} DZD</span>
                   </div>
                 </div>
@@ -98,10 +100,10 @@ export default function Cart() {
                   to="/checkout"
                   className="block w-full py-4 bg-[#01D7D5] text-black text-center font-medium rounded-lg hover:shadow-[0_0_20px_rgba(1,215,213,0.4)] transition-all"
                 >
-                  Proceed to Checkout
+                  {t('cart.checkout')}
                 </Link>
                 <Link to="/store" className="block text-center text-[#8B949E] text-sm mt-4 hover:text-[#01D7D5] transition-colors">
-                  Continue Shopping
+                  {t('cart.continue')}
                 </Link>
 
                 <div className="mt-4 p-3 bg-[rgba(1,215,213,0.1)] rounded-lg text-center">

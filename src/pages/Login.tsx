@@ -1,5 +1,11 @@
+import { useState } from 'react'
 import { Link } from 'react-router'
-import { Zap, Globe } from 'lucide-react'
+import { Zap, Globe, Lock, Shield, RotateCcw } from 'lucide-react'
+import { useLanguage } from '@/hooks/useLanguage'
+import { verifyAdminPassword, setAdminSession } from '@/hooks/adminAuth'
+
+// Default admin password - shown to user for convenience
+const DEFAULT_PASSWORD = 'Eride2025!'
 
 function getOAuthUrl() {
   const kimiAuthUrl = import.meta.env.VITE_KIMI_AUTH_URL;
@@ -18,6 +24,40 @@ function getOAuthUrl() {
 }
 
 export default function Login() {
+  const { lang, setLang, t } = useLanguage()
+  const [adminPassword, setAdminPassword] = useState('')
+  const [showAdminForm, setShowAdminForm] = useState(false)
+  const [loginError, setLoginError] = useState('')
+  const [pwdSuccess, setPwdSuccess] = useState('')
+  const [loggingIn, setLoggingIn] = useState(false)
+
+  const handleAdminLogin = async () => {
+    if (!adminPassword) {
+      setLoginError('Please enter a password')
+      return
+    }
+    setLoggingIn(true)
+    setLoginError('')
+
+    const valid = await verifyAdminPassword(adminPassword)
+    if (valid) {
+      setAdminSession()
+      window.location.href = '/#/admin'
+      window.location.reload()
+    } else {
+      setLoginError(`Wrong password. Try: "${DEFAULT_PASSWORD}"`)
+      setLoggingIn(false)
+    }
+  }
+
+  const handleResetPassword = async () => {
+    // Reset to default password by clearing the stored hash
+    localStorage.removeItem('eride-admin-pwd-hash')
+    setLoginError('')
+    setPwdSuccess('Password reset to default. Try logging in again.')
+    setAdminPassword(DEFAULT_PASSWORD)
+  }
+
   return (
     <div className="min-h-screen bg-black flex">
       {/* Left - Branding */}
@@ -36,9 +76,9 @@ export default function Login() {
             <Zap size={32} className="text-[#01D7D5]" />
             <span className="text-[#01D7D5] font-semibold text-2xl tracking-[0.05em]">E-RIDE</span>
           </div>
-          <h2 className="text-white font-semibold text-3xl mb-4">Algeria&apos;s Electric Future</h2>
+          <h2 className="text-white font-semibold text-3xl mb-4">{t('about.subtitle')}</h2>
           <p className="text-[#8B949E] max-w-[400px] mx-auto">
-            Join thousands of riders and marketers transforming transportation in Algeria.
+            {t('about.communityText')}
           </p>
           <div
             className="mt-8 mx-auto w-[300px] h-[150px]"
@@ -58,36 +98,90 @@ export default function Login() {
             <span className="text-[#01D7D5] font-semibold text-xl tracking-[0.05em]">E-RIDE</span>
           </div>
 
-          <h1 className="text-white font-semibold text-2xl mb-1">Welcome Back</h1>
-          <p className="text-[#8B949E] text-sm mb-8">Sign in to your account to continue</p>
+          <h1 className="text-white font-semibold text-2xl mb-1">{t('login.welcome')}</h1>
+          <p className="text-[#8B949E] text-sm mb-8">{t('login.signin')}</p>
 
-          {/* Admin access hint */}
-          <div className="bg-[rgba(1,215,213,0.05)] border border-[#30363D] rounded-lg p-3 mb-6">
-            <p className="text-[#8B949E] text-xs">
-              <span className="text-[#01D7D5] font-medium">Note:</span> Admin users can access the admin panel at <Link to="/admin" className="text-[#01D7D5] hover:underline">/admin</Link> after signing in.
-            </p>
-          </div>
-
-          {/* Sign In with Kimi */}
+          {/* OAuth Login */}
           <button
             onClick={() => { window.location.href = getOAuthUrl(); }}
             className="w-full py-3.5 bg-[#01D7D5] text-black font-medium rounded-lg hover:shadow-[0_0_20px_rgba(1,215,213,0.4)] hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 mb-4"
           >
             <Zap size={18} />
-            Sign in with Kimi
+            {t('login.withKimi')}
           </button>
 
           {/* Divider */}
           <div className="flex items-center gap-4 my-6">
             <div className="flex-1 h-px bg-[#30363D]" />
-            <span className="text-[#484F58] text-xs">or</span>
+            <span className="text-[#484F58] text-xs">{t('login.or')}</span>
             <div className="flex-1 h-px bg-[#30363D]" />
           </div>
 
-          {/* Email Form */}
+          {/* Admin Password Login */}
+          {!showAdminForm ? (
+            <button
+              onClick={() => setShowAdminForm(true)}
+              className="w-full py-3 border border-[#EF4444]/30 text-[#EF4444] font-medium rounded-lg hover:border-[#EF4444] hover:bg-[rgba(239,68,68,0.05)] transition-all duration-300 flex items-center justify-center gap-2 mb-4"
+            >
+              <Shield size={18} />
+              {t('nav.home') === 'الرئيسية' ? 'دخول المشرف' : 'Admin Login'}
+            </button>
+          ) : (
+            <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-4 mb-4 space-y-3">
+              <div className="flex items-center gap-2 mb-2">
+                <Lock size={16} className="text-[#EF4444]" />
+                <span className="text-white text-sm font-medium">{t('nav.home') === 'الرئيسية' ? 'لوحة تحكم المشرف' : 'Admin Panel Access'}</span>
+              </div>
+
+              {/* Password hint */}
+              <p className="text-[#484F58] text-xs">
+                Default password: <span className="text-[#8B949E] font-mono">{DEFAULT_PASSWORD}</span>
+              </p>
+
+              <input
+                type="password"
+                value={adminPassword}
+                onChange={(e) => { setAdminPassword(e.target.value); setLoginError(''); setPwdSuccess('') }}
+                onKeyDown={(e) => e.key === 'Enter' && handleAdminLogin()}
+                placeholder={t('nav.home') === 'الرئيسية' ? 'أدخل كلمة المرور...' : 'Enter admin password...'}
+                className="w-full bg-[#0A0A0A] border border-[#30363D] text-white rounded-lg px-4 py-3 focus:border-[#01D7D5] focus:outline-none text-sm"
+              />
+              {pwdSuccess && (
+                <p className="text-[#01D7D5] text-xs">{pwdSuccess}</p>
+              )}
+              {loginError && (
+                <p className="text-[#EF4444] text-xs">{loginError}</p>
+              )}
+              <div className="flex gap-2">
+                <button
+                  onClick={handleAdminLogin}
+                  disabled={loggingIn}
+                  className="flex-1 py-2.5 bg-[#EF4444] text-white font-medium rounded-lg hover:shadow-[0_0_20px_rgba(239,68,68,0.4)] transition-all text-sm disabled:opacity-50"
+                >
+                  {loggingIn ? '...' : (t('nav.home') === 'الرئيسية' ? 'دخول' : 'Login')}
+                </button>
+                <button
+                  onClick={() => { setShowAdminForm(false); setLoginError(''); setPwdSuccess('') }}
+                  className="px-4 py-2.5 border border-[#30363D] text-[#484F58] rounded-lg hover:text-white transition-colors text-sm"
+                >
+                  {t('btn.cancel')}
+                </button>
+              </div>
+              {/* Reset password link */}
+              <button
+                onClick={handleResetPassword}
+                className="w-full flex items-center justify-center gap-1.5 text-[#484F58] text-xs hover:text-[#F59E0B] transition-colors pt-1"
+              >
+                <RotateCcw size={12} />
+                Forgot password? Reset to default
+              </button>
+            </div>
+          )}
+
+          {/* Regular Email/Password (for marketers/customers) */}
           <div className="space-y-4">
             <div>
-              <label className="text-[#8B949E] text-sm mb-1 block">Email</label>
+              <label className="text-[#8B949E] text-sm mb-1 block">{t('login.email')}</label>
               <input
                 type="email"
                 placeholder="you@example.com"
@@ -95,7 +189,7 @@ export default function Login() {
               />
             </div>
             <div>
-              <label className="text-[#8B949E] text-sm mb-1 block">Password</label>
+              <label className="text-[#8B949E] text-sm mb-1 block">{t('login.password')}</label>
               <input
                 type="password"
                 placeholder="••••••••"
@@ -105,34 +199,31 @@ export default function Login() {
             <div className="flex items-center justify-between">
               <label className="flex items-center gap-2 text-sm text-[#8B949E] cursor-pointer">
                 <input type="checkbox" className="rounded border-[#30363D] bg-[#161B22] text-[#01D7D5] focus:ring-[#01D7D5]" />
-                Remember me
+                {t('login.remember')}
               </label>
-              <a href="#" className="text-[#01D7D5] text-sm hover:underline">Forgot Password?</a>
+              <a href="#" className="text-[#01D7D5] text-sm hover:underline">{t('login.forgot')}</a>
             </div>
             <button className="w-full py-3.5 border border-[#30363D] text-white font-medium rounded-lg hover:border-[#01D7D5] transition-colors duration-300">
-              Sign In
+              {t('login.signIn')}
             </button>
           </div>
 
           {/* Language Toggle */}
           <div className="flex items-center justify-center gap-2 mt-6">
             <Globe size={14} className="text-[#484F58]" />
-            <button className="text-[#8B949E] text-sm hover:text-[#01D7D5] transition-colors">English</button>
+            <button className={`text-[#8B949E] text-sm hover:text-[#01D7D5] transition-colors ${lang === "en" ? "font-bold text-white" : ""}`} onClick={() => setLang("en")}>English</button>
             <span className="text-[#30363D]">/</span>
-            <button className="text-[#484F58] text-sm hover:text-[#01D7D5] transition-colors">العربية</button>
+            <button className={`text-[#484F58] text-sm hover:text-[#01D7D5] transition-colors ${lang === "ar" ? "font-bold text-white" : ""}`} onClick={() => setLang("ar")}>العربية</button>
           </div>
 
           <p className="text-[#484F58] text-sm text-center mt-6">
-            Don&apos;t have an account?{' '}
-            <a href="#" className="text-[#01D7D5] hover:underline">Sign Up</a>
+            {t('login.noAccount')}{' '}
+            <a href="#" className="text-[#01D7D5] hover:underline">{t('login.signUp')}</a>
           </p>
 
-          <div className="text-center mt-6 space-y-2">
+          <div className="text-center mt-6">
             <Link to="/" className="text-[#484F58] text-sm hover:text-[#8B949E] transition-colors block">
-              ← Back to Home
-            </Link>
-            <Link to="/setup" className="text-[#484F58] text-sm hover:text-[#01D7D5] transition-colors block">
-              🔧 Admin Setup
+              {t('login.back')}
             </Link>
           </div>
         </div>

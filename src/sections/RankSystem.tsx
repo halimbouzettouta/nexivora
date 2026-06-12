@@ -1,4 +1,5 @@
 import { trpc } from '@/providers/trpc'
+import { useLanguage } from '@/hooks/useLanguage'
 import { Zap, Award, Trophy, Crown, Diamond } from 'lucide-react'
 
 const rankIcons: Record<string, React.ReactNode> = {
@@ -27,21 +28,22 @@ const rankRewards: Record<string, string> = {
 
 export default function RankSystem() {
   const { data: ranks } = trpc.rank.list.useQuery()
+  const { t } = useLanguage()
 
   return (
     <section id="ranks" className="w-full bg-black py-20 px-4 sm:px-6 lg:px-[5vw]">
       <div className="max-w-[1200px] mx-auto text-center">
         <p className="font-mono text-xs tracking-[0.2em] text-[#484F58] uppercase mb-4">
-          PROGRESSION SYSTEM
+          {t('ranks.title')}
         </p>
         <h2
           className="text-white font-semibold leading-tight tracking-[-0.02em] mb-3"
           style={{ fontSize: 'clamp(28px, 5vw, 60px)' }}
         >
-          Climb the Ranks
+          {t('ranks.subtitle')}
         </h2>
         <p className="text-[#8B949E] leading-relaxed max-w-[640px] mx-auto mb-14" style={{ fontSize: 'clamp(16px, 1.8vw, 20px)' }}>
-          Earn commissions, unlock rewards, and grow your network. Every sale brings you closer to the next rank.
+          {t('ranks.desc')}
         </p>
 
         <div className="flex flex-wrap justify-center gap-6">

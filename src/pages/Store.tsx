@@ -1,200 +1,122 @@
 import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
-import { trpc } from '@/providers/trpc'
-import ProductCard3D from '@/components/ProductCard3D'
-import { useToastStore } from '@/hooks/useToast'
-import { ShoppingCart, Search } from 'lucide-react'
+import { useProducts, type Product } from '@/hooks/useProducts'
 import { useCart } from '@/hooks/useCart'
-
-const productImages: Record<string, string> = {
-  'E-Ride City Pro': '/product-ebike-premium.jpg',
-  'E-Ride Urban Glide': '/product-escooter-city.jpg',
-  'E-Ride Trail Blazer': '/product-escooter-offroad.jpg',
-  'E-Ride Mountain X': '/product-ebike-mountain.jpg',
-  'E-Ride Air Helmet': '/product-accessory-helmet.jpg',
-  'E-Ride Smart Lock': '/product-accessory-lock.jpg',
-}
+import { useLanguage } from '@/hooks/useLanguage'
+import { ShoppingCart, Search } from 'lucide-react'
 
 const categoryTabs = ['All', 'E-Bikes', 'E-Scooters', 'Accessories', 'Parts']
+const CAT_SLUG: Record<string, string> = {
+  'E-Bikes': 'e-bikes', 'E-Scooters': 'e-scooters',
+  'Accessories': 'accessories', 'Parts': 'parts',
+}
 
 export default function Store() {
+  const { t } = useLanguage()
   const [searchParams, setSearchParams] = useSearchParams()
-  const [search, setSearch] = useState('')
-  const [sortBy, setSortBy] = useState<string>('featured')
+  const { products } = useProducts()
   const addItem = useCart((s) => s.addItem)
 
-  const activeCategory = searchParams.get('category') || 'all'
-  const activeTab = activeCategory === 'e-bikes' ? 'E-Bikes' : activeCategory === 'e-scooters' ? 'E-Scooters' : activeCategory === 'accessories' ? 'Accessories' : activeCategory === 'parts' ? 'Parts' : 'All'
+  const activeCatSlug = searchParams.get('category') || 'all'
+  const activeTab = activeCatSlug === 'e-bikes' ? 'E-Bikes' : activeCatSlug === 'e-scooters' ? 'E-Scooters' : activeCatSlug === 'accessories' ? 'Accessories' : activeCatSlug === 'parts' ? 'Parts' : 'All'
 
-  const { data, isLoading } = trpc.product.list.useQuery({
-    category: activeCategory,
-    search: search || undefined,
-    sortBy: sortBy as 'featured' | 'price_asc' | 'price_desc' | 'rating',
-    page: 1,
-    limit: 24,
+  const [search, setSearch] = useState('')
+  const [sortBy, setSortBy] = useState('featured')
+
+  // Filter & sort
+  const filtered = products.filter((p) => {
+    if (activeCatSlug !== 'all' && p.category !== activeCatSlug) return false
+    if (search && !p.name.toLowerCase().includes(search.toLowerCase()) && !p.description.toLowerCase().includes(search.toLowerCase())) return false
+    return true
+  }).sort((a, b) => {
+    if (sortBy === 'price_asc') return parseInt(a.price) - parseInt(b.price)
+    if (sortBy === 'price_desc') return parseInt(b.price) - parseInt(a.price)
+    if (sortBy === 'rating') return (b.rating || 0) - (a.rating || 0)
+    return 0
   })
 
   const handleCategoryChange = (tab: string) => {
-    const slug = tab === 'E-Bikes' ? 'e-bikes' : tab === 'E-Scooters' ? 'e-scooters' : tab === 'Accessories' ? 'accessories' : tab === 'Parts' ? 'parts' : 'all'
-    if (slug === 'all') {
-      searchParams.delete('category')
-    } else {
-      searchParams.set('category', slug)
-    }
+    const slug = CAT_SLUG[tab] || 'all'
+    if (slug === 'all') { searchParams.delete('category') } else { searchParams.set('category', slug) }
     setSearchParams(searchParams)
   }
 
-  const addToast = useToastStore((s) => s.addToast)
-
-  const handleAddToCart = (product: NonNullable<typeof data>['items'][0]) => {
-    const image = productImages[product.name] || '/product-ebike-premium.jpg'
-    addItem({
-      productId: product.id,
-      name: product.name,
-      price: parseFloat(product.salePrice || product.price),
-      image,
-      quantity: 1,
-    })
-    addToast({ title: 'Added to Cart', message: `${product.name} has been added to your cart.`, type: 'success' })
-  }
-
-  const parseSpecs = (specs: unknown) => {
-    if (!specs) return {}
-    try { return typeof specs === 'string' ? JSON.parse(specs) : specs as Record<string, string> } catch { return {} }
+  const handleAddToCart = (p: Product) => {
+    addItem({ productId: p.id, name: p.name, price: parseInt(p.salePrice || p.price), image: p.image || '', quantity: 1 })
   }
 
   return (
     <div className="min-h-screen bg-black pt-[70px]">
-      {/* Header */}
-      <div className="bg-black pt-16 pb-8 px-4 sm:px-6 lg:px-[5vw]">
-        <div className="max-w-[1440px] mx-auto">
-          <div className="flex items-center gap-2 text-sm text-[#484F58] mb-4">
-            <Link to="/" className="hover:text-[#01D7D5]">Home</Link>
-            <span>/</span>
-            <span className="text-[#8B949E]">Store</span>
-          </div>
-          <h1 className="text-white font-semibold text-4xl md:text-5xl mb-2">All Products</h1>
-          <p className="text-[#8B949E] text-sm">Showing {data?.total || 0} products</p>
+      <div className="bg-black text-center pt-32 pb-20 px-4">
+        <div className="flex items-center justify-center gap-2 text-xs mb-4">
+          <Link to="/" className="hover:text-[#01D7D5]">{t('nav.home')}</Link><span>/</span><span className="text-[#8B949E]">{t('nav.store')}</span>
         </div>
+        <h1 className="text-white font-semibold text-4xl md:text-5xl mb-2">{t('nav.store')}</h1>
+        <p className="text-[#8B949E] text-sm">{filtered.length} {t('nav.home') === 'الرئيسية' ? 'منتج' : 'products'}</p>
       </div>
 
-      {/* Filters Bar */}
-      <div className="sticky top-[70px] z-40 bg-[rgba(10,10,10,0.95)] backdrop-blur-xl border-b border-[#30363D] px-4 sm:px-6 lg:px-[5vw] py-4">
-        <div className="max-w-[1440px] mx-auto flex flex-wrap items-center gap-4">
-          <div className="flex items-center gap-2 overflow-x-auto pb-1">
-            {categoryTabs.map((tab) => (
-              <button
-                key={tab}
-                onClick={() => handleCategoryChange(tab)}
-                className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors ${
-                  activeTab === tab
-                    ? 'bg-[rgba(1,215,213,0.15)] text-[#01D7D5]'
-                    : 'text-[#8B949E] hover:text-white'
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-[5vw] pb-20">
+        <div className="flex flex-wrap items-center gap-3 mb-6">
+          <div className="relative flex-1 min-w-[200px]">
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#484F58]" />
+            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t('store.search')}
+              className="w-full bg-[#161B22] border border-[#30363D] text-white text-sm rounded-lg pl-9 pr-4 py-2.5 focus:border-[#01D7D5] focus:outline-none" />
           </div>
-          <div className="flex-1" />
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#484F58]" />
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="bg-[#161B22] border border-[#30363D] text-white text-sm rounded-lg pl-9 pr-4 py-2 w-48 focus:border-[#01D7D5] focus:outline-none transition-colors"
-              />
-            </div>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="bg-[#161B22] border border-[#30363D] text-white text-sm rounded-lg px-3 py-2 focus:border-[#01D7D5] focus:outline-none"
-            >
-              <option value="featured">Featured</option>
-              <option value="price_asc">Price: Low to High</option>
-              <option value="price_desc">Price: High to Low</option>
-              <option value="rating">Highest Rated</option>
-            </select>
-          </div>
+          <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}
+            className="bg-[#161B22] border border-[#30363D] text-white text-sm rounded-lg px-4 py-2.5 focus:border-[#01D7D5] focus:outline-none">
+            <option value="featured">Sort: Featured</option>
+            <option value="price_asc">Price: Low → High</option>
+            <option value="price_desc">Price: High → Low</option>
+            <option value="rating">Highest Rated</option>
+          </select>
         </div>
-      </div>
 
-      {/* Product Grid */}
-      <div className="px-4 sm:px-6 lg:px-[5vw] py-8">
-        <div className="max-w-[1440px] mx-auto">
-          {isLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="bg-[#161B22] rounded-xl h-[400px] animate-shimmer" />
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {data?.items?.map((product) => {
-                const specs = parseSpecs(product.specs)
-                const image = productImages[product.name] || '/product-ebike-premium.jpg'
-                return (
-                  <ProductCard3D key={product.id}>
-                    <div className="bg-[#161B22] border border-[#30363D] rounded-xl overflow-hidden group h-full flex flex-col">
-                      <Link to={`/store/${product.id}`} className="block">
-                        <div className="aspect-[4/3] overflow-hidden relative">
-                          <img
-                            src={image}
-                            alt={product.name}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            loading="lazy"
-                          />
-                          {product.salePrice && (
-                            <span className="absolute top-3 left-3 bg-red-500 text-white text-[11px] font-medium px-2 py-1 rounded">
-                              SALE
-                            </span>
-                          )}
-                        </div>
-                      </Link>
-                      <div className="p-4 flex-1 flex flex-col">
-                        <Link to={`/store/${product.id}`}>
-                          <h4 className="text-white font-medium text-sm mb-1">{product.name}</h4>
-                        </Link>
-                        <div className="flex items-center gap-1 mb-2">
-                          <span className="text-yellow-500 text-xs">{'★'.repeat(Math.round(parseFloat(product.rating || '0')))}</span>
-                          <span className="text-[#484F58] text-xs">({product.reviewCount})</span>
-                        </div>
-                        <div className="flex items-center gap-2 mb-3">
-                          <span className="text-[#01D7D5] font-semibold">
-                            {parseFloat(product.salePrice || product.price).toLocaleString()} DZD
-                          </span>
-                          {product.salePrice && (
-                            <span className="text-[#484F58] text-sm line-through">
-                              {parseFloat(product.price).toLocaleString()} DZD
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-2 text-xs text-[#484F58] mb-3 flex-wrap">
-                          {Object.entries(specs).slice(0, 2).map(([k, v]) => (
-                            <span key={k} className="flex items-center gap-1">
-                              <span>·</span>
-                              {String(v)}
-                            </span>
-                          ))}
-                        </div>
-                        <button
-                          onClick={() => handleAddToCart(product)}
-                          className="w-full mt-auto py-2.5 bg-[#01D7D5] text-black font-medium text-sm rounded-lg hover:bg-[#00B4B2] transition-colors flex items-center justify-center gap-2"
-                        >
-                          <ShoppingCart size={16} />
-                          Add to Cart
-                        </button>
+        <div className="flex gap-1 mb-6 overflow-x-auto">
+          {categoryTabs.map((tab) => (
+            <button key={tab} onClick={() => handleCategoryChange(tab)}
+              className={`px-4 py-2 rounded-lg text-sm transition-colors whitespace-nowrap ${activeTab === tab ? 'bg-[rgba(1,215,213,0.15)] text-[#01D7D5]' : 'text-[#484F58] hover:text-white'}`}>{tab}</button>
+          ))}
+        </div>
+
+        {filtered.length === 0 ? (
+          <div className="text-center py-24"><p className="text-[#8B949E] text-lg">{t('store.noResults')}</p></div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filtered.map((product) => (
+              <div key={product.id} className="bg-[#161B22] border border-[#30363D] rounded-xl overflow-hidden hover:-translate-y-2 hover:border-[rgba(255,255,255,0.1)] transition-all duration-500 group">
+                <Link to={`/product/${product.slug}`} className="block">
+                  <div className="aspect-[4/3] bg-[#0A0A0A] overflow-hidden relative">
+                    <img src={product.image || '/product-ebike-premium.jpg'} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    {product.salePrice && (
+                      <span className="absolute top-3 right-3 bg-[#EF4444] text-white text-[10px] font-bold px-2 py-1 rounded-full">{t('products.sale')}</span>
+                    )}
+                  </div>
+                  <div className="p-4">
+                    <p className="text-[#8B949E] text-[10px] uppercase tracking-[0.1em]">{product.category}</p>
+                    <h3 className="text-white font-medium text-base mt-1 mb-1">{product.name}</h3>
+                    <p className="text-[#484F58] text-xs mb-3 line-clamp-2">{product.description}</p>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-[#01D7D5] font-semibold">DZD {parseInt(product.salePrice || product.price).toLocaleString()}</span>
+                        {product.salePrice && <span className="text-[#484F58] text-xs line-through">{parseInt(product.price).toLocaleString()}</span>}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-yellow-500 text-xs">★</span>
+                        <span className="text-[#484F58] text-xs">{product.rating || 0}</span>
                       </div>
                     </div>
-                  </ProductCard3D>
-                )
-              })}
-            </div>
-          )}
-        </div>
+                  </div>
+                </Link>
+                <div className="px-4 pb-4">
+                  <button onClick={() => handleAddToCart(product)}
+                    className="w-full py-2.5 bg-[#01D7D5] text-black text-sm font-medium rounded-lg hover:shadow-[0_0_20px_rgba(1,215,213,0.4)] transition-all flex items-center justify-center gap-2">
+                    <ShoppingCart size={14} /> {t('products.addToCart')}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

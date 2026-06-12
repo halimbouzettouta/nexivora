@@ -16,7 +16,10 @@ const categoryColors: Record<string, string> = {
   'Technology': '#3B82F6',
 }
 
+import { useLanguage } from '@/hooks/useLanguage'
+
 export default function EducationalPreview() {
+  const { t } = useLanguage()
   const { data: articlesList } = trpc.article.list.useQuery({ limit: 4 })
 
   return (
@@ -29,7 +32,7 @@ export default function EducationalPreview() {
           className="text-white font-semibold leading-tight tracking-[-0.02em] mb-10"
           style={{ fontSize: 'clamp(28px, 5vw, 60px)' }}
         >
-          Tips for a Better Ride
+          {t('articles.subtitle')}
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
@@ -61,7 +64,7 @@ export default function EducationalPreview() {
                     to={`/blog/${article.slug}`}
                     className="inline-flex items-center gap-1 text-[#01D7D5] text-sm hover:underline"
                   >
-                    Read More
+                    {t('articles.readMore')}
                     <ArrowRight size={14} />
                   </Link>
                 </div>
@@ -75,7 +78,7 @@ export default function EducationalPreview() {
             to="/blog"
             className="inline-flex items-center gap-2 text-[#8B949E] hover:text-[#01D7D5] transition-colors group"
           >
-            View All Articles
+            {t('articles.viewAll')}
             <span className="group-hover:translate-x-1 transition-transform">→</span>
           </Link>
         </div>

@@ -3,7 +3,10 @@ import { Link } from 'react-router'
 import { useToastStore } from '@/hooks/useToast'
 import { MapPin, Phone, Mail, Clock, Instagram, Facebook, Youtube, Send, Check } from 'lucide-react'
 
+import { useLanguage } from '@/hooks/useLanguage'
+
 export default function Contact() {
+  const { t } = useLanguage()
   const [sent, setSent] = useState(false)
   const addToast = useToastStore((s) => s.addToast)
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: 'General Inquiry', message: '' })
@@ -112,7 +115,7 @@ export default function Contact() {
           {/* Contact Info */}
           <div className="space-y-8">
             <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-6">
-              <h3 className="text-white font-semibold text-lg mb-6">Contact Information</h3>
+              <h3 className="text-white font-semibold text-lg mb-6">{t('contact.info')}</h3>
               <div className="space-y-5">
                 <div className="flex items-start gap-4">
                   <MapPin size={20} className="text-[#01D7D5] flex-shrink-0 mt-0.5" />
