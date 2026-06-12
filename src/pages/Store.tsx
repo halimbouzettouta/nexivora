@@ -87,7 +87,7 @@ export default function Store() {
                 <Link to={`/product/${product.slug}`} className="block">
                   <div className="aspect-[4/3] bg-[#0A0A0A] overflow-hidden relative">
                     <img src={product.image || '/product-ebike-premium.jpg'} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                    {product.salePrice && (
+                    {product.salePrice && parseInt(product.salePrice) < parseInt(product.price) && (
                       <span className="absolute top-3 right-3 bg-[#EF4444] text-white text-[10px] font-bold px-2 py-1 rounded-full">{t('products.sale')}</span>
                     )}
                   </div>
