@@ -25,8 +25,9 @@ export default function AdminLogin() {
     const valid = await verifyAdminPassword(password)
     if (valid) {
       setAdminSession()
-      window.location.href = '/#/admin'
-      window.location.reload()
+      // Use replace to go to admin without keeping login in history
+      window.location.replace('/#/admin')
+      return
     } else {
       setError(lang === 'ar' ? 'كلمة المرور خاطئة' : lang === 'fr' ? 'Mot de passe incorrect' : 'Wrong password')
       setLoggingIn(false)

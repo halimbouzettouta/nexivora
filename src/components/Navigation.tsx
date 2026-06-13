@@ -114,7 +114,7 @@ export default function Navigation() {
               )}
             </button>
 
-            {isAuthenticated ? (
+            {isAuthenticated && (
               <div className="relative">
                 <button onClick={() => setUserMenuOpen(!userMenuOpen)} className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-[#01D7D5] flex items-center justify-center text-black text-xs font-bold">
@@ -146,13 +146,6 @@ export default function Navigation() {
                   </div>
                 )}
               </div>
-            ) : (
-              <Link
-                to="/login"
-                className="hidden md:block px-5 py-2 text-sm font-medium bg-[#01D7D5] text-black rounded-lg hover:shadow-[0_0_20px_rgba(1,215,213,0.4)] hover:-translate-y-0.5 transition-all duration-300"
-              >
-                {t('nav.login')}
-              </Link>
             )}
 
             <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden p-2 text-[#8B949E]">
@@ -192,11 +185,7 @@ export default function Navigation() {
                 </button>
               </>
             )}
-            {!isAuthenticated && (
-              <Link to="/login" onClick={() => setMobileOpen(false)} className="mt-4 px-8 py-3 text-base font-medium bg-[#01D7D5] text-black rounded-lg">
-                {t('nav.login')}
-              </Link>
-            )}
+
           </div>
         </div>
       )}
