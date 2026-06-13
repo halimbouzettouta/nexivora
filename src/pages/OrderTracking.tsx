@@ -3,26 +3,32 @@ import { Link } from 'react-router'
 import { useLanguage } from '@/hooks/useLanguage'
 import { Search, Check, Package, Truck, Home, Clock } from 'lucide-react'
 
-const mockOrder = {
-  number: 'ER-2025-0042',
-  date: 'June 1, 2025',
-  status: 'Out for Delivery',
-  estimatedDelivery: 'June 5, 2025',
-  trackingNumber: 'TRK123456',
+const useTimeline = (t: (k: string) => string, lang: string) => {
+  const mockOrder = {
+    number: 'ER-2025-0042',
+    date: lang === 'fr' ? '1 juin 2025' : 'June 1, 2025',
+    status: lang === 'ar' ? 'خرج للتوصيل' : lang === 'fr' ? 'En cours de livraison' : 'Out for Delivery',
+    estimatedDelivery: lang === 'fr' ? '5 juin 2025' : 'June 5, 2025',
+    trackingNumber: 'TRK123456',
+  }
+
+  const timeline = [
+    { icon: <Check size={16} />, label: t('track.orderPlaced'), time: 'Jun 1, 10:00 AM', desc: t('track.orderReceived'), completed: true },
+    { icon: <Check size={16} />, label: t('track.paymentConfirmed'), time: 'Jun 1, 10:05 AM', desc: t('track.paymentVerified'), completed: true },
+    { icon: <Package size={16} />, label: t('track.processing'), time: 'Jun 2, 9:00 AM', desc: t('track.orderPrepared'), completed: true },
+    { icon: <Truck size={16} />, label: t('track.shipped'), time: 'Jun 3, 2:00 PM', desc: `${t('track.orderOnWay')} ${t('track.tracking')}: ${mockOrder.trackingNumber}`, completed: true },
+    { icon: <Home size={16} />, label: t('track.delivered'), time: '', desc: `${t('track.expectedBy')} ${mockOrder.estimatedDelivery}`, completed: false },
+  ]
+
+  return { mockOrder, timeline }
 }
 
-const timeline = [
-  { icon: <Check size={16} />, label: 'Order Placed', time: 'Jun 1, 10:00 AM', desc: 'Your order has been received.', completed: true },
-  { icon: <Check size={16} />, label: 'Payment Confirmed', time: 'Jun 1, 10:05 AM', desc: 'Payment verified.', completed: true },
-  { icon: <Package size={16} />, label: 'Processing', time: 'Jun 2, 9:00 AM', desc: 'Order is being prepared.', completed: true },
-  { icon: <Truck size={16} />, label: 'Shipped', time: 'Jun 3, 2:00 PM', desc: `Your order is on the way. Tracking: ${mockOrder.trackingNumber}`, completed: true },
-  { icon: <Home size={16} />, label: 'Delivered', time: '', desc: `Expected by ${mockOrder.estimatedDelivery}`, completed: false },
-]
-
 export default function OrderTracking() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const [orderNum, setOrderNum] = useState('')
   const [searched, setSearched] = useState(false)
+
+  const { mockOrder, timeline } = useTimeline(t, lang)
 
   const handleTrack = () => {
     if (orderNum.trim()) setSearched(true)
@@ -32,9 +38,9 @@ export default function OrderTracking() {
     <div className="min-h-screen bg-black pt-[70px]">
       <div className="max-w-[800px] mx-auto px-4 sm:px-6 lg:px-[5vw] py-12">
         <div className="flex items-center gap-2 text-sm text-[#484F58] mb-6">
-          <Link to="/" className="hover:text-[#01D7D5]">Home</Link>
+          <Link to="/" className="hover:text-[#01D7D5]">{t('nav.home')}</Link>
           <span>/</span>
-          <span className="text-[#8B949E]">{t('track.button')}</span>
+          <span className="text-[#8B949E]">{t('track.title')}</span>
         </div>
         <h1 className="text-white font-semibold text-3xl mb-8">{t('track.title')}</h1>
 
@@ -44,7 +50,7 @@ export default function OrderTracking() {
             value={orderNum}
             onChange={(e) => setOrderNum(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleTrack()}
-            placeholder="Enter order number (e.g., ER-2025-0042)"
+            placeholder={t('track.placeholder')}
             className="flex-1 bg-[#161B22] border border-[#30363D] text-white rounded-lg px-4 py-3 focus:border-[#01D7D5] focus:outline-none transition-colors"
           />
           <button
@@ -52,7 +58,7 @@ export default function OrderTracking() {
             className="px-6 py-3 bg-[#01D7D5] text-black font-medium rounded-lg hover:shadow-[0_0_20px_rgba(1,215,213,0.4)] transition-all flex items-center gap-2"
           >
             <Search size={18} />
-            Track
+            {t('track.trackBtn')}
           </button>
         </div>
 
@@ -69,7 +75,7 @@ export default function OrderTracking() {
                 </span>
                 <p className="text-[#8B949E] text-sm flex items-center gap-1">
                   <Clock size={14} />
-                  Est. Delivery: {mockOrder.estimatedDelivery}
+                  {t('track.estDelivery')}: {mockOrder.estimatedDelivery}
                 </p>
               </div>
             </div>

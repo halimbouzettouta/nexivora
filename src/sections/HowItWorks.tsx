@@ -1,33 +1,25 @@
-const steps = [
-  {
-    num: '01',
-    title: 'Sign Up',
-    desc: 'Create your marketer account in minutes. Get your unique referral link instantly.',
-  },
-  {
-    num: '02',
-    title: 'Share & Sell',
-    desc: 'Share your link with friends, family, and followers. Every purchase earns you 5% commission.',
-  },
-  {
-    num: '03',
-    title: 'Earn & Grow',
-    desc: 'Track your sales, climb ranks, unlock rewards, and build your team.',
-  },
-]
+import { useLanguage } from '@/hooks/useLanguage'
 
 export default function HowItWorks() {
+  const { t, lang } = useLanguage()
+
+  const steps = [
+    { num: '01', title: t('section.step1'), desc: t('section.step1Desc') },
+    { num: '02', title: t('section.step2'), desc: t('section.step2Desc') },
+    { num: '03', title: t('section.step3'), desc: t('section.step3Desc') },
+  ]
+
   return (
     <section className="w-full bg-[#0A0A0A] py-20 px-4 sm:px-6 lg:px-[5vw]">
       <div className="max-w-[960px] mx-auto text-center">
         <p className="font-mono text-xs tracking-[0.2em] text-[#484F58] uppercase mb-4">
-          THE PROCESS
+          {t('section.howBadge')}
         </p>
         <h2
           className="text-white font-semibold leading-tight tracking-[-0.02em] mb-14"
           style={{ fontSize: 'clamp(28px, 5vw, 60px)' }}
         >
-          Three Steps to Start Earning
+          {t('section.howTitle')}
         </h2>
 
         <div className="flex flex-col md:flex-row gap-8 md:gap-6 justify-center items-stretch">

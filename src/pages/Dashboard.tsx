@@ -11,8 +11,8 @@ import {
 const mockStats = [
   { labelKey: 'dash.personalSales', value: 'DZD 2,450,000', change: '+12%', icon: <DollarSign size={20} /> },
   { labelKey: 'dash.commissions', value: 'DZD 122,500', change: '+8%', icon: <Wallet size={20} /> },
-  { label: 'Team Bonus', value: 'DZD 45,000', change: '+15%', icon: <Users size={20} /> },
-  { label: 'Active Referrals', value: '48', change: '+3 this week', icon: <LinkIcon size={20} /> },
+  { labelKey: 'dash.team', value: 'DZD 45,000', change: '+15%', icon: <Users size={20} /> },
+  { labelKey: 'dash.referral', value: '48', change: '+3', icon: <LinkIcon size={20} /> },
 ]
 
 const mockOrders = [
@@ -108,7 +108,7 @@ export default function Dashboard() {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
               <div className="lg:col-span-2 bg-[#161B22] border border-[#30363D] rounded-xl p-5">
-                <h3 className="text-white font-medium mb-4">Sales Performance</h3>
+                <h3 className="text-white font-medium mb-4">{t('dash.salesPerf')}</h3>
                 <div className="h-[200px] flex items-end gap-3">
                   {[40, 65, 45, 80, 55, 90, 70, 85, 60, 75, 95, 88].map((h, i) => (
                     <div key={i} className="flex-1 flex flex-col items-center gap-1">
@@ -117,7 +117,7 @@ export default function Dashboard() {
                   ))}
                 </div>
                 <div className="flex justify-between mt-2">
-                  {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((m) => (
+                  {t('dash.months').split(',').map((m) => (
                     <span key={m} className="text-[10px] text-[#484F58]">{m}</span>
                   ))}
                 </div>
@@ -133,7 +133,7 @@ export default function Dashboard() {
                   <div className="bg-[#01D7D5] h-2 rounded-full" style={{ width: '64%' }} />
                 </div>
                 <p className="text-[#484F58] text-xs text-center">DZD 3.2M / 5M</p>
-                <p className="text-[#8B949E] text-xs text-center mt-1">Platinum at DZD 5M</p>
+                <p className="text-[#8B949E] text-xs text-center mt-1">{lang === 'ar' ? 'البلاتين عند 5M دج' : lang === 'fr' ? 'Platine à 5M DZD' : 'Platinum at DZD 5M'}</p>
                 <div className="mt-4 space-y-2 text-xs">
                   <div className="flex justify-between"><span className="text-[#484F58]">{t('dash.personalSales')}</span><span className="text-white">DZD 1.8M</span></div>
                   <div className="flex justify-between"><span className="text-[#484F58]">{t('dash.teamSales')}</span><span className="text-white">DZD 1.4M</span></div>
@@ -144,8 +144,8 @@ export default function Dashboard() {
 
             <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-5">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-white font-medium">Recent Orders</h3>
-                <button onClick={() => setActiveTab('orders')} className="text-[#01D7D5] text-xs hover:underline">View All</button>
+                <h3 className="text-white font-medium">{t('dash.recentOrders')}</h3>
+                <button onClick={() => setActiveTab('orders')} className="text-[#01D7D5] text-xs hover:underline">{t('dash.viewAll')}</button>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
@@ -190,12 +190,12 @@ export default function Dashboard() {
         return (
           <div className="space-y-6">
             <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-5">
-              <h3 className="text-white font-medium mb-4">My Orders</h3>
+              <h3 className="text-white font-medium mb-4">{t('dash.myOrders')}</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="text-[#484F58] text-xs uppercase tracking-wider bg-[#0A0A0A]">
-                      {['Order #', 'Customer', 'Product', 'Amount', 'Status', 'Date'].map((h) => <th key={h} className="text-left py-3 px-3 font-medium">{h}</th>)}
+                      {[t('dash.orderNum'), t('dash.customer'), t('dash.product'), t('dash.amount'), t('dash.status'), t('dash.date')].map((h) => <th key={h} className="text-left py-3 px-3 font-medium">{h}</th>)}
                     </tr>
                   </thead>
                   <tbody>
@@ -221,10 +221,10 @@ export default function Dashboard() {
           <div className="space-y-6">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[
-                { label: 'Total Team', value: '24', icon: <Users size={18} /> },
-                { label: 'Direct', value: '6', icon: <ArrowUpRight size={18} /> },
-                { label: 'Indirect', value: '18', icon: <ArrowDownRight size={18} /> },
-                { label: 'Team Sales', value: 'DZD 8.2M', icon: <DollarSign size={18} /> },
+                { label: lang === 'ar' ? 'إجمالي الفريق' : lang === 'fr' ? 'Équipe Totale' : 'Total Team', value: '24', icon: <Users size={18} /> },
+                { label: lang === 'ar' ? 'مباشر' : lang === 'fr' ? 'Directs' : 'Direct', value: '6', icon: <ArrowUpRight size={18} /> },
+                { label: lang === 'ar' ? 'غير مباشر' : lang === 'fr' ? 'Indirects' : 'Indirect', value: '18', icon: <ArrowDownRight size={18} /> },
+                { label: lang === 'ar' ? 'مبيعات الفريق' : lang === 'fr' ? 'Ventes Équipe' : 'Team Sales', value: 'DZD 8.2M', icon: <DollarSign size={18} /> },
               ].map((s) => (
                 <div key={s.label} className="bg-[#161B22] border border-[#30363D] rounded-xl p-4">
                   <div className="flex items-center gap-2 mb-2">
@@ -237,12 +237,12 @@ export default function Dashboard() {
             </div>
 
             <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-5">
-              <h3 className="text-white font-medium mb-4">My Team Members</h3>
+              <h3 className="text-white font-medium mb-4">{t('dash.myTeam')}</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="text-[#484F58] text-xs uppercase tracking-wider bg-[#0A0A0A]">
-                      {['Member', 'Rank', 'Sales', 'Team', 'Joined', 'Status'].map((h) => <th key={h} className="text-left py-3 px-3 font-medium">{h}</th>)}
+                      {[t('dash.member'), t('dash.rank'), t('dash.sales'), t('dash.team'), t('dash.joined'), t('dash.status')].map((h) => <th key={h} className="text-left py-3 px-3 font-medium">{h}</th>)}
                     </tr>
                   </thead>
                   <tbody>
@@ -268,12 +268,12 @@ export default function Dashboard() {
 
             {/* Team Tree View */}
             <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-5">
-              <h3 className="text-white font-medium mb-4">Team Structure</h3>
+              <h3 className="text-white font-medium mb-4">{t('dash.teamStructure')}</h3>
               <div className="flex flex-col items-center">
                 {/* You */}
                 <div className="bg-[#01D7D5]/10 border border-[#01D7D5]/30 rounded-xl px-6 py-3 text-center">
-                  <p className="text-white font-medium text-sm">You (Gold)</p>
-                  <p className="text-[#8B949E] text-xs">Level 0</p>
+                  <p className="text-white font-medium text-sm">{lang === 'ar' ? 'أنت (ذهبي)' : lang === 'fr' ? 'Vous (Or)' : 'You (Gold)'}</p>
+                  <p className="text-[#8B949E] text-xs">{lang === 'ar' ? 'المستوى 0' : lang === 'fr' ? 'Niveau 0' : 'Level 0'}</p>
                 </div>
                 <div className="w-px h-8 bg-[#30363D]" />
                 {/* Level 1 */}
@@ -304,10 +304,10 @@ export default function Dashboard() {
           <div className="space-y-6">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[
-                { label: 'Total Earned', value: 'DZD 122,500', icon: <DollarSign size={18} /> },
-                { label: 'Direct Sales', value: 'DZD 89,200', icon: <ArrowUpRight size={18} /> },
-                { label: 'Team Bonus', value: 'DZD 28,300', icon: <Users size={18} /> },
-                { label: 'Rank Bonus', value: 'DZD 25,000', icon: <Gift size={18} /> },
+                { label: lang === 'ar' ? 'إجمالي المكتسب' : lang === 'fr' ? 'Total Gagné' : 'Total Earned', value: 'DZD 122,500', icon: <DollarSign size={18} /> },
+                { label: lang === 'ar' ? 'المبيعات المباشرة' : lang === 'fr' ? 'Ventes Directes' : 'Direct Sales', value: 'DZD 89,200', icon: <ArrowUpRight size={18} /> },
+                { label: lang === 'ar' ? 'مكافأة الفريق' : lang === 'fr' ? 'Bonus Équipe' : 'Team Bonus', value: 'DZD 28,300', icon: <Users size={18} /> },
+                { label: lang === 'ar' ? 'مكافأة الرتبة' : lang === 'fr' ? 'Bonus Rang' : 'Rank Bonus', value: 'DZD 25,000', icon: <Gift size={18} /> },
               ].map((s) => (
                 <div key={s.label} className="bg-[#161B22] border border-[#30363D] rounded-xl p-4">
                   <div className="flex items-center gap-2 mb-2">
@@ -320,12 +320,12 @@ export default function Dashboard() {
             </div>
 
             <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-5">
-              <h3 className="text-white font-medium mb-4">Commission History</h3>
+              <h3 className="text-white font-medium mb-4">{t('dash.commissionHistory')}</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="text-[#484F58] text-xs uppercase tracking-wider bg-[#0A0A0A]">
-                      {['Source', 'Type', 'Amount', 'Date', 'Status'].map((h) => <th key={h} className="text-left py-3 px-3 font-medium">{h}</th>)}
+                      {[t('dash.source'), t('dash.type'), t('dash.amount'), t('dash.date'), t('dash.status')].map((h) => <th key={h} className="text-left py-3 px-3 font-medium">{h}</th>)}
                     </tr>
                   </thead>
                   <tbody>
@@ -346,12 +346,12 @@ export default function Dashboard() {
             {/* Commission Breakdown */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-5">
-                <h3 className="text-white font-medium mb-4">Commission Breakdown</h3>
+                <h3 className="text-white font-medium mb-4">{t('dash.commissionBreakdown')}</h3>
                 <div className="space-y-3">
                   {[
-                    { label: 'Direct Sales Commission (5%)', value: 73, amount: 'DZD 89,200' },
-                    { label: 'Team Override (2%)', value: 18, amount: 'DZD 28,300' },
-                    { label: 'Rank Bonuses', value: 9, amount: 'DZD 25,000' },
+                    { label: lang === 'ar' ? 'عمولة المبيعات المباشرة (5%)' : lang === 'fr' ? 'Commission Ventes Directes (5%)' : 'Direct Sales Commission (5%)', value: 73, amount: 'DZD 89,200' },
+                    { label: lang === 'ar' ? 'تجاوز الفريق (2%)' : lang === 'fr' ? 'Dépassement Équipe (2%)' : 'Team Override (2%)', value: 18, amount: 'DZD 28,300' },
+                    { label: lang === 'ar' ? 'مكافآت الرتب' : lang === 'fr' ? 'Bonus de Rang' : 'Rank Bonuses', value: 9, amount: 'DZD 25,000' },
                   ].map((item) => (
                     <div key={item.label}>
                       <div className="flex justify-between text-xs mb-1">
@@ -366,14 +366,14 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-5">
-                <h3 className="text-white font-medium mb-4">Withdrawal</h3>
+                <h3 className="text-white font-medium mb-4">{t('dash.withdrawal')}</h3>
                 <div className="text-center py-6">
-                  <p className="text-[#484F58] text-sm mb-2">Available Balance</p>
+                  <p className="text-[#484F58] text-sm mb-2">{t('dash.availableBalance')}</p>
                   <p className="text-[#01D7D5] font-semibold text-3xl mb-4">DZD 42,300</p>
                   <button className="px-8 py-3 bg-[#01D7D5] text-black font-medium rounded-lg hover:shadow-[0_0_20px_rgba(1,215,213,0.4)] transition-all">
-                    Request Withdrawal
+                    {t('dash.requestWithdrawal')}
                   </button>
-                  <p className="text-[#484F58] text-xs mt-3">Minimum withdrawal: DZD 10,000</p>
+                  <p className="text-[#484F58] text-xs mt-3">{t('dash.minWithdrawal')}</p>
                 </div>
               </div>
             </div>
@@ -415,7 +415,7 @@ export default function Dashboard() {
                     </div>
                     <p className="text-white font-medium text-sm">{rank.name}</p>
                     <p className="text-[#484F58] text-xs mt-1">DZD {(rank.min / 1000000).toFixed(1)}M+</p>
-                    {isCurrent && <span className="inline-block mt-2 text-[10px] font-medium px-2 py-0.5 rounded-full bg-[rgba(255,215,0,0.15)] text-[#FFD700]">Current</span>}
+                    {isCurrent && <span className="inline-block mt-2 text-[10px] font-medium px-2 py-0.5 rounded-full bg-[rgba(255,215,0,0.15)] text-[#FFD700]">{t('dash.current')}</span>}
                   </div>
                 )
               })}
@@ -423,15 +423,15 @@ export default function Dashboard() {
 
             {/* Rank Benefits */}
             <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-5">
-              <h3 className="text-white font-medium mb-4">Current Benefits (Gold)</h3>
+              <h3 className="text-white font-medium mb-4">{t('dash.currentBenefits')}</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {[
-                  { icon: <DollarSign size={18} />, title: '5% Commission', desc: 'On all direct sales' },
-                  { icon: <Users size={18} />, title: '2% Team Override', desc: 'On team member sales' },
-                  { icon: <Gift size={18} />, title: 'DZD 25K Bonus', desc: 'One-time rank bonus' },
-                  { icon: <Star size={18} />, title: 'Priority Support', desc: 'Dedicated support channel' },
-                  { icon: <Trophy size={18} />, title: 'Early Access', desc: 'New product previews' },
-                  { icon: <Share2 size={18} />, title: 'Custom Referral', desc: 'Branded referral link' },
+                  { icon: <DollarSign size={18} />, title: lang === 'ar' ? 'عمولة 5%' : lang === 'fr' ? 'Commission 5%' : '5% Commission', desc: lang === 'ar' ? 'على جميع المبيعات المباشرة' : lang === 'fr' ? 'Sur toutes les ventes directes' : 'On all direct sales' },
+                  { icon: <Users size={18} />, title: lang === 'ar' ? 'تجاوز فريق 2%' : lang === 'fr' ? 'Dépassement Équipe 2%' : '2% Team Override', desc: lang === 'ar' ? 'على مبيعات أعضاء الفريق' : lang === 'fr' ? 'Sur les ventes des membres' : 'On team member sales' },
+                  { icon: <Gift size={18} />, title: 'DZD 25K', desc: lang === 'ar' ? 'مكافأة رتبة لمرة واحدة' : lang === 'fr' ? 'Bonus de rang unique' : 'One-time rank bonus' },
+                  { icon: <Star size={18} />, title: lang === 'ar' ? 'دعم أولوية' : lang === 'fr' ? 'Support Prioritaire' : 'Priority Support', desc: lang === 'ar' ? 'قناة دعم مخصصة' : lang === 'fr' ? 'Canal de support dédié' : 'Dedicated support channel' },
+                  { icon: <Trophy size={18} />, title: lang === 'ar' ? 'وصول مبكر' : lang === 'fr' ? 'Accès Anticipé' : 'Early Access', desc: lang === 'ar' ? 'معاينات منتجات جديدة' : lang === 'fr' ? 'Aperçus des nouveaux produits' : 'New product previews' },
+                  { icon: <Share2 size={18} />, title: lang === 'ar' ? 'إحالة مخصصة' : lang === 'fr' ? 'Parrainage Personnalisé' : 'Custom Referral', desc: lang === 'ar' ? 'رابط إحالة مخصص' : lang === 'fr' ? 'Lien de parrainage personnalisé' : 'Branded referral link' },
                 ].map((b) => (
                   <div key={b.title} className="flex items-start gap-3 p-3 bg-[#0A0A0A] rounded-lg">
                     <div className="text-[#01D7D5]">{b.icon}</div>
@@ -460,7 +460,7 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-5">
-              <h3 className="text-white font-medium mb-4">Social Share</h3>
+              <h3 className="text-white font-medium mb-4">{t('dash.socialShare')}</h3>
               <div className="flex gap-3">
                 {['Facebook', 'Twitter', 'WhatsApp', 'Telegram'].map((platform) => (
                   <button key={platform} className="flex-1 py-3 bg-[#0A0A0A] border border-[#30363D] text-white rounded-lg text-sm hover:border-[#01D7D5] transition-colors">{platform}</button>
@@ -476,8 +476,8 @@ export default function Dashboard() {
             <div className="w-16 h-16 bg-[#161B22] border border-[#30363D] rounded-xl flex items-center justify-center mb-4">
               <Settings size={28} className="text-[#484F58]" />
             </div>
-            <h3 className="text-white font-medium text-lg mb-2">Coming Soon</h3>
-            <p className="text-[#8B949E] text-sm">This section is under development.</p>
+            <h3 className="text-white font-medium text-lg mb-2">{t('dash.comingSoon')}</h3>
+            <p className="text-[#8B949E] text-sm">{t('dash.underDev')}</p>
           </div>
         )
     }
@@ -503,7 +503,7 @@ export default function Dashboard() {
                 <div className="w-8 h-8 rounded-full bg-[#01D7D5] flex items-center justify-center text-black text-xs font-bold">{user?.name?.charAt(0) || 'U'}</div>
                 <div className="flex-1 min-w-0">
                   <p className="text-white text-sm font-medium truncate">{user?.name || 'User'}</p>
-                  <p className="text-[#8B949E] text-[11px]">Gold Marketer</p>
+                  <p className="text-[#8B949E] text-[11px]">{t('dash.goldMarketer')}</p>
                 </div>
               </div>
               <button onClick={logout} className="w-full mt-3 flex items-center gap-2 text-[#EF4444] text-sm hover:underline"><LogOut size={14} /> Logout</button>

@@ -1,5 +1,6 @@
 import { trpc } from '@/providers/trpc'
 import { Check } from 'lucide-react'
+import { useLanguage } from '@/hooks/useLanguage'
 
 const planMeta = [
   { recommended: false },
@@ -8,22 +9,24 @@ const planMeta = [
 ]
 
 export default function SubscriptionPlans() {
+  const { t, lang } = useLanguage()
   const { data: plans } = trpc.subscription.list.useQuery()
+  const isFr = lang === 'fr'
 
   return (
     <section className="w-full bg-black py-20 px-4 sm:px-6 lg:px-[5vw]">
       <div className="max-w-[1000px] mx-auto text-center">
         <p className="font-mono text-xs tracking-[0.2em] text-[#484F58] uppercase mb-4">
-          MAINTENANCE &amp; WARRANTY
+          {t('section.subBadge')}
         </p>
         <h2
           className="text-white font-semibold leading-tight tracking-[-0.02em] mb-3"
           style={{ fontSize: 'clamp(28px, 5vw, 60px)' }}
         >
-          Protect Your Investment
+          {t('section.subTitle')}
         </h2>
         <p className="text-[#8B949E] leading-relaxed max-w-[560px] mx-auto mb-14" style={{ fontSize: 'clamp(16px, 1.8vw, 20px)' }}>
-          Choose a plan that keeps your ride in perfect condition.
+          {t('section.subDesc')}
         </p>
 
         <div className="flex flex-wrap justify-center gap-6">
@@ -39,18 +42,18 @@ export default function SubscriptionPlans() {
               >
                 {isRec && (
                   <span className="inline-block bg-[#01D7D5] text-black text-[11px] font-semibold tracking-[0.08em] px-3 py-1 rounded mb-4">
-                    RECOMMENDED
+                    {t('section.recommended')}
                   </span>
                 )}
                 {plan.billingCycle === 'one_time' && (
                   <span className="inline-block bg-[#30363D] text-white text-[11px] font-semibold tracking-[0.08em] px-3 py-1 rounded mb-4">
-                    +1 YEAR
+                    +1 {isFr ? 'AN' : 'YEAR'}
                   </span>
                 )}
                 <h4 className="text-white font-medium text-lg mb-2">{plan.name}</h4>
                 <p className="text-[#01D7D5] font-semibold text-2xl mb-4">
                   {parseFloat(plan.price).toLocaleString()} DZD
-                  {plan.billingCycle === 'monthly' && <span className="text-sm text-[#8B949E]">/mo</span>}
+                  {plan.billingCycle === 'monthly' && <span className="text-sm text-[#8B949E]">/{isFr ? 'mois' : 'mo'}</span>}
                 </p>
                 <p className="text-[#8B949E] text-sm mb-6">{plan.description}</p>
                 <ul className="space-y-3 mb-6">
@@ -68,7 +71,7 @@ export default function SubscriptionPlans() {
                       : 'border border-[#30363D] text-white hover:border-[#01D7D5]'
                   }`}
                 >
-                  {plan.billingCycle === 'one_time' ? 'Purchase' : 'Subscribe'}
+                  {plan.billingCycle === 'one_time' ? t('section.purchase') : t('section.subscribe')}
                 </button>
               </div>
             )

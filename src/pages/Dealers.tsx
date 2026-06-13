@@ -26,16 +26,27 @@ const MOCK_DEALERS: Dealer[] = [
   { id: 8, name: 'E-Ride Batna', city: 'Batna', region: 'East', address: '23 Avenue des Freres Bouadou, Batna', phone: '0233-456-789', hours: 'Sat-Thu 9AM-6PM', lat: 35.5559, lng: 6.1741 },
 ]
 
-const regions = ['All Regions', 'Center', 'West', 'East']
+function getRegions(t: (k: string) => string, isAr: boolean, isFr: boolean) {
+  return [
+    { key: 'all', label: t('dealers.allRegions') },
+    { key: 'Center', label: t('dealers.center') },
+    { key: 'West', label: t('dealers.west') },
+    { key: 'East', label: t('dealers.east') },
+  ]
+}
 
 export default function Dealers() {
   const { t, lang } = useLanguage()
   const [search, setSearch] = useState('')
-  const [regionFilter, setRegionFilter] = useState('All Regions')
+  const [regionFilter, setRegionFilter] = useState('all')
+
+  const isAr = lang === 'ar'
+  const isFr = lang === 'fr'
+  const regions = getRegions(t, isAr, isFr)
 
   const filtered = MOCK_DEALERS.filter((d) => {
     const matchSearch = !search || d.name.toLowerCase().includes(search.toLowerCase()) || d.city.toLowerCase().includes(search.toLowerCase())
-    const matchRegion = regionFilter === 'All Regions' || d.region === regionFilter
+    const matchRegion = regionFilter === 'all' || d.region === regionFilter
     return matchSearch && matchRegion
   })
 
@@ -61,8 +72,8 @@ export default function Dealers() {
           </div>
           <div className="flex gap-1">
             {regions.map((r) => (
-              <button key={r} onClick={() => setRegionFilter(r)}
-                className={`px-3 py-2 rounded-lg text-xs transition-colors ${regionFilter === r ? 'bg-[rgba(1,215,213,0.15)] text-[#01D7D5]' : 'text-[#484F58] hover:text-white'}`}>{r}</button>
+              <button key={r.key} onClick={() => setRegionFilter(r.key)}
+                className={`px-3 py-2 rounded-lg text-xs transition-colors ${regionFilter === r.key ? 'bg-[rgba(1,215,213,0.15)] text-[#01D7D5]' : 'text-[#484F58] hover:text-white'}`}>{r.label}</button>
             ))}
           </div>
         </div>
