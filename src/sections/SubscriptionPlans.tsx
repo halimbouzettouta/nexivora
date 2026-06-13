@@ -8,10 +8,55 @@ const planMeta = [
   { recommended: false },
 ]
 
+// Translation mapping for known plan data from API
+const PLAN_NAME_KEYS: Record<string, string> = {
+  'Extended Warranty': 'plan.extendedWarranty',
+  'Premium Maintenance': 'plan.premiumMaintenance',
+  'Basic Maintenance': 'plan.basicMaintenance',
+}
+
+const PLAN_DESC_KEYS: Record<string, string> = {
+  'One-year extended warranty coverage for complete peace of mind.': 'plan.warrantyDesc',
+  'Comprehensive care package with weekly check-ups and emergency support.': 'plan.premiumDesc',
+  'Essential monthly maintenance to keep your ride in good condition.': 'plan.basicDesc',
+}
+
+const FEATURE_KEYS: Record<string, string> = {
+  '1 additional year of coverage': 'plan.featureCov1',
+  '2 additional years of coverage': 'plan.featureCov2',
+  'Weekly check-ups': 'plan.featureWeekly',
+  '24/7 emergency support': 'plan.featureEmergency',
+  'Monthly inspection': 'plan.featureMonthly',
+  '10% discount on parts': 'plan.featureDiscount',
+  'Priority scheduling': 'plan.featurePriority',
+  'Free pick-up & delivery': 'plan.featurePickup',
+  'Free labor on repairs': 'plan.featureLabor',
+  'Annual deep service': 'plan.featureAnnual',
+}
+
 export default function SubscriptionPlans() {
   const { t, lang } = useLanguage()
   const { data: plans } = trpc.subscription.list.useQuery()
   const isFr = lang === 'fr'
+  const isAr = lang === 'ar'
+
+  // Helper to translate plan data
+  const getPlanName = (name: string) => {
+    const key = PLAN_NAME_KEYS[name]
+    return key ? t(key) : name
+  }
+
+  const getPlanDesc = (desc: string) => {
+    const key = PLAN_DESC_KEYS[desc]
+    return key ? t(key) : desc
+  }
+
+  const getFeature = (feature: string) => {
+    const key = FEATURE_KEYS[feature]
+    return key ? t(key) : feature
+  }
+
+  const yearLabel = isAr ? '+1 سنة' : isFr ? '+1 AN' : '+1 YEAR'
 
   return (
     <section className="w-full bg-black py-20 px-4 sm:px-6 lg:px-[5vw]">
@@ -47,20 +92,20 @@ export default function SubscriptionPlans() {
                 )}
                 {plan.billingCycle === 'one_time' && (
                   <span className="inline-block bg-[#30363D] text-white text-[11px] font-semibold tracking-[0.08em] px-3 py-1 rounded mb-4">
-                    +1 {isFr ? 'AN' : 'YEAR'}
+                    {yearLabel}
                   </span>
                 )}
-                <h4 className="text-white font-medium text-lg mb-2">{plan.name}</h4>
+                <h4 className="text-white font-medium text-lg mb-2">{getPlanName(plan.name)}</h4>
                 <p className="text-[#01D7D5] font-semibold text-2xl mb-4">
                   {parseFloat(plan.price).toLocaleString()} DZD
-                  {plan.billingCycle === 'monthly' && <span className="text-sm text-[#8B949E]">/{isFr ? 'mois' : 'mo'}</span>}
+                  {plan.billingCycle === 'monthly' && <span className="text-sm text-[#8B949E]">/{isFr ? 'mois' : isAr ? 'شهر' : 'mo'}</span>}
                 </p>
-                <p className="text-[#8B949E] text-sm mb-6">{plan.description}</p>
+                <p className="text-[#8B949E] text-sm mb-6">{getPlanDesc(plan.description)}</p>
                 <ul className="space-y-3 mb-6">
                   {features.map((f: string, i: number) => (
                     <li key={i} className="flex items-center gap-2 text-sm text-[#8B949E]">
                       <Check size={16} className="text-[#01D7D5] flex-shrink-0" />
-                      {f}
+                      {getFeature(f)}
                     </li>
                   ))}
                 </ul>

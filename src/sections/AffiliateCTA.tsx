@@ -1,5 +1,4 @@
 import { Link } from 'react-router'
-
 import { useLanguage } from '@/hooks/useLanguage'
 
 export default function AffiliateCTA() {
@@ -10,10 +9,10 @@ export default function AffiliateCTA() {
         className="text-white font-semibold leading-tight tracking-[-0.02em] mb-4"
         style={{ fontSize: 'clamp(28px, 5vw, 60px)' }}
       >
-        Earn 5% Commission on Every Sale
+        {t('affiliate.title')}
       </h2>
       <p className="text-[#8B949E] leading-relaxed max-w-[560px] mx-auto mb-10" style={{ fontSize: 'clamp(16px, 1.8vw, 20px)' }}>
-        Plus unlock team performance bonuses as you climb the ranks. Join hundreds of marketers already earning with E-Ride Algeria.
+        {t('affiliate.desc')}
       </p>
       <div className="flex items-center justify-center gap-4 flex-wrap mb-8">
         <Link
@@ -26,11 +25,11 @@ export default function AffiliateCTA() {
           to="/about"
           className="px-10 py-4 border border-[#30363D] text-white font-medium rounded-lg hover:border-[#01D7D5] transition-colors duration-300"
         >
-          Learn More
+          {t('affiliate.learnMore')}
         </Link>
       </div>
       <p className="font-mono text-sm text-[#484F58]">
-        5% Direct Commission · 5% Team Bonus · Weekly Payouts
+        {t('affiliate.tags')}
       </p>
     </section>
   )

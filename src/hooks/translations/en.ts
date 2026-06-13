@@ -311,6 +311,53 @@ export const en: Record<string, string> = {
   'dash.goldMarketer': 'Gold Marketer',
   'dash.months': 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec',
 
+  // Affiliate CTA
+  'affiliate.title': 'Earn 5% Commission on Every Sale',
+  'affiliate.desc': 'Plus unlock team performance bonuses as you climb the ranks. Join hundreds of marketers already earning with E-Ride Algeria.',
+  'affiliate.learnMore': 'Learn More',
+  'affiliate.tags': '5% Direct Commission · 5% Team Bonus · Weekly Payouts',
+
+  // Rank System
+  'rank.entryLevel': 'Entry Level',
+  'rank.reqSilver': 'DZD 500K personal sales',
+  'rank.reqGold': 'DZD 2M total sales',
+  'rank.reqPlatinum': 'DZD 5M total sales',
+  'rank.reqDiamond': 'DZD 10M total sales',
+  'rank.welcomeKit': 'Welcome Kit',
+  'rank.shoppingVoucher': 'Shopping Voucher',
+  'rank.premiumSmartphone': 'Premium Smartphone',
+  'rank.electricScooter': 'Electric Scooter',
+  'rank.tripBonus': 'Trip / Cash Bonus',
+
+  // Subscription plan translations (for API data)
+  'plan.extendedWarranty': 'Extended Warranty',
+  'plan.premiumMaintenance': 'Premium Maintenance',
+  'plan.basicMaintenance': 'Basic Maintenance',
+  'plan.warrantyDesc': 'One-year extended warranty coverage for complete peace of mind.',
+  'plan.premiumDesc': 'Comprehensive care package with weekly check-ups and emergency support.',
+  'plan.basicDesc': 'Essential monthly maintenance to keep your ride in good condition.',
+  'plan.featureCov1': '1 additional year of coverage',
+  'plan.featureCov2': '2 additional years of coverage',
+  'plan.featureWeekly': 'Weekly check-ups',
+  'plan.featureEmergency': '24/7 emergency support',
+  'plan.featureMonthly': 'Monthly inspection',
+  'plan.featureDiscount': '10% discount on parts',
+  'plan.featurePriority': 'Priority scheduling',
+  'plan.featurePickup': 'Free pick-up & delivery',
+  'plan.featureLabor': 'Free labor on repairs',
+  'plan.featureAnnual': 'Annual deep service',
+
+  // Educational Preview
+  'edu.badge': 'LEARN & RIDE',
+
+  // Testimonials
+  'testimonial.quote1': 'The referral program changed my life. I started sharing my link on social media and within 3 months I hit Gold rank. The commission system is fair and payments are always on time.',
+  'testimonial.quote2': 'Building my team was the best decision I made. The 5% team bonus adds up quickly when you have motivated marketers under you. E-Ride gives us all the tools we need.',
+  'testimonial.quote3': 'I joined as a side hustle and now earn more from commissions than my day job. The products practically sell themselves - everyone wants an electric scooter!',
+  'testimonial.quote4': 'From Starter to Diamond in 8 months. The rank rewards are incredible - I got a free electric scooter at Platinum and a luxury trip at Diamond. Best program in Algeria.',
+  'testimonial.quote5': 'The dashboard makes it so easy to track everything - my sales, commissions, team performance. Customer support is responsive and the community is amazing.',
+  'testimonial.quote6': 'I love that I can work from anywhere. I share my referral link on WhatsApp groups and Instagram stories. The 5% commission on every sale is generous.',
+
   // Sections
   'section.loyaltyBadge': 'LOYALTY REWARDS',
   'section.loyaltyTitle': 'Earn Points with Every Purchase',

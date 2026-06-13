@@ -1,13 +1,5 @@
 import { useRef, useEffect } from 'react'
-
-const testimonials = [
-  { name: 'Ahmed Benali', rank: 'Gold', earnings: '485,000', quote: 'The referral program changed my life. I started sharing my link on social media and within 3 months I hit Gold rank. The commission system is fair and payments are always on time.' },
-  { name: 'Karim Hadj', rank: 'Platinum', earnings: '1,250,000', quote: 'Building my team was the best decision I made. The 5% team bonus adds up quickly when you have motivated marketers under you. E-Ride gives us all the tools we need.' },
-  { name: 'Yasmine Djebbar', rank: 'Silver', earnings: '180,000', quote: 'I joined as a side hustle and now earn more from commissions than my day job. The products practically sell themselves - everyone wants an electric scooter!' },
-  { name: 'Omar Khalef', rank: 'Diamond', earnings: '2,800,000', quote: 'From Starter to Diamond in 8 months. The rank rewards are incredible - I got a free electric scooter at Platinum and a luxury trip at Diamond. Best program in Algeria.' },
-  { name: 'Sofia Mansouri', rank: 'Gold', earnings: '620,000', quote: 'The dashboard makes it so easy to track everything - my sales, commissions, team performance. Customer support is responsive and the community is amazing.' },
-  { name: 'Nadia Berrahal', rank: 'Silver', earnings: '240,000', quote: 'I love that I can work from anywhere. I share my referral link on WhatsApp groups and Instagram stories. The 5% commission on every sale is generous.' },
-]
+import { useLanguage } from '@/hooks/useLanguage'
 
 const rankColors: Record<string, string> = {
   Starter: '#01D7D5',
@@ -17,13 +9,21 @@ const rankColors: Record<string, string> = {
   Diamond: '#B9F2FF',
 }
 
-const marketerNames = ['Ahmed Benali', 'Karim Hadj', 'Yasmine Djebbar', 'Omar Khalef', 'Sofia Mansouri', 'Nadia Berrahal', 'Farid Taleb', 'Amel Chenouf', 'Rachid Meziane', 'Lina Bouzid']
+const getTestimonials = (t: (k: string) => string) => [
+  { name: 'Ahmed Benali', rank: 'Gold', earnings: '485,000', quote: t('testimonial.quote1') },
+  { name: 'Karim Hadj', rank: 'Platinum', earnings: '1,250,000', quote: t('testimonial.quote2') },
+  { name: 'Yasmine Djebbar', rank: 'Silver', earnings: '180,000', quote: t('testimonial.quote3') },
+  { name: 'Omar Khalef', rank: 'Diamond', earnings: '2,800,000', quote: t('testimonial.quote4') },
+  { name: 'Sofia Mansouri', rank: 'Gold', earnings: '620,000', quote: t('testimonial.quote5') },
+  { name: 'Nadia Berrahal', rank: 'Silver', earnings: '240,000', quote: t('testimonial.quote6') },
+]
 
-import { useLanguage } from '@/hooks/useLanguage'
+const marketerNames = ['Ahmed Benali', 'Karim Hadj', 'Yasmine Djebbar', 'Omar Khalef', 'Sofia Mansouri', 'Nadia Berrahal', 'Farid Taleb', 'Amel Chenouf', 'Rachid Meziane', 'Lina Bouzid']
 
 export default function Testimonials() {
   const { t } = useLanguage()
   const scrollRef = useRef<HTMLDivElement>(null)
+  const testimonials = getTestimonials(t)
 
   useEffect(() => {
     const el = scrollRef.current
@@ -54,26 +54,26 @@ export default function Testimonials() {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-          {testimonials.map((t) => (
-            <div key={t.name} className="bg-[#161B22] border border-[#30363D] rounded-xl p-8">
+          {testimonials.map((tm) => (
+            <div key={tm.name} className="bg-[#161B22] border border-[#30363D] rounded-xl p-8">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 rounded-full bg-[#30363D] flex items-center justify-center text-white font-semibold text-sm">
-                  {t.name.split(' ').map((n) => n[0]).join('')}
+                  {tm.name.split(' ').map((n) => n[0]).join('')}
                 </div>
                 <div>
-                  <p className="text-white font-medium text-sm">{t.name}</p>
+                  <p className="text-white font-medium text-sm">{tm.name}</p>
                   <span
                     className="text-xs font-medium px-2 py-0.5 rounded-full"
-                    style={{ backgroundColor: `${rankColors[t.rank]}18`, color: rankColors[t.rank] }}
+                    style={{ backgroundColor: `${rankColors[tm.rank]}18`, color: rankColors[tm.rank] }}
                   >
-                    {t.rank}
+                    {tm.rank}
                   </span>
                 </div>
                 <span className="ml-auto text-[#01D7D5] font-semibold text-sm">
-                  DZD {t.earnings}
+                  DZD {tm.earnings}
                 </span>
               </div>
-              <p className="text-[#8B949E] text-sm italic leading-relaxed">&ldquo;{t.quote}&rdquo;</p>
+              <p className="text-[#8B949E] text-sm italic leading-relaxed">&ldquo;{tm.quote}&rdquo;</p>
             </div>
           ))}
         </div>

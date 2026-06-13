@@ -311,6 +311,53 @@ export const ar: Record<string, string> = {
   'dash.goldMarketer': 'مسوق ذهبي',
   'dash.months': 'يناير,فبراير,مارس,أبريل,مايو,يونيو,يوليو,أغسطس,سبتمبر,أكتوبر,نوفمبر,ديسمبر',
 
+  // Affiliate CTA
+  'affiliate.title': 'احصل على عمولة 5% على كل عملية بيع',
+  'affiliate.desc': 'افتح مكافآت أداء الفريق وأنت تصعد المراتب. انضم لمئات المسوقين الذين يكسبون مع إي-رايد الجزائر.',
+  'affiliate.learnMore': 'اعرف المزيد',
+  'affiliate.tags': 'عمولة مباشرة 5% · مكافأة فريق 5% · دفعات أسبوعية',
+
+  // Rank System
+  'rank.entryLevel': 'مبتدئ',
+  'rank.reqSilver': '500 ألف دج مبيعات شخصية',
+  'rank.reqGold': '2 مليون دج إجمالي المبيعات',
+  'rank.reqPlatinum': '5 ملايين دج إجمالي المبيعات',
+  'rank.reqDiamond': '10 ملايين دج إجمالي المبيعات',
+  'rank.welcomeKit': 'طقم ترحيبي',
+  'rank.shoppingVoucher': 'قسيمة تسوق',
+  'rank.premiumSmartphone': 'هاتف ذكي فاخر',
+  'rank.electricScooter': 'سكوتر كهربائي',
+  'rank.tripBonus': 'رحلة / مكافأة نقدية',
+
+  // Subscription plan translations
+  'plan.extendedWarranty': 'الضمان الممتد',
+  'plan.premiumMaintenance': 'الصيانة الممتازة',
+  'plan.basicMaintenance': 'الصيانة الأساسية',
+  'plan.warrantyDesc': 'تغطية ضمان ممتدة لمدة سنة لراحة تامة بالكامل.',
+  'plan.premiumDesc': 'باقة رعاية شاملة مع فحوصات أسبوعية ودعم طوارئ.',
+  'plan.basicDesc': 'صيانة شهرية أساسية للحفاظ على دراجتك في حالة جيدة.',
+  'plan.featureCov1': 'سنة إضافية من التغطية',
+  'plan.featureCov2': 'سنتان إضافيتان من التغطية',
+  'plan.featureWeekly': 'فحوصات أسبوعية',
+  'plan.featureEmergency': 'دعم طوارئ 24/7',
+  'plan.featureMonthly': 'فحص شهري',
+  'plan.featureDiscount': 'خصم 10% على القطع',
+  'plan.featurePriority': 'جدولة أولوية',
+  'plan.featurePickup': 'استلام وتوصيل مجاني',
+  'plan.featureLabor': 'عمل مجاني على الإصلاحات',
+  'plan.featureAnnual': 'خدمة سنوية عميقة',
+
+  // Educational Preview
+  'edu.badge': 'تعلم و ابدأ',
+
+  // Testimonials
+  'testimonial.quote1': 'غيّر برنامج الإحالة حياتي. بدأت بمشاركة رابطي على وسائل التواصل الاجتماعي وخلال 3 أشهر وصلت للمرتبة الذهبية. نظام العمولات عادل والمدفوعات دائماً في موعدها.',
+  'testimonial.quote2': 'بناء فريقي كان أفضل قرار اتخذته. مكافأة الفريق 5% تتراكم بسرعة عندما يكون لديك مسوقون متحمسون. إي-رايد يزودنا بكل الأدوات التي نحتاجها.',
+  'testimonial.quote3': 'انضممت كعمل جانبي والآن أكسب من العمولات أكثر من وظيفتي اليومية. المنتجات تبيع نفسها عملياً - الجميع يريد سكوتر كهربائي!',
+  'testimonial.quote4': 'من مبتدئ إلى ألماس في 8 أشهر. مكافآت المراتب لا تصدق - حصلت على سكوتر كهربائي مجاني في البلاتين ورحلة فاخرة في الألماس. أفضل برنامج في الجزائر.',
+  'testimonial.quote5': 'لوحة التحكم تجعل من السهل جداً تتبع كل شيء - مبيعاتي، عمولاتي، أداء فريقي. دعم العملاء سريع والمجتمع رائع.',
+  'testimonial.quote6': 'أحب أنه يمكنني العمل من أي مكان. أشارك رابط الإحالة في مجموعات الواتساب وقصص الإنستغرام. عمولة 5% على كل عملية بيع سخية.',
+
   // Sections
   'section.loyaltyBadge': 'نقاط الولاء',
   'section.loyaltyTitle': 'اجمع نقاط مع كل عملية شراء',

@@ -1,6 +1,7 @@
 import { Link } from 'react-router'
 import { trpc } from '@/providers/trpc'
 import { ArrowRight } from 'lucide-react'
+import { useLanguage } from '@/hooks/useLanguage'
 
 const articleImages: Record<string, string> = {
   'How to Extend Your Battery Life': '/article-battery.jpg',
@@ -16,17 +17,15 @@ const categoryColors: Record<string, string> = {
   'Technology': '#3B82F6',
 }
 
-import { useLanguage } from '@/hooks/useLanguage'
-
 export default function EducationalPreview() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const { data: articlesList } = trpc.article.list.useQuery({ limit: 4 })
 
   return (
     <section className="w-full bg-[#0A0A0A] py-20 px-4 sm:px-6 lg:px-[5vw]">
       <div className="max-w-[1200px] mx-auto">
         <p className="font-mono text-xs tracking-[0.2em] text-[#484F58] uppercase mb-4">
-          LEARN &amp; RIDE
+          {t('edu.badge')}
         </p>
         <h2
           className="text-white font-semibold leading-tight tracking-[-0.02em] mb-10"
@@ -79,7 +78,7 @@ export default function EducationalPreview() {
             className="inline-flex items-center gap-2 text-[#8B949E] hover:text-[#01D7D5] transition-colors group"
           >
             {t('articles.viewAll')}
-            <span className="group-hover:translate-x-1 transition-transform">→</span>
+            <span className="group-hover:translate-x-1 transition-transform">{lang === 'ar' ? '←' : '→'}</span>
           </Link>
         </div>
       </div>

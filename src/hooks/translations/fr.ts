@@ -311,6 +311,53 @@ export const fr: Record<string, string> = {
   'dash.goldMarketer': 'Marketer Or',
   'dash.months': 'Jan,Fév,Mar,Avr,Mai,Jun,Jul,Août,Sep,Oct,Nov,Déc',
 
+  // Affiliate CTA
+  'affiliate.title': 'Gagnez 5% de Commission sur Chaque Vente',
+  'affiliate.desc': 'Débloquez des bonus de performance d\'équipe en montant les rangs. Rejoignez des centaines de marketers qui gagnent avec E-Ride Algérie.',
+  'affiliate.learnMore': 'En Savoir Plus',
+  'affiliate.tags': 'Commission Directe 5% · Bonus Équipe 5% · Paiements Hebdomadaires',
+
+  // Rank System
+  'rank.entryLevel': 'Niveau D\'entrée',
+  'rank.reqSilver': '500K DZD ventes personnelles',
+  'rank.reqGold': '2M DZD ventes totales',
+  'rank.reqPlatinum': '5M DZD ventes totales',
+  'rank.reqDiamond': '10M DZD ventes totales',
+  'rank.welcomeKit': 'Kit de Bienvenue',
+  'rank.shoppingVoucher': 'Bon d\'Achat',
+  'rank.premiumSmartphone': 'Smartphone Premium',
+  'rank.electricScooter': 'Trottinette Électrique',
+  'rank.tripBonus': 'Voyage / Bonus',
+
+  // Subscription plan translations
+  'plan.extendedWarranty': 'Garantie Étendue',
+  'plan.premiumMaintenance': 'Maintenance Premium',
+  'plan.basicMaintenance': 'Maintenance Basique',
+  'plan.warrantyDesc': 'Garantie étendue d\'un an pour une tranquillité totale.',
+  'plan.premiumDesc': 'Forfait complet avec check-ups hebdomadaires et support d\'urgence.',
+  'plan.basicDesc': 'Maintenance mensuelle essentielle pour garder votre véhicule en bon état.',
+  'plan.featureCov1': '1 an de couverture supplémentaire',
+  'plan.featureCov2': '2 ans de couverture supplémentaire',
+  'plan.featureWeekly': 'Check-ups hebdomadaires',
+  'plan.featureEmergency': 'Support d\'urgence 24/7',
+  'plan.featureMonthly': 'Inspection mensuelle',
+  'plan.featureDiscount': '10% de réduction sur pièces',
+  'plan.featurePriority': 'Planification prioritaire',
+  'plan.featurePickup': 'Enlèvement & livraison gratuits',
+  'plan.featureLabor': 'Main d\'œuvre gratuite',
+  'plan.featureAnnual': 'Service annuel complet',
+
+  // Educational Preview
+  'edu.badge': 'APPRENDRE & ROULER',
+
+  // Testimonials
+  'testimonial.quote1': 'Le programme de parrainage a changé ma vie. J\'ai commencé à partager mon lien sur les réseaux sociaux et en 3 mois j\'ai atteint le rang Or. Le système de commission est juste et les paiements sont toujours ponctuels.',
+  'testimonial.quote2': 'Construire mon équipe était la meilleure décision. Le bonus équipe de 5% s\'accumule rapidement avec des marketers motivés. E-Ride nous donne tous les outils nécessaires.',
+  'testimonial.quote3': 'J\'ai rejoint comme complément et maintenant je gagne plus en commissions que dans mon emploi principal. Les produits se vendent tout seuls - tout le monde veut une trottinette électrique !',
+  'testimonial.quote4': 'De Starter à Diamant en 8 mois. Les récompenses sont incroyables - une trottinette gratuite au Platine et un voyage de luxe au Diamant. Le meilleur programme en Algérie.',
+  'testimonial.quote5': 'Le tableau de bord rend le suivi facile - mes ventes, commissions, performance équipe. Le support client est réactif et la communauté est géniale.',
+  'testimonial.quote6': 'J\'adore pouvoir travailler de n\'importe où. Je partage mon lien dans des groupes WhatsApp et stories Instagram. La commission de 5% est généreuse.',
+
   // Sections
   'section.loyaltyBadge': 'RÉCOMPENSES FIDÉLITÉ',
   'section.loyaltyTitle': 'Gagnez des Points à Chaque Achat',

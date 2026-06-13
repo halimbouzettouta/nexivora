@@ -10,20 +10,20 @@ const rankIcons: Record<string, React.ReactNode> = {
   Diamond: <Diamond size={28} />,
 }
 
-const rankRequirements: Record<string, string> = {
-  Starter: 'Entry Level',
-  Silver: 'DZD 500K personal sales',
-  Gold: 'DZD 2M total sales',
-  Platinum: 'DZD 5M total sales',
-  Diamond: 'DZD 10M total sales',
+const rankReqKeys: Record<string, string> = {
+  Starter: 'rank.entryLevel',
+  Silver: 'rank.reqSilver',
+  Gold: 'rank.reqGold',
+  Platinum: 'rank.reqPlatinum',
+  Diamond: 'rank.reqDiamond',
 }
 
-const rankRewards: Record<string, string> = {
-  Starter: 'Welcome Kit',
-  Silver: 'Shopping Voucher',
-  Gold: 'Premium Smartphone',
-  Platinum: 'Electric Scooter',
-  Diamond: 'Trip / Cash Bonus',
+const rankRewardKeys: Record<string, string> = {
+  Starter: 'rank.welcomeKit',
+  Silver: 'rank.shoppingVoucher',
+  Gold: 'rank.premiumSmartphone',
+  Platinum: 'rank.electricScooter',
+  Diamond: 'rank.tripBonus',
 }
 
 export default function RankSystem() {
@@ -64,13 +64,13 @@ export default function RankSystem() {
                 {rank.name}
               </h4>
               <p className="text-[#8B949E] text-xs mb-4">
-                {rankRequirements[rank.name] || ''}
+                {t(rankReqKeys[rank.name] || 'rank.entryLevel')}
               </p>
               <div
                 className="inline-block px-4 py-2 rounded-full text-xs font-medium"
                 style={{ backgroundColor: `${rank.color}18`, color: rank.color }}
               >
-                {rankRewards[rank.name] || rank.rewardDescription}
+                {t(rankRewardKeys[rank.name] || 'rank.welcomeKit')}
               </div>
             </div>
           ))}
