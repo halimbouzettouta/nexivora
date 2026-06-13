@@ -18,6 +18,7 @@ import AdminDashboard from './pages/AdminDashboard'
 import AdminSetup from './pages/AdminSetup'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import AdminLogin from './pages/AdminLogin'
 import NotFound from './pages/NotFound'
 
 export default function App() {
@@ -43,6 +44,7 @@ export default function App() {
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/admin-login" element={<AdminLogin />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   )

@@ -1,17 +1,7 @@
 import { useState } from 'react'
 import { Search, Printer, Eye, Download } from 'lucide-react'
+import { trpc } from '@/providers/trpc'
 import StatusBadge from './StatusBadge'
-
-const allOrders = [
-  { id: 'ER-1295', customer: 'Ahmed Benali', email: 'ahmed@email.com', products: 'E-Ride City Pro x1', total: '185,000', status: 'completed', payment: 'cod', date: '2025-06-10', city: 'Algiers' },
-  { id: 'ER-1294', customer: 'Yasmine Djebbar', email: 'yasmine@email.com', products: 'E-Ride Urban Glide x1, Helmet x1', total: '133,500', status: 'processing', payment: 'card', date: '2025-06-10', city: 'Oran' },
-  { id: 'ER-1293', customer: 'Karim Hadj', email: 'karim@email.com', products: 'E-Ride Trail Blazer x1', total: '259,000', status: 'shipped', payment: 'cod', date: '2025-06-09', city: 'Constantine' },
-  { id: 'ER-1292', customer: 'Sofia Mansouri', email: 'sofia@email.com', products: 'E-Ride Mountain X x1, Lock x1', total: '332,000', status: 'completed', payment: 'baridimob', date: '2025-06-09', city: 'Algiers' },
-  { id: 'ER-1291', customer: 'Omar Khalef', email: 'omar@email.com', products: 'E-Ride Air Helmet x2', total: '17,000', status: 'pending', payment: 'cod', date: '2025-06-08', city: 'Annaba' },
-  { id: 'ER-1290', customer: 'Nadia Berrahal', email: 'nadia@email.com', products: 'E-Ride Smart Lock x3', total: '36,000', status: 'canceled', payment: 'card', date: '2025-06-08', city: 'Setif' },
-  { id: 'ER-1289', customer: 'Farid Taleb', email: 'farid@email.com', products: 'E-Ride City Pro x1', total: '185,000', status: 'completed', payment: 'cod', date: '2025-06-07', city: 'Algiers' },
-  { id: 'ER-1288', customer: 'Amel Chenouf', email: 'amel@email.com', products: 'E-Ride Urban Glide x1', total: '125,000', status: 'refunded', payment: 'card', date: '2025-06-07', city: 'Blida' },
-]
 
 const statusOptions = ['All', 'Pending', 'Processing', 'Shipped', 'Delivered', 'Completed', 'Canceled', 'Refunded']
 
@@ -20,9 +10,23 @@ export default function OrdersTab() {
   const [search, setSearch] = useState('')
   const [selectedOrders, setSelectedOrders] = useState<string[]>([])
 
-  const filtered = allOrders.filter((o) => {
+  const { data: allOrders, isLoading } = trpc.order.list.useQuery({})
+
+  // Calculate stats from real data
+  const stats = [
+    { label: 'Total Orders', value: allOrders?.length?.toString() || '0', color: '#01D7D5' },
+    { label: 'Pending', value: allOrders?.filter(o => o.status === 'pending').length?.toString() || '0', color: '#F59E0B' },
+    { label: 'Processing', value: allOrders?.filter(o => o.status === 'processing').length?.toString() || '0', color: '#3B82F6' },
+    { label: 'Completed', value: allOrders?.filter(o => o.status === 'delivered' || o.status === 'completed').length?.toString() || '0', color: '#01D7D5' },
+  ]
+
+  const filtered = (allOrders || []).filter((o) => {
     const matchStatus = statusFilter === 'All' || o.status === statusFilter.toLowerCase()
-    const matchSearch = !search || o.customer.toLowerCase().includes(search.toLowerCase()) || o.id.toLowerCase().includes(search.toLowerCase())
+    const matchSearch = !search ||
+      (o.orderNumber?.toLowerCase() || '').includes(search.toLowerCase()) ||
+      (typeof o.shippingAddress === 'object' && o.shippingAddress !== null
+        ? (o.shippingAddress as Record<string, string>).fullName?.toLowerCase().includes(search.toLowerCase())
+        : false)
     return matchStatus && matchSearch
   })
 
@@ -30,16 +34,40 @@ export default function OrdersTab() {
     setSelectedOrders((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id])
   }
 
+  const getCustomerName = (order: any) => {
+    if (typeof order.shippingAddress === 'object' && order.shippingAddress !== null) {
+      return (order.shippingAddress as Record<string, string>).fullName || 'Unknown'
+    }
+    return 'Unknown'
+  }
+
+  const getCustomerEmail = (order: any) => {
+    if (typeof order.shippingAddress === 'object' && order.shippingAddress !== null) {
+      return (order.shippingAddress as Record<string, string>).email || ''
+    }
+    return ''
+  }
+
+  const getCity = (order: any) => {
+    if (typeof order.shippingAddress === 'object' && order.shippingAddress !== null) {
+      return (order.shippingAddress as Record<string, string>).city || ''
+    }
+    return ''
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="text-[#8B949E] text-sm">Loading orders...</div>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-6">
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        {[
-          { label: 'Total Orders', value: '3,420', color: '#01D7D5' },
-          { label: 'Pending', value: '24', color: '#F59E0B' },
-          { label: 'Processing', value: '18', color: '#3B82F6' },
-          { label: 'Completed', value: '2,890', color: '#01D7D5' },
-        ].map((s) => (
+        {stats.map((s) => (
           <div key={s.label} className="bg-[#161B22] border border-[#30363D] rounded-xl p-4">
             <p className="text-[11px] uppercase tracking-wider text-[#484F58] mb-1">{s.label}</p>
             <p className="text-white font-semibold text-xl" style={{ color: s.color }}>{s.value}</p>
@@ -99,21 +127,28 @@ export default function OrdersTab() {
               </tr>
             </thead>
             <tbody>
+              {filtered.length === 0 && (
+                <tr>
+                  <td colSpan={9} className="py-12 text-center text-[#484F58]">
+                    {allOrders?.length === 0 ? 'No orders yet. Orders will appear here when customers place them.' : 'No orders match your filters.'}
+                  </td>
+                </tr>
+              )}
               {filtered.map((o) => (
                 <tr key={o.id} className="border-t border-[#30363D]/50 hover:bg-[rgba(255,255,255,0.02)] transition-colors">
                   <td className="py-3 px-3">
-                    <input type="checkbox" checked={selectedOrders.includes(o.id)} onChange={() => toggleSelect(o.id)} className="rounded border-[#30363D] bg-[#161B22]" />
+                    <input type="checkbox" checked={selectedOrders.includes(String(o.id))} onChange={() => toggleSelect(String(o.id))} className="rounded border-[#30363D] bg-[#161B22]" />
                   </td>
-                  <td className="py-3 px-3 text-white font-mono text-xs">{o.id}</td>
+                  <td className="py-3 px-3 text-white font-mono text-xs">{o.orderNumber}</td>
                   <td className="py-3 px-3">
-                    <p className="text-white text-sm">{o.customer}</p>
-                    <p className="text-[#484F58] text-xs">{o.email}</p>
+                    <p className="text-white text-sm">{getCustomerName(o)}</p>
+                    <p className="text-[#484F58] text-xs">{getCustomerEmail(o)}</p>
                   </td>
-                  <td className="py-3 px-3 text-[#8B949E] text-xs max-w-[180px] truncate">{o.products}</td>
-                  <td className="py-3 px-3 text-white">{o.total} DZD</td>
-                  <td className="py-3 px-3"><StatusBadge status={o.status} /></td>
-                  <td className="py-3 px-3 text-[#8B949E] text-xs uppercase">{o.payment}</td>
-                  <td className="py-3 px-3 text-[#484F58] text-xs">{o.date}</td>
+                  <td className="py-3 px-3 text-[#8B949E] text-xs max-w-[180px] truncate">{o.products || '—'}</td>
+                  <td className="py-3 px-3 text-white">{parseFloat(o.total || '0').toLocaleString()} DZD</td>
+                  <td className="py-3 px-3"><StatusBadge status={o.status || 'pending'} /></td>
+                  <td className="py-3 px-3 text-[#8B949E] text-xs uppercase">{o.paymentMethod || 'cod'}</td>
+                  <td className="py-3 px-3 text-[#484F58] text-xs">{o.createdAt ? new Date(o.createdAt).toLocaleDateString() : '—'}</td>
                   <td className="py-3 px-3">
                     <div className="flex gap-1.5">
                       <button className="p-1.5 text-[#484F58] hover:text-[#01D7D5] transition-colors rounded hover:bg-[rgba(1,215,213,0.1)]"><Eye size={14} /></button>
@@ -127,9 +162,9 @@ export default function OrdersTab() {
         </div>
         {/* Pagination */}
         <div className="flex items-center justify-between p-4 border-t border-[#30363D]">
-          <p className="text-[#484F58] text-xs">Showing {filtered.length} of {allOrders.length} orders</p>
+          <p className="text-[#484F58] text-xs">Showing {filtered.length} of {allOrders?.length || 0} orders</p>
           <div className="flex gap-1">
-            {['Prev', '1', '2', '3', 'Next'].map((p) => (
+            {['Prev', '1', 'Next'].map((p) => (
               <button key={p} className={`px-3 py-1.5 rounded text-xs ${p === '1' ? 'bg-[rgba(1,215,213,0.15)] text-[#01D7D5]' : 'text-[#484F58] hover:text-white'}`}>{p}</button>
             ))}
           </div>

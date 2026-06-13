@@ -178,4 +178,37 @@ export const orderRouter = createRouter({
 
     return myOrders;
   }),
+
+  // Admin: list all orders
+  list: publicQuery
+    .input(z.object({
+      status: z.string().optional(),
+      search: z.string().optional(),
+      limit: z.number().default(50),
+      offset: z.number().default(0),
+    }).optional())
+    .query(async ({ input }) => {
+      const db = getDb();
+      const allOrders = await db.select().from(orders).orderBy(desc(orders.createdAt));
+
+      // Enrich with customer info
+      const enriched = [];
+      for (const order of allOrders) {
+        const items = await db.select().from(orderItems).where(eq(orderItems.orderId, order.id));
+        const itemNames = [];
+        for (const item of items) {
+          const product = await db.select().from(products).where(eq(products.id, item.productId));
+          if (product[0]) {
+            itemNames.push(`${product[0].name} x${item.quantity}`);
+          }
+        }
+        enriched.push({
+          ...order,
+          products: itemNames.join(', '),
+          itemCount: items.length,
+        });
+      }
+
+      return enriched;
+    }),
 });

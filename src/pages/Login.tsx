@@ -1,61 +1,27 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
-import { Zap, Globe, Lock, Shield, RotateCcw, UserPlus } from 'lucide-react'
+import { Zap, Globe, UserPlus, Shield, LogIn } from 'lucide-react'
 import { useLanguage } from '@/hooks/useLanguage'
-import { verifyAdminPassword, setAdminSession } from '@/hooks/adminAuth'
-
-// Default admin password - shown to user for convenience
-const DEFAULT_PASSWORD = 'Eride2025!'
 
 function getOAuthUrl() {
   const kimiAuthUrl = import.meta.env.VITE_KIMI_AUTH_URL;
   const appID = import.meta.env.VITE_APP_ID;
   const redirectUri = `${window.location.origin}/api/oauth/callback`;
   const state = btoa(redirectUri);
-
   const url = new URL(`${kimiAuthUrl}/api/oauth/authorize`);
   url.searchParams.set("client_id", appID);
   url.searchParams.set("redirect_uri", redirectUri);
   url.searchParams.set("response_type", "code");
   url.searchParams.set("scope", "profile");
   url.searchParams.set("state", state);
-
   return url.toString();
 }
 
 export default function Login() {
   const { lang, setLang, t } = useLanguage()
-  const [adminPassword, setAdminPassword] = useState('')
-  const [showAdminForm, setShowAdminForm] = useState(false)
-  const [loginError, setLoginError] = useState('')
-  const [pwdSuccess, setPwdSuccess] = useState('')
-  const [loggingIn, setLoggingIn] = useState(false)
 
-  const handleAdminLogin = async () => {
-    if (!adminPassword) {
-      setLoginError(lang === 'ar' ? 'الرجاء إدخال كلمة المرور' : lang === 'fr' ? 'Veuillez entrer un mot de passe' : 'Please enter a password')
-      return
-    }
-    setLoggingIn(true)
-    setLoginError('')
-
-    const valid = await verifyAdminPassword(adminPassword)
-    if (valid) {
-      setAdminSession()
-      window.location.href = '/#/admin'
-      window.location.reload()
-    } else {
-      setLoginError(lang === 'ar' ? 'كلمة المرور خاطئة' : lang === 'fr' ? 'Mot de passe incorrect' : `Wrong password. Try: "${DEFAULT_PASSWORD}"`)
-      setLoggingIn(false)
-    }
-  }
-
-  const handleResetPassword = async () => {
-    // Reset to default password by clearing the stored hash
-    localStorage.removeItem('eride-admin-pwd-hash')
-    setLoginError('')
-    setPwdSuccess(lang === 'ar' ? 'تم إعادة تعيين كلمة المرور. حاول تسجيل الدخول مرة أخرى.' : lang === 'fr' ? 'Mot de passe réinitialisé. Essayez de vous reconnecter.' : 'Password reset to default. Try logging in again.')
-    setAdminPassword(DEFAULT_PASSWORD)
+  const handleSignIn = () => {
+    window.location.href = getOAuthUrl()
   }
 
   return (
@@ -89,7 +55,7 @@ export default function Login() {
         </div>
       </div>
 
-      {/* Right - Form */}
+      {/* Right - Options */}
       <div className="w-full lg:w-1/2 flex items-center justify-center bg-[#0A0A0A] px-6">
         <div className="w-full max-w-[420px]">
           {/* Mobile Logo */}
@@ -99,114 +65,45 @@ export default function Login() {
           </div>
 
           <h1 className="text-white font-semibold text-2xl mb-1">{t('login.welcome')}</h1>
-          <p className="text-[#8B949E] text-sm mb-8">{t('login.signin')}</p>
+          <p className="text-[#8B949E] text-sm mb-8">{lang === 'ar' ? 'اختر كيف تريد المتابعة' : lang === 'fr' ? 'Choisissez comment continuer' : 'Choose how to continue'}</p>
 
-          {/* OAuth Login */}
-          <button
-            onClick={() => { window.location.href = getOAuthUrl(); }}
-            className="w-full py-3.5 bg-[#01D7D5] text-black font-medium rounded-lg hover:shadow-[0_0_20px_rgba(1,215,213,0.4)] hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 mb-4"
+          {/* Join as Marketer - Main CTA */}
+          <Link
+            to="/register"
+            className="w-full py-4 bg-[#01D7D5] text-black font-semibold rounded-xl hover:shadow-[0_0_30px_rgba(1,215,213,0.4)] hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 mb-4"
           >
-            <Zap size={18} />
-            {t('login.withKimi')}
+            <UserPlus size={20} />
+            {lang === 'ar' ? 'انضم كمسوق' : lang === 'fr' ? 'Devenir Marketer' : 'Join as Marketer'}
+          </Link>
+
+          <p className="text-[#8B949E] text-xs text-center mb-4 px-4">
+            {lang === 'ar' ? 'تحتاج رابط إحالة من مسوق حالي للانضمام' : lang === 'fr' ? 'Un lien de parrainage est requis pour rejoindre' : 'A referral link from an existing marketer is required to join'}
+          </p>
+
+          {/* Sign In for existing marketers */}
+          <button
+            onClick={handleSignIn}
+            className="w-full py-3 border border-[#30363D] text-[#8B949E] font-medium rounded-lg hover:border-[#01D7D5] hover:text-white transition-all duration-300 flex items-center justify-center gap-2 mb-6"
+          >
+            <LogIn size={18} />
+            {lang === 'ar' ? 'تسجيل دخول مسوق' : lang === 'fr' ? 'Connexion Marketer' : 'Sign In as Marketer'}
           </button>
 
           {/* Divider */}
-          <div className="flex items-center gap-4 my-6">
+          <div className="flex items-center gap-4 my-4">
             <div className="flex-1 h-px bg-[#30363D]" />
             <span className="text-[#484F58] text-xs">{t('login.or')}</span>
             <div className="flex-1 h-px bg-[#30363D]" />
           </div>
 
-          {/* Admin Password Login */}
-          {!showAdminForm ? (
-            <button
-              onClick={() => setShowAdminForm(true)}
-              className="w-full py-3 border border-[#EF4444]/30 text-[#EF4444] font-medium rounded-lg hover:border-[#EF4444] hover:bg-[rgba(239,68,68,0.05)] transition-all duration-300 flex items-center justify-center gap-2 mb-4"
-            >
-              <Shield size={18} />
-              {lang === 'ar' ? 'دخول المشرف' : lang === 'fr' ? 'Connexion Admin' : 'Admin Login'}
-            </button>
-          ) : (
-            <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-4 mb-4 space-y-3">
-              <div className="flex items-center gap-2 mb-2">
-                <Lock size={16} className="text-[#EF4444]" />
-                <span className="text-white text-sm font-medium">{lang === 'ar' ? 'لوحة تحكم المشرف' : lang === 'fr' ? 'Accès Panneau Admin' : 'Admin Panel Access'}</span>
-              </div>
-
-              {/* Password hint */}
-              <p className="text-[#484F58] text-xs">
-                {lang === 'ar' ? 'كلمة المرور الافتراضية:' : lang === 'fr' ? 'Mot de passe par défaut :' : 'Default password:'} <span className="text-[#8B949E] font-mono">{DEFAULT_PASSWORD}</span>
-              </p>
-
-              <input
-                type="password"
-                value={adminPassword}
-                onChange={(e) => { setAdminPassword(e.target.value); setLoginError(''); setPwdSuccess('') }}
-                onKeyDown={(e) => e.key === 'Enter' && handleAdminLogin()}
-                placeholder={lang === 'ar' ? 'أدخل كلمة المرور...' : lang === 'fr' ? 'Entrez le mot de passe admin...' : 'Enter admin password...'}
-                className="w-full bg-[#0A0A0A] border border-[#30363D] text-white rounded-lg px-4 py-3 focus:border-[#01D7D5] focus:outline-none text-sm"
-              />
-              {pwdSuccess && (
-                <p className="text-[#01D7D5] text-xs">{pwdSuccess}</p>
-              )}
-              {loginError && (
-                <p className="text-[#EF4444] text-xs">{loginError}</p>
-              )}
-              <div className="flex gap-2">
-                <button
-                  onClick={handleAdminLogin}
-                  disabled={loggingIn}
-                  className="flex-1 py-2.5 bg-[#EF4444] text-white font-medium rounded-lg hover:shadow-[0_0_20px_rgba(239,68,68,0.4)] transition-all text-sm disabled:opacity-50"
-                >
-                  {loggingIn ? '...' : (lang === 'ar' ? 'دخول' : lang === 'fr' ? 'Connexion' : 'Login')}
-                </button>
-                <button
-                  onClick={() => { setShowAdminForm(false); setLoginError(''); setPwdSuccess('') }}
-                  className="px-4 py-2.5 border border-[#30363D] text-[#484F58] rounded-lg hover:text-white transition-colors text-sm"
-                >
-                  {t('btn.cancel')}
-                </button>
-              </div>
-              {/* Reset password link */}
-              <button
-                onClick={handleResetPassword}
-                className="w-full flex items-center justify-center gap-1.5 text-[#484F58] text-xs hover:text-[#F59E0B] transition-colors pt-1"
-              >
-                <RotateCcw size={12} />
-                {lang === 'ar' ? 'نسيت كلمة المرور؟ إعادة تعيين' : lang === 'fr' ? 'Mot de passe oublié ? Réinitialiser' : 'Forgot password? Reset to default'}
-              </button>
-            </div>
-          )}
-
-          {/* Regular Email/Password (for marketers/customers) */}
-          <div className="space-y-4">
-            <div>
-              <label className="text-[#8B949E] text-sm mb-1 block">{t('login.email')}</label>
-              <input
-                type="email"
-                placeholder="you@example.com"
-                className="w-full bg-[#161B22] border border-[#30363D] text-white rounded-lg px-4 py-3 focus:border-[#01D7D5] focus:outline-none focus:ring-1 focus:ring-[#01D7D5]/20 transition-all"
-              />
-            </div>
-            <div>
-              <label className="text-[#8B949E] text-sm mb-1 block">{t('login.password')}</label>
-              <input
-                type="password"
-                placeholder="••••••••"
-                className="w-full bg-[#161B22] border border-[#30363D] text-white rounded-lg px-4 py-3 focus:border-[#01D7D5] focus:outline-none focus:ring-1 focus:ring-[#01D7D5]/20 transition-all"
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 text-sm text-[#8B949E] cursor-pointer">
-                <input type="checkbox" className="rounded border-[#30363D] bg-[#161B22] text-[#01D7D5] focus:ring-[#01D7D5]" />
-                {t('login.remember')}
-              </label>
-              <a href="#" className="text-[#01D7D5] text-sm hover:underline">{t('login.forgot')}</a>
-            </div>
-            <button className="w-full py-3.5 border border-[#30363D] text-white font-medium rounded-lg hover:border-[#01D7D5] transition-colors duration-300">
-              {t('login.signIn')}
-            </button>
-          </div>
+          {/* Admin Login */}
+          <Link
+            to="/admin-login"
+            className="w-full py-3 border border-[#EF4444]/30 text-[#EF4444] font-medium rounded-lg hover:border-[#EF4444] hover:bg-[rgba(239,68,68,0.05)] transition-all duration-300 flex items-center justify-center gap-2 mb-6"
+          >
+            <Shield size={18} />
+            {lang === 'ar' ? 'دخول المشرف' : lang === 'fr' ? 'Connexion Admin' : 'Admin Login'}
+          </Link>
 
           {/* Language Toggle */}
           <div className="flex items-center justify-center gap-2 mt-6">
@@ -216,22 +113,6 @@ export default function Login() {
             <button className={`text-[#8B949E] text-sm hover:text-[#01D7D5] transition-colors ${lang === "ar" ? "font-bold text-white" : ""}`} onClick={() => setLang("ar")}>العربية</button>
             <span className="text-[#30363D]">/</span>
             <button className={`text-[#8B949E] text-sm hover:text-[#01D7D5] transition-colors ${lang === "fr" ? "font-bold text-white" : ""}`} onClick={() => setLang("fr")}>Français</button>
-          </div>
-
-          <p className="text-[#484F58] text-sm text-center mt-4">
-            {t('login.noAccount')}{' '}
-            <Link to="/register" className="text-[#01D7D5] hover:underline">{t('login.signUp')}</Link>
-          </p>
-
-          {/* Join as Marketer button */}
-          <div className="mt-4 pt-4 border-t border-[#30363D]">
-            <Link
-              to="/register"
-              className="flex items-center justify-center gap-2 w-full py-3 bg-[rgba(1,215,213,0.1)] text-[#01D7D5] font-medium rounded-lg hover:bg-[rgba(1,215,213,0.2)] transition-all"
-            >
-              <UserPlus size={18} />
-              {lang === 'ar' ? 'انضم كمسوق' : lang === 'fr' ? 'Devenir Marketer' : 'Join as Marketer'}
-            </Link>
           </div>
 
           <div className="text-center mt-6">

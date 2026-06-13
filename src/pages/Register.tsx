@@ -1,16 +1,13 @@
-import { useState, useEffect } from 'react'
-import { Link, useSearchParams, useNavigate } from 'react-router'
+import { useState } from 'react'
+import { Link, useSearchParams } from 'react-router'
 import { trpc } from '@/providers/trpc'
 import { useLanguage } from '@/hooks/useLanguage'
 import {
   UserPlus,
   AlertTriangle,
-  CheckCircle,
   Loader2,
-  Users,
   ArrowRight,
-  LogIn,
-  MapPin,
+  Mail,
   Zap,
 } from 'lucide-react'
 
@@ -105,11 +102,11 @@ export default function Register() {
 
           <div className="space-y-3">
             <Link
-              to="/dealers"
+              to="/contact"
               className="inline-flex items-center gap-2 px-6 py-3 bg-[#01D7D5] text-black font-medium rounded-lg hover:shadow-[0_0_20px_rgba(1,215,213,0.4)] transition-all"
             >
-              <MapPin size={16} />
-              {t('register.noRefAction')}
+              <Mail size={16} />
+              {isAr ? 'طلب كود إحالة' : isFr ? 'Demander un Code' : 'Request a Referral Code'}
             </Link>
           </div>
           <p className="text-[#484F58] text-xs mt-6">
