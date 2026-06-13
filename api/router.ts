@@ -6,6 +6,7 @@ import { rankRouter } from "./rank-router";
 import { subscriptionRouter } from "./subscription-router";
 import { orderRouter } from "./order-router";
 import { adminSetupRouter } from "./admin-setup-router";
+import { referralRouter } from "./referral-router";
 import { createRouter, publicQuery } from "./middleware";
 
 export const appRouter = createRouter({
@@ -18,6 +19,7 @@ export const appRouter = createRouter({
   subscription: subscriptionRouter,
   order: orderRouter,
   adminSetup: adminSetupRouter,
+  referral: referralRouter,
 });
 
 export type AppRouter = typeof appRouter;

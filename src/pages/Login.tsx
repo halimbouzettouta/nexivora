@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
-import { Zap, Globe, Lock, Shield, RotateCcw } from 'lucide-react'
+import { Zap, Globe, Lock, Shield, RotateCcw, UserPlus } from 'lucide-react'
 import { useLanguage } from '@/hooks/useLanguage'
 import { verifyAdminPassword, setAdminSession } from '@/hooks/adminAuth'
 
@@ -218,10 +218,21 @@ export default function Login() {
             <button className={`text-[#8B949E] text-sm hover:text-[#01D7D5] transition-colors ${lang === "fr" ? "font-bold text-white" : ""}`} onClick={() => setLang("fr")}>Français</button>
           </div>
 
-          <p className="text-[#484F58] text-sm text-center mt-6">
+          <p className="text-[#484F58] text-sm text-center mt-4">
             {t('login.noAccount')}{' '}
-            <a href="#" className="text-[#01D7D5] hover:underline">{t('login.signUp')}</a>
+            <Link to="/register" className="text-[#01D7D5] hover:underline">{t('login.signUp')}</Link>
           </p>
+
+          {/* Join as Marketer button */}
+          <div className="mt-4 pt-4 border-t border-[#30363D]">
+            <Link
+              to="/register"
+              className="flex items-center justify-center gap-2 w-full py-3 bg-[rgba(1,215,213,0.1)] text-[#01D7D5] font-medium rounded-lg hover:bg-[rgba(1,215,213,0.2)] transition-all"
+            >
+              <UserPlus size={18} />
+              {lang === 'ar' ? 'انضم كمسوق' : lang === 'fr' ? 'Devenir Marketer' : 'Join as Marketer'}
+            </Link>
+          </div>
 
           <div className="text-center mt-6">
             <Link to="/" className="text-[#484F58] text-sm hover:text-[#8B949E] transition-colors block">

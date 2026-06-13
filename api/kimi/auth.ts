@@ -1,7 +1,8 @@
 import type { Context } from "hono";
-import { setCookie } from "hono/cookie";
+import { setCookie, getCookie, deleteCookie } from "hono/cookie";
 import * as jose from "jose";
 import * as cookie from "cookie";
+import { eq } from "drizzle-orm";
 import { env } from "../lib/env";
 import { getSessionCookieOptions } from "../lib/cookies";
 import { Session } from "@contracts/constants";
@@ -9,6 +10,8 @@ import { Errors } from "@contracts/errors";
 import { signSessionToken, verifySessionToken } from "./session";
 import { users as kimiUsers } from "./platform";
 import { findUserByUnionId, upsertUser } from "../queries/users";
+import { getDb } from "../queries/connection";
+import * as schema from "@db/schema";
 import type { TokenResponse } from "./types";
 
 async function exchangeAuthCode(
@@ -101,11 +104,38 @@ export function createOAuthCallbackHandler() {
         throw new Error("Failed to fetch user profile from Kimi Open");
       }
 
+      // Check for referral cookie
+      const refCode = getCookie(c, "eride_ref");
+      let parentId: number | undefined;
+
+      if (refCode) {
+        // Find referrer by referral code
+        const db = getDb();
+        const referrer = await db
+          .select()
+          .from(schema.users)
+          .where(eq(schema.users.referralCode, refCode))
+          .limit(1);
+
+        if (referrer[0]) {
+          parentId = referrer[0].id;
+        }
+
+        // Clear the referral cookie after use
+        deleteCookie(c, "eride_ref", { path: "/" });
+      }
+
+      // Generate a unique referral code for the new user
+      const newReferralCode = `ER${Date.now().toString(36).toUpperCase()}${Math.random().toString(36).substring(2, 5).toUpperCase()}`;
+
       await upsertUser({
         unionId: userId,
         name: userProfile.name,
         avatar: userProfile.avatar_url,
         lastSignInAt: new Date(),
+        parentId: parentId ?? undefined,
+        referralCode: newReferralCode,
+        role: "marketer",
       });
 
       const token = await signSessionToken({
@@ -119,7 +149,8 @@ export function createOAuthCallbackHandler() {
         maxAge: Session.maxAgeMs / 1000,
       });
 
-      return c.redirect("/", 302);
+      // Redirect to dashboard after successful registration with referral
+      return c.redirect("/dashboard", 302);
     } catch (error) {
       console.error("[OAuth] Callback failed", error);
       return c.json({ error: "OAuth callback failed" }, 500);

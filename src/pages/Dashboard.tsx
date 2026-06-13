@@ -80,7 +80,8 @@ export default function Dashboard() {
     { id: 'settings', label: t('admin.settings'), icon: <Settings size={18} /> },
   ]
 
-  const referralLink = `https://eride-dz.com/ref/${user?.id || 'ABCD1234'}`
+  const referralCode = user?.referralCode || 'DEMO1234'
+  const referralLink = `${window.location.origin}/#/register?ref=${referralCode}`
 
   const handleCopy = () => {
     navigator.clipboard.writeText(referralLink)
