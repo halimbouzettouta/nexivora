@@ -7,7 +7,7 @@ import { useLanguage } from '@/hooks/useLanguage'
 
 export default function Checkout() {
   const navigate = useNavigate()
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const { items, totalPrice, clearCart } = useCart()
   const addToast = useToastStore((s) => s.addToast)
   const [step, setStep] = useState<1 | 2 | 3>(1)
@@ -50,7 +50,7 @@ export default function Checkout() {
           {[
             { n: 1 as const, label: t('checkout.shipping') },
             { n: 2 as const, label: t('checkout.payment') },
-            { n: 3 as const, label: t('nav.home') === 'الرئيسية' ? 'تأكيد' : 'Confirm' },
+            { n: 3 as const, label: lang === 'ar' ? 'تأكيد' : lang === 'fr' ? 'Confirmer' : 'Confirm' },
           ].map((s, idx) => (
             <div key={s.n} className="flex items-center gap-2">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
@@ -71,7 +71,7 @@ export default function Checkout() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {(['fullName', 'phone', 'email', 'postalCode'] as const).map((field) => (
                   <div key={field} className={field === 'email' ? 'sm:col-span-2' : ''}>
-                    <label className="text-[#8B949E] text-sm mb-1 block">{field === 'fullName' ? t('checkout.name') : field === 'postalCode' ? (t('nav.home') === 'الرئيسية' ? 'الرمز البريدي' : 'Postal Code') : field === 'phone' ? t('checkout.phone') : t('checkout.email')}</label>
+                    <label className="text-[#8B949E] text-sm mb-1 block">{field === 'fullName' ? t('checkout.name') : field === 'postalCode' ? (lang === 'ar' ? 'الرمز البريدي' : lang === 'fr' ? 'Code Postal' : 'Postal Code') : field === 'phone' ? t('checkout.phone') : t('checkout.email')}</label>
                     <input
                       type={field === 'email' ? 'email' : 'text'}
                       value={form[field]}
@@ -110,8 +110,8 @@ export default function Checkout() {
               <h3 className="text-white font-medium text-lg mt-8">{t('checkout.shipping')}</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {([
-                  { id: 'standard' as const, label: t('nav.home') === 'الرئيسية' ? 'توصيل عادي' : 'Standard Delivery', price: 2500, time: t('nav.home') === 'الرئيسية' ? '3-5 أيام عمل' : '3-5 business days' },
-                  { id: 'express' as const, label: t('nav.home') === 'الرئيسية' ? 'توصيل سريع' : 'Express Delivery', price: 5000, time: t('nav.home') === 'الرئيسية' ? '1-2 يوم عمل' : '1-2 business days' },
+                  { id: 'standard' as const, label: lang === 'ar' ? 'توصيل عادي' : lang === 'fr' ? 'Livraison Standard' : 'Standard Delivery', price: 2500, time: lang === 'ar' ? '3-5 أيام عمل' : lang === 'fr' ? '3-5 jours ouvrés' : '3-5 business days' },
+                  { id: 'express' as const, label: lang === 'ar' ? 'توصيل سريع' : lang === 'fr' ? 'Livraison Express' : 'Express Delivery', price: 5000, time: lang === 'ar' ? '1-2 يوم عمل' : lang === 'fr' ? '1-2 jours ouvrés' : '1-2 business days' },
                 ]).map((m) => (
                   <button
                     key={m.id}

@@ -85,7 +85,7 @@ const MOCK_ARTICLES: Article[] = [
 
 export default function ArticleDetail() {
   const { slug } = useParams<{ slug: string }>()
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
 
   const article = MOCK_ARTICLES.find((a) => a.slug === slug)
 
@@ -93,8 +93,8 @@ export default function ArticleDetail() {
     return (
       <div className="min-h-screen bg-black pt-[70px] flex items-center justify-center">
         <div className="text-center">
-          <p className="text-white text-lg mb-4">{t('nav.home') === 'الرئيسية' ? 'المقال غير موجود' : 'Article not found'}</p>
-          <Link to="/blog" className="text-[#01D7D5] hover:underline">{t('nav.home') === 'الرئيسية' ? 'العودة للمدونة' : 'Back to Blog'}</Link>
+          <p className="text-white text-lg mb-4">{lang === 'ar' ? 'المقال غير موجود' : lang === 'fr' ? 'Article non trouvé' : 'Article not found'}</p>
+          <Link to="/blog" className="text-[#01D7D5] hover:underline">{lang === 'ar' ? 'العودة للمدونة' : lang === 'fr' ? 'Retour au Blog' : 'Back to Blog'}</Link>
         </div>
       </div>
     )
@@ -104,7 +104,7 @@ export default function ArticleDetail() {
     <div className="min-h-screen bg-black pt-[70px]">
       <div className="max-w-[800px] mx-auto px-4 sm:px-6 lg:px-[5vw] py-12">
         <Link to="/blog" className="inline-flex items-center gap-1 text-[#8B949E] text-sm mb-8 hover:text-[#01D7D5] transition-colors">
-          <ArrowLeft size={16} /> {t('nav.home') === 'الرئيسية' ? 'العودة للمدونة' : 'Back to Blog'}
+          <ArrowLeft size={16} /> {lang === 'ar' ? 'العودة للمدونة' : lang === 'fr' ? 'Retour au Blog' : 'Back to Blog'}
         </Link>
 
         <div className="aspect-[21/9] rounded-xl overflow-hidden mb-8 bg-[#161B22] border border-[#30363D]">
@@ -140,7 +140,7 @@ export default function ArticleDetail() {
         </div>
 
         <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-6">
-          <h3 className="text-white font-medium mb-2">{t('nav.home') === 'الرئيسية' ? 'مقالات ذات صلة' : 'Related Articles'}</h3>
+          <h3 className="text-white font-medium mb-2">{lang === 'ar' ? 'مقالات ذات صلة' : lang === 'fr' ? 'Articles Similaires' : 'Related Articles'}</h3>
           <div className="space-y-3">
             {MOCK_ARTICLES.filter((a) => a.slug !== article.slug).slice(0, 3).map((a) => (
               <Link key={a.slug} to={`/blog/${a.slug}`} className="flex items-center gap-3 group">

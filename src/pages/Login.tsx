@@ -33,7 +33,7 @@ export default function Login() {
 
   const handleAdminLogin = async () => {
     if (!adminPassword) {
-      setLoginError(t('nav.home') === 'الرئيسية' ? 'الرجاء إدخال كلمة المرور' : 'Please enter a password')
+      setLoginError(lang === 'ar' ? 'الرجاء إدخال كلمة المرور' : lang === 'fr' ? 'Veuillez entrer un mot de passe' : 'Please enter a password')
       return
     }
     setLoggingIn(true)
@@ -45,7 +45,7 @@ export default function Login() {
       window.location.href = '/#/admin'
       window.location.reload()
     } else {
-      setLoginError(t('nav.home') === 'الرئيسية' ? 'كلمة المرور خاطئة' : `Wrong password. Try: "${DEFAULT_PASSWORD}"`)
+      setLoginError(lang === 'ar' ? 'كلمة المرور خاطئة' : lang === 'fr' ? 'Mot de passe incorrect' : `Wrong password. Try: "${DEFAULT_PASSWORD}"`)
       setLoggingIn(false)
     }
   }
@@ -54,7 +54,7 @@ export default function Login() {
     // Reset to default password by clearing the stored hash
     localStorage.removeItem('eride-admin-pwd-hash')
     setLoginError('')
-    setPwdSuccess(t('nav.home') === 'الرئيسية' ? 'تم إعادة تعيين كلمة المرور. حاول تسجيل الدخول مرة أخرى.' : 'Password reset to default. Try logging in again.')
+    setPwdSuccess(lang === 'ar' ? 'تم إعادة تعيين كلمة المرور. حاول تسجيل الدخول مرة أخرى.' : lang === 'fr' ? 'Mot de passe réinitialisé. Essayez de vous reconnecter.' : 'Password reset to default. Try logging in again.')
     setAdminPassword(DEFAULT_PASSWORD)
   }
 
@@ -124,18 +124,18 @@ export default function Login() {
               className="w-full py-3 border border-[#EF4444]/30 text-[#EF4444] font-medium rounded-lg hover:border-[#EF4444] hover:bg-[rgba(239,68,68,0.05)] transition-all duration-300 flex items-center justify-center gap-2 mb-4"
             >
               <Shield size={18} />
-              {t('nav.home') === 'الرئيسية' ? 'دخول المشرف' : 'Admin Login'}
+              {lang === 'ar' ? 'دخول المشرف' : lang === 'fr' ? 'Connexion Admin' : 'Admin Login'}
             </button>
           ) : (
             <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-4 mb-4 space-y-3">
               <div className="flex items-center gap-2 mb-2">
                 <Lock size={16} className="text-[#EF4444]" />
-                <span className="text-white text-sm font-medium">{t('nav.home') === 'الرئيسية' ? 'لوحة تحكم المشرف' : 'Admin Panel Access'}</span>
+                <span className="text-white text-sm font-medium">{lang === 'ar' ? 'لوحة تحكم المشرف' : lang === 'fr' ? 'Accès Panneau Admin' : 'Admin Panel Access'}</span>
               </div>
 
               {/* Password hint */}
               <p className="text-[#484F58] text-xs">
-                {t('nav.home') === 'الرئيسية' ? 'كلمة المرور الافتراضية:' : 'Default password:'} <span className="text-[#8B949E] font-mono">{DEFAULT_PASSWORD}</span>
+                {lang === 'ar' ? 'كلمة المرور الافتراضية:' : lang === 'fr' ? 'Mot de passe par défaut :' : 'Default password:'} <span className="text-[#8B949E] font-mono">{DEFAULT_PASSWORD}</span>
               </p>
 
               <input
@@ -143,7 +143,7 @@ export default function Login() {
                 value={adminPassword}
                 onChange={(e) => { setAdminPassword(e.target.value); setLoginError(''); setPwdSuccess('') }}
                 onKeyDown={(e) => e.key === 'Enter' && handleAdminLogin()}
-                placeholder={t('nav.home') === 'الرئيسية' ? 'أدخل كلمة المرور...' : 'Enter admin password...'}
+                placeholder={lang === 'ar' ? 'أدخل كلمة المرور...' : lang === 'fr' ? 'Entrez le mot de passe admin...' : 'Enter admin password...'}
                 className="w-full bg-[#0A0A0A] border border-[#30363D] text-white rounded-lg px-4 py-3 focus:border-[#01D7D5] focus:outline-none text-sm"
               />
               {pwdSuccess && (
@@ -158,7 +158,7 @@ export default function Login() {
                   disabled={loggingIn}
                   className="flex-1 py-2.5 bg-[#EF4444] text-white font-medium rounded-lg hover:shadow-[0_0_20px_rgba(239,68,68,0.4)] transition-all text-sm disabled:opacity-50"
                 >
-                  {loggingIn ? '...' : (t('nav.home') === 'الرئيسية' ? 'دخول' : 'Login')}
+                  {loggingIn ? '...' : (lang === 'ar' ? 'دخول' : lang === 'fr' ? 'Connexion' : 'Login')}
                 </button>
                 <button
                   onClick={() => { setShowAdminForm(false); setLoginError(''); setPwdSuccess('') }}
@@ -173,7 +173,7 @@ export default function Login() {
                 className="w-full flex items-center justify-center gap-1.5 text-[#484F58] text-xs hover:text-[#F59E0B] transition-colors pt-1"
               >
                 <RotateCcw size={12} />
-                {t('nav.home') === 'الرئيسية' ? 'نسيت كلمة المرور؟ إعادة تعيين' : 'Forgot password? Reset to default'}
+                {lang === 'ar' ? 'نسيت كلمة المرور؟ إعادة تعيين' : lang === 'fr' ? 'Mot de passe oublié ? Réinitialiser' : 'Forgot password? Reset to default'}
               </button>
             </div>
           )}
@@ -213,7 +213,9 @@ export default function Login() {
             <Globe size={14} className="text-[#484F58]" />
             <button className={`text-[#8B949E] text-sm hover:text-[#01D7D5] transition-colors ${lang === "en" ? "font-bold text-white" : ""}`} onClick={() => setLang("en")}>English</button>
             <span className="text-[#30363D]">/</span>
-            <button className={`text-[#484F58] text-sm hover:text-[#01D7D5] transition-colors ${lang === "ar" ? "font-bold text-white" : ""}`} onClick={() => setLang("ar")}>العربية</button>
+            <button className={`text-[#8B949E] text-sm hover:text-[#01D7D5] transition-colors ${lang === "ar" ? "font-bold text-white" : ""}`} onClick={() => setLang("ar")}>العربية</button>
+            <span className="text-[#30363D]">/</span>
+            <button className={`text-[#8B949E] text-sm hover:text-[#01D7D5] transition-colors ${lang === "fr" ? "font-bold text-white" : ""}`} onClick={() => setLang("fr")}>Français</button>
           </div>
 
           <p className="text-[#484F58] text-sm text-center mt-6">

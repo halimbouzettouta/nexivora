@@ -77,21 +77,22 @@ const MOCK_ARTICLES: Article[] = [
   },
 ]
 
-const getCategories = (isAr: boolean) => isAr
-  ? ['جميع الفئات', 'أدلة', 'صيانة', 'أخبار الصناعة', 'تسويق', 'سلامة']
+const getCategories = (isAr: boolean, isFr: boolean) =>
+  isAr ? ['جميع الفئات', 'أدلة', 'صيانة', 'أخبار الصناعة', 'تسويق', 'سلامة']
+  : isFr ? ['Toutes les Catégories', 'Guides', 'Entretien', 'Actualités', 'Marketing', 'Sécurité']
   : ['All Categories', 'Guides', 'Maintenance', 'Industry News', 'Marketing', 'Safety']
 
 export default function Blog() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const [search, setSearch] = useState('')
-  const isAr = t('nav.home') === 'الرئيسية'
-  const categories = getCategories(isAr)
-  const [activeCategory, setActiveCategory] = useState(isAr ? 'جميع الفئات' : 'All Categories')
+  const isAr = lang === 'ar'
+  const categories = getCategories(isAr, lang === 'fr')
+  const [activeCategory, setActiveCategory] = useState(isAr ? 'جميع الفئات' : lang === 'fr' ? 'Toutes les Catégories' : 'All Categories')
 
   const featured = MOCK_ARTICLES[0]
 
   const filtered = useMemo(() => {
-    const allCategoriesLabel = isAr ? 'جميع الفئات' : 'All Categories'
+    const allCategoriesLabel = isAr ? 'جميع الفئات' : lang === 'fr' ? 'Toutes les Catégories' : 'All Categories'
     return MOCK_ARTICLES.filter((a) => {
       if (activeCategory !== allCategoriesLabel && a.category !== activeCategory) return false
       if (search && !a.title.toLowerCase().includes(search.toLowerCase()) && !a.excerpt.toLowerCase().includes(search.toLowerCase())) return false
@@ -122,11 +123,11 @@ export default function Blog() {
                 <img src={featured.image} alt={featured.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
               </div>
               <div className="p-6 lg:p-8 flex flex-col justify-center">
-                <span className="inline-block bg-[rgba(1,215,213,0.1)] text-[#01D7D5] text-[10px] font-bold px-3 py-1 rounded-full mb-3 w-fit">{t('nav.home') === 'الرئيسية' ? 'مميز' : 'FEATURED'}</span>
+                <span className="inline-block bg-[rgba(1,215,213,0.1)] text-[#01D7D5] text-[10px] font-bold px-3 py-1 rounded-full mb-3 w-fit">{lang === 'ar' ? 'مميز' : lang === 'fr' ? 'EN VEDETTE' : 'FEATURED'}</span>
                 <span className="text-[#484F58] text-xs mb-2">{featured.category} &middot; {featured.date}</span>
                 <h2 className="text-white font-semibold text-2xl mb-3 group-hover:text-[#01D7D5] transition-colors">{featured.title}</h2>
                 <p className="text-[#8B949E] text-sm leading-relaxed mb-4">{featured.excerpt}</p>
-                <span className="text-[#01D7D5] text-sm flex items-center gap-1">{t('articles.readMore')} &rarr;</span>
+                <span className="text-[#01D7D5] text-sm flex items-center gap-1">{t('articles.readMore')} {lang === 'fr' ? '→' : '→'}</span>
               </div>
             </div>
           </Link>
@@ -153,7 +154,7 @@ export default function Blog() {
                 <p className="text-[#8B949E] text-xs leading-relaxed mb-3 line-clamp-2">{article.excerpt}</p>
                 <div className="flex items-center justify-between">
                   <span className="text-[#484F58] text-[10px] flex items-center gap-1"><Clock size={10} /> {article.readTime} {t('blog.readTime')}</span>
-                  <span className="text-[#01D7D5] text-[10px]">{t('articles.readMore')} &rarr;</span>
+                  <span className="text-[#01D7D5] text-[10px]">{t('articles.readMore')} {lang === 'fr' ? '→' : '→'}</span>
                 </div>
               </div>
             </Link>

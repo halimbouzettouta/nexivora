@@ -6,7 +6,7 @@ import { getProducts } from '@/hooks/productStore'
 import { ShoppingCart, Heart, Star, Minus, Plus, Share2, Truck, Battery, Gauge } from 'lucide-react'
 
 export default function ProductDetail() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const params = useParams<{ slug: string }>()
   const slug = params.slug || ''
   const addItem = useCart((s) => s.addItem)
@@ -23,7 +23,7 @@ export default function ProductDetail() {
     return (
       <div className="min-h-screen bg-black pt-[70px] flex items-center justify-center">
         <div className="text-center">
-          <p className="text-white text-lg mb-4">{t('nav.home') === 'الرئيسية' ? 'المنتج غير موجود' : 'Product not found'}</p>
+          <p className="text-white text-lg mb-4">{lang === 'ar' ? 'المنتج غير موجود' : lang === 'fr' ? 'Produit non trouvé' : 'Product not found'}</p>
           <Link to="/store" className="text-[#01D7D5] hover:underline">{t('cart.continue')}</Link>
         </div>
       </div>
@@ -68,7 +68,7 @@ export default function ProductDetail() {
                   <Star key={i} size={16} fill={i < Math.round(product.rating || 0) ? 'currentColor' : 'none'} />
                 ))}
               </div>
-              <span className="text-[#8B949E] text-sm">{product.rating} {t('nav.home') === 'الرئيسية' ? 'من 5' : 'out of 5'} ({product.reviewCount} {t('product.reviews')})</span>
+              <span className="text-[#8B949E] text-sm">{product.rating} {lang === 'ar' ? 'من 5' : lang === 'fr' ? 'sur 5' : 'out of 5'} ({product.reviewCount} {t('product.reviews')})</span>
             </div>
 
             <div className="flex items-center gap-3 mb-4">
@@ -90,7 +90,7 @@ export default function ProductDetail() {
             </div>
 
             <div className="flex items-center gap-4 mb-6">
-              <span className="text-[#8B949E] text-sm">{t('nav.home') === 'الرئيسية' ? 'الكمية:' : 'Quantity:'}</span>
+              <span className="text-[#8B949E] text-sm">{lang === 'ar' ? 'الكمية:' : lang === 'fr' ? 'Quantité :' : 'Quantity:'}</span>
               <div className="flex items-center border border-[#30363D] rounded-lg">
                 <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-3 py-2 text-[#8B949E] hover:text-white"><Minus size={16} /></button>
                 <span className="px-3 py-2 text-white min-w-[40px] text-center">{quantity}</span>

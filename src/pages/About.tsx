@@ -19,8 +19,14 @@ const valuesAr = [
 
 export default function About() {
   const { t } = useLanguage()
-  const isAr = t('nav.home') === 'الرئيسية'
-  const values = isAr ? valuesAr : [
+  const isAr = lang === 'ar'
+  const valuesFr = [
+    { icon: <Zap size={32} />, title: 'Innovation', desc: 'Solutions de mobilité électrique pionnières pour le marché algérien.' },
+    { icon: <Leaf size={32} />, title: 'Durabilité', desc: 'Engagés à réduire les émissions de carbone par le transport propre.' },
+    { icon: <Users size={32} />, title: 'Communauté', desc: 'Construire un réseau de cyclistes, marketers et partenaires en Algérie.' },
+    { icon: <Shield size={32} />, title: 'Intégrité', desc: 'Prix transparents, marketing honnête et produits fiables.' },
+  ]
+  const values = isAr ? valuesAr : lang === 'fr' ? valuesFr : [
     { icon: <Zap size={32} />, title: 'Innovation', desc: 'Pioneering electric mobility solutions for the Algerian market.' },
     { icon: <Leaf size={32} />, title: 'Sustainability', desc: 'Committed to reducing carbon emissions through clean transportation.' },
     { icon: <Users size={32} />, title: 'Community', desc: 'Building a network of riders, marketers, and partners across Algeria.' },

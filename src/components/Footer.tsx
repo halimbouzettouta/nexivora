@@ -3,7 +3,7 @@ import { Instagram, Facebook, Youtube } from 'lucide-react'
 import { useLanguage } from '@/hooks/useLanguage'
 
 export default function Footer() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
 
   const shopLinks = [
     { label: t('cat.ebikes'), path: '/store?category=e-bikes' },
@@ -16,7 +16,7 @@ export default function Footer() {
     { label: t('footer.referral'), path: '/dashboard' },
     { label: t('nav.blog'), path: '/blog' },
     { label: t('nav.dealers'), path: '/dealers' },
-    { label: t('nav.home') === 'الرئيسية' ? 'اتصل بنا' : 'Contact', path: '/contact' },
+    { label: lang === 'ar' ? 'اتصل بنا' : lang === 'fr' ? 'Contact' : 'Contact', path: '/contact' },
   ]
 
   const supportLinks = [

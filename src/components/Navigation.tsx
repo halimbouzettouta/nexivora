@@ -14,7 +14,7 @@ export default function Navigation() {
   const { user, isAuthenticated, isAdmin, logout } = useAuth()
   const { lang, setLang, t } = useLanguage()
 
-  const toggleLang = () => setLang(lang === 'en' ? 'ar' : 'en')
+  const toggleLang = () => setLang(lang === 'en' ? 'ar' : lang === 'ar' ? 'fr' : 'en')
 
   const navLinks = [
     { label: t('nav.home'), path: '/' },
@@ -99,7 +99,7 @@ export default function Navigation() {
               className="hidden sm:flex items-center gap-1.5 border border-[#30363D] rounded-lg px-3 py-1.5 text-[13px] text-[#8B949E] hover:border-[#01D7D5] hover:text-[#01D7D5] transition-colors duration-300"
             >
               <Globe size={14} />
-              {t('nav.lang')}
+              {lang === 'fr' ? 'FR' : lang === 'ar' ? 'AR' : 'EN'}
             </button>
 
             <button

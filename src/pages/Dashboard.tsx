@@ -62,7 +62,7 @@ const statusColors: Record<string, string> = {
 }
 
 export default function Dashboard() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const [activeTab, setActiveTab] = useState('overview')
   const [copied, setCopied] = useState(false)
   const { user, logout } = useAuth()
@@ -73,10 +73,10 @@ export default function Dashboard() {
     { id: 'network', label: t('dash.team'), icon: <Users size={18} /> },
     { id: 'commissions', label: t('dash.commissions'), icon: <DollarSign size={18} /> },
     { id: 'ranks', label: t('admin.ranks'), icon: <Trophy size={18} /> },
-    { id: 'loyalty', label: t('nav.home') === 'الرئيسية' ? 'نقاط الولاء' : 'Loyalty Points', icon: <Star size={18} /> },
+    { id: 'loyalty', label: lang === 'ar' ? 'نقاط الولاء' : lang === 'fr' ? 'Points de Fidélité' : 'Loyalty Points', icon: <Star size={18} /> },
     { id: 'subscriptions', label: t('admin.subscriptions'), icon: <CreditCard size={18} /> },
     { id: 'analytics', label: t('admin.analytics'), icon: <BarChart3 size={18} /> },
-    { id: 'tools', label: t('nav.home') === 'الرئيسية' ? 'أدوات التسويق' : 'Marketing Tools', icon: <Share2 size={18} /> },
+    { id: 'tools', label: lang === 'ar' ? 'أدوات التسويق' : lang === 'fr' ? 'Outils Marketing' : 'Marketing Tools', icon: <Share2 size={18} /> },
     { id: 'settings', label: t('admin.settings'), icon: <Settings size={18} /> },
   ]
 

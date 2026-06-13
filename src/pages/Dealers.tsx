@@ -29,7 +29,7 @@ const MOCK_DEALERS: Dealer[] = [
 const regions = ['All Regions', 'Center', 'West', 'East']
 
 export default function Dealers() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const [search, setSearch] = useState('')
   const [regionFilter, setRegionFilter] = useState('All Regions')
 
@@ -88,9 +88,9 @@ export default function Dealers() {
           <div className="lg:col-span-2 bg-[#161B22] border border-[#30363D] rounded-xl overflow-hidden">
             <div className="w-full h-full min-h-[500px] flex flex-col items-center justify-center p-8">
               <MapPin size={48} className="text-[#30363D] mb-4" />
-              <h3 className="text-white font-medium mb-2">{t('nav.home') === 'الرئيسية' ? 'خريطة الموزعين' : 'Dealer Locations'}</h3>
+              <h3 className="text-white font-medium mb-2">{lang === 'ar' ? 'خريطة الموزعين' : lang === 'fr' ? 'Carte des Concessionnaires' : 'Dealer Locations'}</h3>
               <p className="text-[#8B949E] text-sm text-center mb-4">
-                {filtered.length} {t('nav.home') === 'الرئيسية' ? 'موزع في الجزائر' : 'dealers across Algeria'}
+                {filtered.length} {lang === 'ar' ? 'موزع في الجزائر' : lang === 'fr' ? 'concessionnaires en Algérie' : 'dealers across Algeria'}
               </p>
               <div className="grid grid-cols-2 gap-3 w-full max-w-[300px]">
                 {filtered.slice(0, 6).map((d) => (

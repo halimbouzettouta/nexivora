@@ -5,7 +5,7 @@ import { Minus, Plus, X, ShoppingBag } from 'lucide-react'
 import { useLanguage } from '@/hooks/useLanguage'
 
 export default function Cart() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const { items, totalPrice, updateQuantity, removeItem } = useCart()
   const addToast = useToastStore((s) => s.addToast)
 
@@ -19,7 +19,7 @@ export default function Cart() {
           <span className="text-[#8B949E]">{t('cart.title')}</span>
         </div>
         <h1 className="text-white font-semibold text-3xl mb-1">{t('cart.title')}</h1>
-        <p className="text-[#8B949E] text-sm mb-8">{items.length} {t('nav.home') === 'الرئيسية' ? 'منتج' : 'items'}</p>
+        <p className="text-[#8B949E] text-sm mb-8">{items.length} {lang === 'ar' ? 'منتج' : lang === 'fr' ? 'produits' : 'items'}</p>
 
         {items.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-center">
@@ -39,7 +39,7 @@ export default function Cart() {
                   <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded-lg" />
                   <div className="flex-1 min-w-0">
                     <p className="text-white font-medium text-sm">{item.name}</p>
-                    <p className="text-[#8B949E] text-xs mb-2">{t('nav.home') === 'الرئيسية' ? 'سعر الوحدة:' : 'Unit price:'} {item.price.toLocaleString()} DZD</p>
+                    <p className="text-[#8B949E] text-xs mb-2">{lang === 'ar' ? 'سعر الوحدة:' : lang === 'fr' ? 'Prix unitaire :' : 'Unit price:'} {item.price.toLocaleString()} DZD</p>
                     <div className="flex items-center gap-2">
                       <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="w-7 h-7 flex items-center justify-center border border-[#30363D] rounded text-[#8B949E]">
                         <Minus size={14} />
@@ -54,7 +54,7 @@ export default function Cart() {
                     <p className="text-white font-semibold">{(item.price * item.quantity).toLocaleString()} DZD</p>
                     <button onClick={() => {
                       removeItem(item.id)
-                      addToast({ title: t('nav.home') === 'الرئيسية' ? 'تمت الإزالة' : 'Item removed', message: t('nav.home') === 'الرئيسية' ? `${item.name} تمت إزالته من السلة` : `${item.name} removed from cart`, type: 'info' })
+                      addToast({ title: lang === 'ar' ? 'تمت الإزالة' : lang === 'fr' ? 'Supprimé' : 'Item removed', message: lang === 'ar' ? `${item.name} تمت إزالته من السلة` : lang === 'fr' ? `${item.name} retiré du panier` : `${item.name} removed from cart`, type: 'info' })
                     }} className="text-[#484F58] hover:text-[#EF4444] transition-colors mt-1">
                       <X size={16} />
                     </button>
@@ -74,7 +74,7 @@ export default function Cart() {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-[#8B949E]">{t('cart.shipping')}</span>
-                    <span className="text-[#8B949E]">{t('nav.home') === 'الرئيسية' ? 'يحسب عند الدفع' : 'Calculated at checkout'}</span>
+                    <span className="text-[#8B949E]">{lang === 'ar' ? 'يحسب عند الدفع' : lang === 'fr' ? 'Calculé au paiement' : 'Calculated at checkout'}</span>
                   </div>
                 </div>
                 <div className="border-t border-[#30363D] pt-4 mb-4">
@@ -88,11 +88,11 @@ export default function Cart() {
                 <div className="flex gap-2 mb-4">
                   <input
                     type="text"
-                    placeholder={t('nav.home') === 'الرئيسية' ? 'أدخل كود الخصم...' : 'Enter promo code'}
+                    placeholder={lang === 'ar' ? 'أدخل كود الخصم...' : lang === 'fr' ? 'Entrez le code promo...' : 'Enter promo code'}
                     className="flex-1 bg-[#0A0A0A] border border-[#30363D] text-white text-sm rounded-lg px-3 py-2 focus:border-[#01D7D5] focus:outline-none"
                   />
                   <button className="px-4 py-2 bg-[#30363D] text-white text-sm rounded-lg hover:bg-[#484F58] transition-colors">
-                    {t('nav.home') === 'الرئيسية' ? 'تطبيق' : 'Apply'}
+                    {lang === 'ar' ? 'تطبيق' : lang === 'fr' ? 'Appliquer' : 'Apply'}
                   </button>
                 </div>
 
@@ -107,7 +107,7 @@ export default function Cart() {
                 </Link>
 
                 <div className="mt-4 p-3 bg-[rgba(1,215,213,0.1)] rounded-lg text-center">
-                  <p className="text-[#01D7D5] text-xs">{t('nav.home') === 'الرئيسية' ? `ستجمع ${Math.floor(totalPrice / 10)} نقطة ولاء` : `You'll earn ${Math.floor(totalPrice / 10)} loyalty points`}</p>
+                  <p className="text-[#01D7D5] text-xs">{lang === 'ar' ? `ستجمع ${Math.floor(totalPrice / 10)} نقطة ولاء` : lang === 'fr' ? `Vous gagnerez ${Math.floor(totalPrice / 10)} points de fidélité` : `You'll earn ${Math.floor(totalPrice / 10)} loyalty points`}</p>
                 </div>
               </div>
             </div>

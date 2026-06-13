@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
 
-type Lang = 'en' | 'ar'
+type Lang = 'en' | 'ar' | 'fr'
 
 interface LanguageContextType {
   lang: Lang
@@ -13,8 +13,9 @@ const LanguageContext = createContext<LanguageContextType | null>(null)
 
 import { en } from './translations/en'
 import { ar } from './translations/ar'
+import { fr } from './translations/fr'
 
-const dictionaries: Record<Lang, Record<string, string>> = { en, ar }
+const dictionaries: Record<Lang, Record<string, string>> = { en, ar, fr }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>(() => {
