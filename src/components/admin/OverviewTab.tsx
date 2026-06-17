@@ -1,47 +1,38 @@
 import { useState, useEffect } from 'react'
 import StatCard from './StatCard'
 import StatusBadge from './StatusBadge'
-import { TrendingUp, ShoppingCart, Users, DollarSign, AlertTriangle, Brain } from 'lucide-react'
-import { getOrders, getOrderStats } from '@/hooks/orderStore'
-import { getCommissions, getCommissionStats } from '@/hooks/orderStore'
-import { getMarketerAccounts } from '@/hooks/marketerAuth'
-import type { Order } from '@/hooks/orderStore'
+import { TrendingUp, ShoppingCart, Users, DollarSign, AlertTriangle } from 'lucide-react'
+import { trpc } from '@/providers/trpc'
 
 export default function OverviewTab() {
-  const [orders, setOrders] = useState<Order[]>([])
-  const orderStats = getOrderStats()
-  const commissionStats = getCommissionStats()
-  const marketers = getMarketerAccounts()
-  const commissions = getCommissions()
-
-  useEffect(() => {
-    setOrders(getOrders())
-  }, [])
+  const { data: orders = [] } = trpc.order.list.useQuery(undefined, { staleTime: 10000 })
+  const { data: users = [] } = trpc.adminSetup.listUsers.useQuery(undefined, { staleTime: 30000 })
 
   // Compute real revenue
-  const totalRevenue = orderStats.totalRevenue
-  const pendingCommissions = commissionStats.totalPending
+  const totalRevenue = orders.reduce((sum: number, o: any) => sum + Number(o.total || 0), 0)
+  const pendingCount = orders.filter((o: any) => o.status === 'pending').length
+  const processingCount = orders.filter((o: any) => o.status === 'processing').length
+  const deliveredCount = orders.filter((o: any) => o.status === 'delivered' || o.status === 'completed').length
+  const canceledCount = orders.filter((o: any) => o.status === 'canceled' || o.status === 'refunded').length
+  const totalMarketers = users.filter((u: any) => u.role === 'marketer' || u.role === 'admin').length
 
   // Get recent orders (last 5)
   const recentOrders = orders.slice(0, 5)
 
-  // Get top marketers by earnings
-  const topMarketers = [...marketers].sort((a, b) => b.earnings - a.earnings).slice(0, 5)
-
   // Compute status distribution from real data
   const statusDist = [
-    { label: 'Completed', count: orderStats.delivered, color: '#01D7D5' },
-    { label: 'Processing', count: orderStats.processing, color: '#3B82F6' },
-    { label: 'Pending', count: orderStats.pending, color: '#F59E0B' },
-    { label: 'Canceled', count: orderStats.canceled, color: '#EF4444' },
+    { label: 'Completed', count: deliveredCount, color: '#01D7D5' },
+    { label: 'Processing', count: processingCount, color: '#3B82F6' },
+    { label: 'Pending', count: pendingCount, color: '#F59E0B' },
+    { label: 'Canceled', count: canceledCount, color: '#EF4444' },
   ].filter(s => s.count > 0)
   const totalWithStatus = statusDist.reduce((s, d) => s + d.count, 0) || 1
 
   const kpiData = [
     { label: 'Total Revenue', value: `DZD ${(totalRevenue / 1000000).toFixed(1)}M`, change: '+18%', icon: <TrendingUp size={20} /> },
-    { label: 'Total Orders', value: String(orderStats.total), change: `+${orderStats.total}`, icon: <ShoppingCart size={20} /> },
-    { label: 'Active Marketers', value: String(marketers.length), change: `+${marketers.length}`, icon: <Users size={20} /> },
-    { label: 'Pending Commissions', value: `DZD ${(pendingCommissions / 1000).toFixed(0)}K`, change: `${commissions.filter(c => c.status === 'pending').length} pending`, icon: <DollarSign size={20} /> },
+    { label: 'Total Orders', value: String(orders.length), change: `+${orders.length}`, icon: <ShoppingCart size={20} /> },
+    { label: 'Active Marketers', value: String(totalMarketers), change: `+${totalMarketers}`, icon: <Users size={20} /> },
+    { label: 'Pending Orders', value: String(pendingCount), change: `${pendingCount} pending`, icon: <DollarSign size={20} /> },
     { label: 'Low Stock Alerts', value: '3 products', change: 'Action needed', icon: <AlertTriangle size={20} />, warning: true },
   ]
 
@@ -114,14 +105,14 @@ export default function OverviewTab() {
               {recentOrders.length === 0 && (
                 <tr><td colSpan={6} className="py-8 text-center text-[#484F58]">No orders yet</td></tr>
               )}
-              {recentOrders.map((o) => (
-                <tr key={o.id} className="border-t border-[#30363D]/50 hover:bg-[rgba(255,255,255,0.02)] transition-colors">
+              {recentOrders.map((o: any) => (
+                <tr key={o.id || o.orderNumber} className="border-t border-[#30363D]/50 hover:bg-[rgba(255,255,255,0.02)] transition-colors">
                   <td className="py-3 px-3 text-white font-mono text-xs">{o.orderNumber}</td>
-                  <td className="py-3 px-3 text-[#8B949E]">{o.customerName}</td>
-                  <td className="py-3 px-3 text-[#8B949E]">{o.items.map(i => i.name).join(', ').slice(0, 30)}</td>
-                  <td className="py-3 px-3 text-white">{o.total.toLocaleString()} DZD</td>
+                  <td className="py-3 px-3 text-[#8B949E]">{o.shippingAddress?.fullName || 'Guest'}</td>
+                  <td className="py-3 px-3 text-[#8B949E]">{o.products || `${o.itemCount || 0} items`}</td>
+                  <td className="py-3 px-3 text-white">{Number(o.total).toLocaleString()} DZD</td>
                   <td className="py-3 px-3"><StatusBadge status={o.status} /></td>
-                  <td className="py-3 px-3 text-[#484F58]">{new Date(o.createdAt).toLocaleDateString()}</td>
+                  <td className="py-3 px-3 text-[#484F58]">{o.createdAt ? new Date(o.createdAt).toLocaleDateString() : ''}</td>
                 </tr>
               ))}
             </tbody>
@@ -136,24 +127,24 @@ export default function OverviewTab() {
           <table className="w-full text-sm">
             <thead>
               <tr className="text-[#484F58] text-xs uppercase tracking-wider">
-                {['Name', 'Rank', 'Earnings', 'Referral Code'].map((h) => (
+                {['Name', 'Role', 'Status', 'Joined'].map((h) => (
                   <th key={h} className="text-left py-2 px-3 font-medium">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {topMarketers.map((m, idx) => (
-                <tr key={idx} className="border-t border-[#30363D]/50 hover:bg-[rgba(255,255,255,0.02)] transition-colors">
+              {users.filter((u: any) => u.role === 'marketer' || u.role === 'admin').slice(0, 5).map((m: any, idx: number) => (
+                <tr key={m.id} className="border-t border-[#30363D]/50 hover:bg-[rgba(255,255,255,0.02)] transition-colors">
                   <td className="py-3 px-3 text-white flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-full bg-[#30363D] flex items-center justify-center text-xs font-medium">{m.name.charAt(0)}</div>
-                    {m.name}
+                    <div className="w-7 h-7 rounded-full bg-[#30363D] flex items-center justify-center text-xs font-medium">{(m.name || 'U').charAt(0)}</div>
+                    {m.name || 'Anonymous'}
                   </td>
-                  <td className="py-3 px-3"><StatusBadge status={m.rank} /></td>
-                  <td className="py-3 px-3 text-[#01D7D5]">DZD {m.earnings.toLocaleString()}</td>
-                  <td className="py-3 px-3 text-[#01D7D5] text-xs font-mono">{m.referralCode}</td>
+                  <td className="py-3 px-3"><StatusBadge status={m.role} /></td>
+                  <td className="py-3 px-3"><span className="text-[10px] px-2 py-0.5 rounded-full bg-[rgba(1,215,213,0.15)] text-[#01D7D5]">{m.status}</span></td>
+                  <td className="py-3 px-3 text-[#484F58] text-xs">{m.createdAt ? new Date(m.createdAt).toLocaleDateString() : ''}</td>
                 </tr>
               ))}
-              {topMarketers.length === 0 && (
+              {users.filter((u: any) => u.role === 'marketer' || u.role === 'admin').length === 0 && (
                 <tr><td colSpan={4} className="py-8 text-center text-[#484F58]">No marketers registered yet</td></tr>
               )}
             </tbody>

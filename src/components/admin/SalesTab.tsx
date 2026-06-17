@@ -1,23 +1,26 @@
 import { useState } from 'react'
-import { Download, TrendingUp, DollarSign, ShoppingBag, BarChart3 } from 'lucide-react'
+import { TrendingUp, DollarSign, ShoppingBag, BarChart3, Users } from 'lucide-react'
 import StatCard from './StatCard'
-import { getOrders, getOrderStats } from '@/hooks/orderStore'
-import { getMarketerAccounts } from '@/hooks/marketerAuth'
+import { trpc } from '@/providers/trpc'
+import { trpc as trpcClient } from '@/providers/trpc'
 
 export default function SalesTab() {
   const [period, setPeriod] = useState('monthly')
-  const orders = getOrders()
-  const stats = getOrderStats()
-  const marketers = getMarketerAccounts()
 
-  const totalRevenue = stats.totalRevenue
-  const totalOrders = stats.total
+  // Fetch from REAL API
+  const { data: orders = [] } = trpc.order.list.useQuery(undefined, { staleTime: 10000 })
+  const { data: users = [] } = trpc.adminSetup.listUsers.useQuery(undefined, { staleTime: 30000 })
+
+  const totalRevenue = orders.reduce((sum: number, o: any) => sum + Number(o.total || 0), 0)
+  const totalOrders = orders.length
   const avgOrder = totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0
+  const totalMarketers = users.filter((u: any) => u.role === 'marketer' || u.role === 'admin').length
 
   // Sales by city from real orders
   const citySales: Record<string, number> = {}
-  orders.forEach(o => {
-    if (o.city) citySales[o.city] = (citySales[o.city] || 0) + o.total
+  orders.forEach((o: any) => {
+    const city = o.shippingAddress?.city
+    if (city) citySales[city] = (citySales[city] || 0) + Number(o.total || 0)
   })
   const salesByRegion = Object.entries(citySales)
     .sort((a, b) => b[1] - a[1])
@@ -32,8 +35,8 @@ export default function SalesTab() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard label="Total Revenue" value={`DZD ${(totalRevenue / 1000).toFixed(0)}K`} change={`${totalOrders} orders`} icon={<DollarSign size={20} />} />
         <StatCard label="Total Orders" value={String(totalOrders)} change={`Avg DZD ${avgOrder.toLocaleString()}`} icon={<TrendingUp size={20} />} />
-        <StatCard label="Marketers" value={String(marketers.length)} change="active" icon={<BarChart3 size={20} />} />
-        <StatCard label="Completed" value={String(stats.delivered)} change={`${stats.pending} pending`} icon={<ShoppingBag size={20} />} />
+        <StatCard label="Marketers" value={String(totalMarketers)} change="active" icon={<Users size={20} />} />
+        <StatCard label="Completed" value={String(orders.filter((o: any) => o.status === 'delivered' || o.status === 'completed').length)} change={`${orders.filter((o: any) => o.status === 'pending').length} pending`} icon={<ShoppingBag size={20} />} />
       </div>
 
       {/* Revenue Chart */}
@@ -91,13 +94,13 @@ export default function SalesTab() {
               </tr>
             </thead>
             <tbody>
-              {orders.slice(0, 10).map((s) => (
-                <tr key={s.id} className="border-t border-[#30363D]/50 hover:bg-[rgba(255,255,255,0.02)] transition-colors">
+              {orders.slice(0, 10).map((s: any) => (
+                <tr key={s.id || s.orderNumber} className="border-t border-[#30363D]/50 hover:bg-[rgba(255,255,255,0.02)] transition-colors">
                   <td className="py-3 px-3 text-white font-mono text-xs">{s.orderNumber}</td>
-                  <td className="py-3 px-3 text-[#8B949E]">{s.customerName}</td>
-                  <td className="py-3 px-3 text-[#01D7D5]">DZD {s.total.toLocaleString()}</td>
+                  <td className="py-3 px-3 text-[#8B949E]">{s.shippingAddress?.fullName || 'Guest'}</td>
+                  <td className="py-3 px-3 text-[#01D7D5]">DZD {Number(s.total).toLocaleString()}</td>
                   <td className="py-3 px-3 text-[#8B949E] text-xs capitalize">{s.status}</td>
-                  <td className="py-3 px-3 text-[#484F58] text-xs">{new Date(s.createdAt).toLocaleDateString()}</td>
+                  <td className="py-3 px-3 text-[#484F58] text-xs">{s.createdAt ? new Date(s.createdAt).toLocaleDateString() : ''}</td>
                 </tr>
               ))}
               {orders.length === 0 && (

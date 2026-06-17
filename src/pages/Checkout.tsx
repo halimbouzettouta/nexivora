@@ -2,8 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useCart } from '@/hooks/useCart'
 import { useToastStore } from '@/hooks/useToast'
-import { saveOrder } from '@/hooks/orderStore'
-import { getMarketerSession } from '@/hooks/marketerAuth'
+import { trpc } from '@/providers/trpc'
 import { CreditCard, Banknote, Smartphone, Check, Truck } from 'lucide-react'
 import { useLanguage } from '@/hooks/useLanguage'
 
@@ -34,43 +33,40 @@ export default function Checkout() {
     )
   }
 
+  const createOrderMutation = trpc.order.create.useMutation({
+    onSuccess: (data) => {
+      if (data.orderNumber) {
+        setOrderNumber(data.orderNumber)
+      }
+      setStep(3)
+      clearCart()
+      addToast({ title: 'Order Placed!', message: `Your order ${data.orderNumber} has been placed successfully.`, type: 'success' })
+    },
+    onError: (err) => {
+      addToast({ title: 'Error', message: err.message || 'Failed to place order. Please try again.', type: 'error' })
+    },
+  })
+
   const handlePlaceOrder = () => {
     const orderNum = `ER-${Date.now()}-${Math.floor(Math.random() * 1000)}`
     setOrderNumber(orderNum)
 
-    // Check referral code priority:
-    // 1. URL param ref=CODE
-    // 2. sessionStorage from referral link visit
-    // 3. Logged-in marketer's own referral code
-    const urlParams = new URLSearchParams(window.location.search)
-    const sessionRef = sessionStorage.getItem('nxv_order_ref')
-    const marketer = getMarketerSession()
-    const marketerRef = marketer?.referralCode || null
-    const refCode = urlParams.get('ref') || sessionRef || marketerRef || null
+    const shippingAddress = {
+      fullName: form.fullName,
+      phone: form.phone,
+      email: form.email,
+      address: form.address,
+      city: form.city,
+      postalCode: form.postalCode,
+    }
 
-    // Save order to localStorage
-    saveOrder({
-        id: orderNum,
-        orderNumber: orderNum,
-        customerName: form.fullName || 'Guest',
-        customerPhone: form.phone || '',
-        customerEmail: form.email || '',
-        address: form.address || '',
-        city: form.city || '',
-        items: items.map(i => ({ productId: i.productId, name: i.name, price: i.price, quantity: i.quantity, image: i.image })),
-        subtotal: totalPrice,
-        shipping: shippingCost,
-        total: totalPrice + shippingCost,
-        paymentMethod: paymentMethod,
-        shippingMethod: shippingMethod,
-        status: 'pending',
-        createdAt: new Date().toISOString(),
-        marketerReferralCode: refCode,
-      })
-
-    setStep(3)
-    clearCart()
-    addToast({ title: 'Order Placed!', message: `Your order ${orderNum} has been placed successfully.`, type: 'success' })
+    createOrderMutation.mutate({
+      items: items.map(i => ({ productId: i.id, quantity: i.quantity })),
+      shippingAddress,
+      paymentMethod: paymentMethod === 'baridimob' ? 'baridimob' : paymentMethod === 'card' ? 'card' : 'cod',
+      shippingCost,
+      discount: 0,
+    })
   }
 
   return (

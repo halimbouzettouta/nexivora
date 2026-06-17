@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
-import { Search, Printer, Eye, Download } from 'lucide-react'
+import { useState } from 'react'
+import { Search, Eye, RefreshCw } from 'lucide-react'
 import StatusBadge from './StatusBadge'
-import { getOrders, getOrderStats, updateOrderStatus, type Order } from '@/hooks/orderStore'
+import { trpc } from '@/providers/trpc'
 
 const statusOptions = ['All', 'Pending', 'Processing', 'Shipped', 'Delivered', 'Completed', 'Canceled', 'Refunded']
 const statusTransitions: Record<string, string[]> = {
@@ -17,19 +17,22 @@ const statusTransitions: Record<string, string[]> = {
 export default function OrdersTab() {
   const [statusFilter, setStatusFilter] = useState('All')
   const [search, setSearch] = useState('')
-  const [allOrders, setAllOrders] = useState<Order[]>([])
-  const [selectedOrders, setSelectedOrders] = useState<string[]>([])
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null)
 
-  // Load orders from localStorage
-  const refresh = () => setAllOrders(getOrders())
-  useEffect(() => {
-    refresh()
-    const interval = setInterval(refresh, 2000)
-    return () => clearInterval(interval)
-  }, [])
+  // Fetch orders from the REAL API
+  const { data: allOrders = [], isLoading, refetch } = trpc.order.list.useQuery(undefined, {
+    staleTime: 5000,
+    refetchInterval: 10000, // Auto-refresh every 10 seconds
+  })
 
-  const stats = getOrderStats()
+  const utils = trpc.useUtils()
+
+  const stats = {
+    total: allOrders.length,
+    pending: allOrders.filter((o: any) => o.status === 'pending').length,
+    processing: allOrders.filter((o: any) => o.status === 'processing').length,
+    delivered: allOrders.filter((o: any) => o.status === 'delivered' || o.status === 'completed').length,
+  }
 
   const statCards = [
     { label: 'Total Orders', value: String(stats.total), color: '#01D7D5' },
@@ -38,24 +41,15 @@ export default function OrdersTab() {
     { label: 'Completed', value: String(stats.delivered), color: '#01D7D5' },
   ]
 
-  const filtered = allOrders.filter((o) => {
+  const filtered = allOrders.filter((o: any) => {
     const matchStatus = statusFilter === 'All' || o.status === statusFilter.toLowerCase()
     const matchSearch = !search ||
-      o.orderNumber.toLowerCase().includes(search.toLowerCase()) ||
-      o.customerName.toLowerCase().includes(search.toLowerCase())
+      (o.orderNumber && o.orderNumber.toLowerCase().includes(search.toLowerCase())) ||
+      (o.shippingAddress && JSON.stringify(o.shippingAddress).toLowerCase().includes(search.toLowerCase()))
     return matchStatus && matchSearch
   })
 
-  const selectedOrder = allOrders.find(o => o.id === selectedOrderId)
-
-  const toggleSelect = (id: string) => {
-    setSelectedOrders((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id])
-  }
-
-  const handleStatusChange = (orderId: string, newStatus: string) => {
-    updateOrderStatus(orderId, newStatus.toLowerCase() as Order['status'])
-    refresh()
-  }
+  const selectedOrder = allOrders.find((o: any) => o.id === selectedOrderId || o.orderNumber === selectedOrderId)
 
   return (
     <div className="space-y-6">
@@ -84,9 +78,9 @@ export default function OrdersTab() {
             </button>
           ))}
         </div>
-        <button onClick={() => { refresh(); alert(`${getOrders().length} orders refreshed`) }}
+        <button onClick={() => refetch()}
           className="flex items-center gap-2 px-4 py-2.5 border border-[#30363D] rounded-lg text-sm text-[#8B949E] hover:border-[#01D7D5] hover:text-white transition-colors">
-          <Download size={14} /> Refresh
+          <RefreshCw size={14} /> Refresh
         </button>
       </div>
 
@@ -98,7 +92,6 @@ export default function OrdersTab() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="text-[#484F58] text-xs uppercase tracking-wider bg-[#0A0A0A]">
-                    <th className="text-left py-3 px-3 w-8"><input type="checkbox" className="rounded border-[#30363D] bg-[#161B22]" /></th>
                     <th className="text-left py-3 px-3">Order #</th>
                     <th className="text-left py-3 px-3">Customer</th>
                     <th className="text-left py-3 px-3">Items</th>
@@ -108,28 +101,28 @@ export default function OrdersTab() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filtered.length === 0 && (
+                  {isLoading && (
+                    <tr><td colSpan={6} className="py-12 text-center text-[#484F58]">Loading orders...</td></tr>
+                  )}
+                  {!isLoading && filtered.length === 0 && (
                     <tr>
-                      <td colSpan={7} className="py-12 text-center text-[#484F58]">
+                      <td colSpan={6} className="py-12 text-center text-[#484F58]">
                         {allOrders.length === 0 ? 'No orders yet. Orders appear here when customers check out.' : 'No orders match your filters.'}
                       </td>
                     </tr>
                   )}
-                  {filtered.map((o) => (
-                    <tr key={o.id} onClick={() => setSelectedOrderId(o.id)}
-                      className={`border-t border-[#30363D]/50 cursor-pointer transition-colors ${selectedOrderId === o.id ? 'bg-[rgba(1,215,213,0.05)]' : 'hover:bg-[rgba(255,255,255,0.02)]'}`}>
-                      <td className="py-3 px-3" onClick={(e) => e.stopPropagation()}>
-                        <input type="checkbox" checked={selectedOrders.includes(o.id)} onChange={() => toggleSelect(o.id)} className="rounded border-[#30363D] bg-[#161B22]" />
-                      </td>
+                  {filtered.map((o: any) => (
+                    <tr key={o.id || o.orderNumber} onClick={() => setSelectedOrderId(o.id || o.orderNumber)}
+                      className={`border-t border-[#30363D]/50 cursor-pointer transition-colors ${selectedOrderId === (o.id || o.orderNumber) ? 'bg-[rgba(1,215,213,0.05)]' : 'hover:bg-[rgba(255,255,255,0.02)]'}`}>
                       <td className="py-3 px-3 text-white font-mono text-xs">{o.orderNumber}</td>
                       <td className="py-3 px-3">
-                        <p className="text-white text-sm">{o.customerName}</p>
-                        <p className="text-[#484F58] text-xs">{o.customerPhone || o.customerEmail}</p>
+                        <p className="text-white text-sm">{o.shippingAddress?.fullName || 'Guest'}</p>
+                        <p className="text-[#484F58] text-xs">{o.shippingAddress?.phone || ''}</p>
                       </td>
-                      <td className="py-3 px-3 text-[#8B949E] text-xs">{o.items.length} items</td>
-                      <td className="py-3 px-3 text-white">{o.total.toLocaleString()} DZD</td>
+                      <td className="py-3 px-3 text-[#8B949E] text-xs">{o.products || `${o.itemCount || 0} items`}</td>
+                      <td className="py-3 px-3 text-white">{Number(o.total).toLocaleString()} DZD</td>
                       <td className="py-3 px-3"><StatusBadge status={o.status} /></td>
-                      <td className="py-3 px-3 text-[#484F58] text-xs">{new Date(o.createdAt).toLocaleDateString()}</td>
+                      <td className="py-3 px-3 text-[#484F58] text-xs">{o.createdAt ? new Date(o.createdAt).toLocaleDateString() : ''}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -151,41 +144,21 @@ export default function OrdersTab() {
               </div>
 
               <div className="space-y-2 text-sm">
-                <p className="text-[#8B949E]"><span className="text-[#484F58]">Customer:</span> {selectedOrder.customerName}</p>
-                <p className="text-[#8B949E]"><span className="text-[#484F58]">Phone:</span> {selectedOrder.customerPhone || '—'}</p>
-                <p className="text-[#8B949E]"><span className="text-[#484F58]">Address:</span> {selectedOrder.address || '—'}</p>
-                <p className="text-[#8B949E]"><span className="text-[#484F58]">City:</span> {selectedOrder.city || '—'}</p>
+                <p className="text-[#8B949E]"><span className="text-[#484F58]">Customer:</span> {selectedOrder.shippingAddress?.fullName || 'Guest'}</p>
+                <p className="text-[#8B949E]"><span className="text-[#484F58]">Phone:</span> {selectedOrder.shippingAddress?.phone || '—'}</p>
+                <p className="text-[#8B949E]"><span className="text-[#484F58]">Address:</span> {selectedOrder.shippingAddress?.address || '—'}</p>
+                <p className="text-[#8B949E]"><span className="text-[#484F58]">City:</span> {selectedOrder.shippingAddress?.city || '—'}</p>
                 <p className="text-[#8B949E]"><span className="text-[#484F58]">Payment:</span> {selectedOrder.paymentMethod}</p>
               </div>
 
               <div className="border-t border-[#30363D] pt-3">
                 <p className="text-[#484F58] text-xs uppercase mb-2">Items</p>
-                {selectedOrder.items.map((item, i) => (
-                  <div key={i} className="flex justify-between text-sm mb-1">
-                    <span className="text-[#8B949E]">{item.name} x{item.quantity}</span>
-                    <span className="text-white">{(item.price * item.quantity).toLocaleString()} DZD</span>
-                  </div>
-                ))}
+                <p className="text-[#8B949E] text-sm">{selectedOrder.products || 'See order details'}</p>
                 <div className="border-t border-[#30363D] pt-2 mt-2">
-                  <div className="flex justify-between text-sm"><span className="text-[#484F58]">Subtotal</span><span className="text-white">{selectedOrder.subtotal.toLocaleString()} DZD</span></div>
-                  <div className="flex justify-between text-sm"><span className="text-[#484F58]">Shipping</span><span className="text-white">{selectedOrder.shipping.toLocaleString()} DZD</span></div>
-                  <div className="flex justify-between text-sm font-semibold mt-1"><span className="text-white">Total</span><span className="text-[#01D7D5]">{selectedOrder.total.toLocaleString()} DZD</span></div>
-                </div>
-              </div>
-
-              {/* Status change buttons */}
-              <div className="border-t border-[#30363D] pt-3">
-                <p className="text-[#484F58] text-xs uppercase mb-2">Change Status</p>
-                <div className="flex flex-wrap gap-2">
-                  {(statusTransitions[selectedOrder.status] || []).map((nextStatus) => (
-                    <button key={nextStatus} onClick={() => handleStatusChange(selectedOrder.id, nextStatus)}
-                      className="px-3 py-1.5 bg-[#0A0A0A] border border-[#30363D] rounded text-xs text-white hover:border-[#01D7D5] transition-colors">
-                      Mark {nextStatus}
-                    </button>
-                  ))}
-                  {statusTransitions[selectedOrder.status]?.length === 0 && (
-                    <p className="text-[#484F58] text-xs">No further transitions available</p>
-                  )}
+                  <div className="flex justify-between text-sm font-semibold mt-1">
+                    <span className="text-white">Total</span>
+                    <span className="text-[#01D7D5]">{Number(selectedOrder.total).toLocaleString()} DZD</span>
+                  </div>
                 </div>
               </div>
             </div>
