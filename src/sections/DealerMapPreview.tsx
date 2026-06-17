@@ -1,11 +1,20 @@
 import { Link } from 'react-router'
-import { trpc } from '@/providers/trpc'
-
 import { useLanguage } from '@/hooks/useLanguage'
+import InteractiveMap from '@/components/InteractiveMap'
+
+const PREVIEW_DEALERS = [
+  { id: 1, name: 'Nexivora Algiers Center', city: 'Algiers', region: 'Center', address: '123 Boulevard Mohamed VI, Algiers', phone: '0234-567-890', hours: 'Sat-Thu 9AM-6PM', lat: 36.7538, lng: 3.0588 },
+  { id: 2, name: 'Nexivora Oran Showroom', city: 'Oran', region: 'West', address: '45 Avenue Emir Abdelkader, Oran', phone: '0412-345-678', hours: 'Sat-Thu 9AM-7PM', lat: 35.6971, lng: -0.6308 },
+  { id: 3, name: 'Nexivora Constantine', city: 'Constantine', region: 'East', address: '78 Rue Ahmed Bey, Constantine', phone: '0315-678-901', hours: 'Sat-Thu 8:30AM-5:30PM', lat: 36.3650, lng: 6.6147 },
+  { id: 4, name: 'Nexivora Annaba', city: 'Annaba', region: 'East', address: '12 Boulevard Colonel Amirouche, Annaba', phone: '0238-901-234', hours: 'Sat-Thu 9AM-6PM', lat: 36.9044, lng: 7.7564 },
+  { id: 5, name: 'Nexivora Blida', city: 'Blida', region: 'Center', address: '34 Route de Soumaa, Blida', phone: '0235-456-789', hours: 'Sat-Thu 9AM-6PM', lat: 36.4738, lng: 2.8324 },
+  { id: 6, name: 'Nexivora Setif', city: 'Setif', region: 'East', address: '56 Avenue du 1er Novembre, Setif', phone: '0236-789-012', hours: 'Sat-Thu 8:30AM-5:30PM', lat: 36.1911, lng: 5.4137 },
+  { id: 7, name: 'Nexivora Tlemcen', city: 'Tlemcen', region: 'West', address: '89 Rue de la Grande Mosque, Tlemcen', phone: '0243-567-890', hours: 'Sat-Thu 9AM-6PM', lat: 34.8828, lng: -1.3167 },
+  { id: 8, name: 'Nexivora Batna', city: 'Batna', region: 'East', address: '23 Avenue des Freres Bouadou, Batna', phone: '0233-456-789', hours: 'Sat-Thu 9AM-6PM', lat: 35.5559, lng: 6.1741 },
+]
 
 export default function DealerMapPreview() {
   const { t } = useLanguage()
-  const { data: dealersList } = trpc.dealer.list.useQuery()
 
   return (
     <section id="dealers" className="w-full bg-black py-20 px-4 sm:px-6 lg:px-[5vw]">
@@ -24,71 +33,7 @@ export default function DealerMapPreview() {
         </p>
 
         <div className="w-full h-[400px] rounded-xl overflow-hidden border border-[#30363D] mb-8 bg-[#161B22]">
-          <div className="w-full h-full relative">
-            {/* Simplified visual map with dealer dots */}
-            <svg viewBox="0 0 800 400" className="w-full h-full">
-              {/* Algeria outline (simplified) */}
-              <path
-                d="M150,80 L250,60 L400,50 L550,70 L650,100 L700,150 L720,200 L700,280 L650,340 L550,370 L400,380 L300,360 L200,320 L120,250 L100,180 L120,120 Z"
-                fill="#161B22"
-                stroke="#30363D"
-                strokeWidth="2"
-              />
-              {/* Grid lines */}
-              {[100, 200, 300, 400, 500, 600].map((x) => (
-                <line key={`v${x}`} x1={x} y1="40" x2={x} y2="380" stroke="#30363D" strokeWidth="0.5" strokeDasharray="4" />
-              ))}
-              {[80, 160, 240, 320].map((y) => (
-                <line key={`h${y}`} x1="80" y1={y} x2="720" y2={y} stroke="#30363D" strokeWidth="0.5" strokeDasharray="4" />
-              ))}
-              {/* City markers */}
-              {dealersList?.map((dealer, idx) => {
-                // Approximate positions for Algerian cities
-                const positions: Record<string, { x: number; y: number }> = {
-                  'Algiers': { x: 420, y: 100 },
-                  'Oran': { x: 220, y: 120 },
-                  'Constantine': { x: 520, y: 130 },
-                  'Annaba': { x: 600, y: 140 },
-                  'Setif': { x: 480, y: 115 },
-                  'Blida': { x: 400, y: 110 },
-                }
-                const pos = positions[dealer.city] || { x: 400 + idx * 40, y: 150 + idx * 20 }
-                return (
-                  <g key={dealer.id}>
-                    <circle
-                      cx={pos.x}
-                      cy={pos.y}
-                      r="8"
-                      fill="#01D7D5"
-                      className="animate-pulse"
-                    >
-                      <animate
-                        attributeName="r"
-                        values="6;10;6"
-                        dur="2s"
-                        repeatCount="indefinite"
-                      />
-                      <animate
-                        attributeName="opacity"
-                        values="1;0.6;1"
-                        dur="2s"
-                        repeatCount="indefinite"
-                      />
-                    </circle>
-                    <text
-                      x={pos.x}
-                      y={pos.y + 22}
-                      fill="#8B949E"
-                      fontSize="10"
-                      textAnchor="middle"
-                    >
-                      {dealer.city}
-                    </text>
-                  </g>
-                )
-              })}
-            </svg>
-          </div>
+          <InteractiveMap dealers={PREVIEW_DEALERS} />
         </div>
 
         <Link

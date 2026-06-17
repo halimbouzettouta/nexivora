@@ -34,7 +34,7 @@ export default function About() {
   ]
 
   return (
-    <div className="min-h-screen bg-black pt-[70px]">
+    <div className="min-h-screen bg-black pt-[90px]">
       {/* Hero */}
       <div className="bg-black text-center pt-32 pb-20 px-4">
         <h1 className="text-white font-semibold mb-4" style={{ fontSize: 'clamp(32px, 5vw, 60px)' }}>
@@ -50,10 +50,10 @@ export default function About() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="space-y-4">
             <div className="aspect-[4/3] rounded-xl overflow-hidden bg-[#161B22] border border-[#30363D]">
-              <img src="/about-warehouse.jpg" alt="E-Ride" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+              <img src="/about-warehouse.jpg" alt="Nexivora" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
             </div>
             <div className="aspect-[16/9] rounded-xl overflow-hidden bg-[#161B22] border border-[#30363D]">
-              <img src="/escooter-lifestyle.jpg" alt="E-Ride" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+              <img src="/escooter-lifestyle.jpg" alt="Nexivora" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
             </div>
           </div>
           <div>

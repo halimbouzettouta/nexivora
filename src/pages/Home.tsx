@@ -1,9 +1,8 @@
 import HeroSection from '@/sections/HeroSection'
 import FeaturedProducts from '@/sections/FeaturedProducts'
-import RankSystem from '@/sections/RankSystem'
+import WhyChooseUs from '@/sections/WhyChooseUs'
 import HowItWorks from '@/sections/HowItWorks'
 import SubscriptionPlans from '@/sections/SubscriptionPlans'
-import AffiliateCTA from '@/sections/AffiliateCTA'
 import LoyaltyProgram from '@/sections/LoyaltyProgram'
 import Testimonials from '@/sections/Testimonials'
 import DealerMapPreview from '@/sections/DealerMapPreview'
@@ -14,10 +13,9 @@ export default function Home() {
     <>
       <HeroSection />
       <FeaturedProducts />
-      <RankSystem />
+      <WhyChooseUs />
       <HowItWorks />
       <SubscriptionPlans />
-      <AffiliateCTA />
       <LoyaltyProgram />
       <Testimonials />
       <DealerMapPreview />

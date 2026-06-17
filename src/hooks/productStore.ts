@@ -19,7 +19,7 @@ export interface Product {
   specs?: Record<string, string>
 }
 
-const STORAGE_KEY = 'eride_products_v2'
+const STORAGE_KEY = 'nexivora_products_v2'
 const LISTENERS = new Set<() => void>()
 
 function notify() {
@@ -32,12 +32,12 @@ export function subscribeProducts(listener: () => void): () => void {
 }
 
 const DEFAULT_PRODUCTS: Product[] = [
-  { id: 1, name: 'E-Ride City Pro', slug: 'e-ride-city-pro', description: 'Premium electric bike for city commuting with 80km range.', price: '185000', salePrice: '169000', category: 'e-bikes', stock: 15, lowStock: 5, status: 'active', rating: 4.8, sales: 142, reviewCount: 124, image: '/product-ebike-premium.jpg', specs: { Range: '80km', Speed: '45km/h', Battery: '48V 15Ah' } },
-  { id: 2, name: 'E-Ride Urban Glide', slug: 'e-ride-urban-glide', description: 'Lightweight foldable e-scooter for urban mobility.', price: '125000', salePrice: '112500', category: 'e-scooters', stock: 22, lowStock: 5, status: 'active', rating: 4.6, sales: 98, reviewCount: 89, image: '/product-escooter-city.jpg', specs: { Range: '45km', Speed: '35km/h', Weight: '16kg' } },
-  { id: 3, name: 'E-Ride Trail Blazer', slug: 'e-ride-trail-blazer', description: 'Off-road electric scooter with dual suspension.', price: '259000', salePrice: '259000', category: 'e-scooters', stock: 3, lowStock: 5, status: 'active', rating: 4.9, sales: 67, reviewCount: 67, image: '/product-escooter-offroad.jpg', specs: { Range: '60km', Speed: '55km/h', Motor: '2000W' } },
-  { id: 4, name: 'E-Ride Mountain X', slug: 'e-ride-mountain-x', description: 'Full-suspension electric mountain bike.', price: '320000', salePrice: '289000', category: 'e-bikes', stock: 6, lowStock: 5, status: 'active', rating: 4.7, sales: 45, reviewCount: 45, image: '/product-ebike-mountain.jpg', specs: { Range: '100km', Speed: '50km/h', Motor: '1000W' } },
-  { id: 5, name: 'E-Ride Air Helmet', slug: 'e-ride-air-helmet', description: 'Lightweight ventilated helmet with LED light.', price: '8500', category: 'accessories', stock: 50, lowStock: 10, status: 'active', rating: 4.5, sales: 312, reviewCount: 210, image: '/product-accessory-helmet.jpg', specs: { Weight: '280g', Sizes: 'M/L/XL', LED: 'Yes' } },
-  { id: 6, name: 'E-Ride Smart Lock', slug: 'e-ride-smart-lock', description: 'Fingerprint & Bluetooth smart lock.', price: '12000', salePrice: '9900', category: 'accessories', stock: 35, lowStock: 8, status: 'active', rating: 4.4, sales: 189, reviewCount: 156, image: '/product-accessory-lock.jpg', specs: { Type: 'Fingerprint', Battery: '1yr', Alarm: '110dB' } },
+  { id: 1, name: 'Nexivora City Pro', slug: 'e-ride-city-pro', description: 'Premium electric bike for city commuting with 80km range.', price: '185000', salePrice: '169000', category: 'e-bikes', stock: 15, lowStock: 5, status: 'active', rating: 4.8, sales: 142, reviewCount: 124, image: '/product-ebike-premium.jpg', specs: { Range: '80km', Speed: '45km/h', Battery: '48V 15Ah' } },
+  { id: 2, name: 'Nexivora Urban Glide', slug: 'e-ride-urban-glide', description: 'Lightweight foldable e-scooter for urban mobility.', price: '125000', salePrice: '112500', category: 'e-scooters', stock: 22, lowStock: 5, status: 'active', rating: 4.6, sales: 98, reviewCount: 89, image: '/product-escooter-city.jpg', specs: { Range: '45km', Speed: '35km/h', Weight: '16kg' } },
+  { id: 3, name: 'Nexivora Trail Blazer', slug: 'e-ride-trail-blazer', description: 'Off-road electric scooter with dual suspension.', price: '259000', salePrice: '259000', category: 'e-scooters', stock: 3, lowStock: 5, status: 'active', rating: 4.9, sales: 67, reviewCount: 67, image: '/product-escooter-offroad.jpg', specs: { Range: '60km', Speed: '55km/h', Motor: '2000W' } },
+  { id: 4, name: 'Nexivora Mountain X', slug: 'e-ride-mountain-x', description: 'Full-suspension electric mountain bike.', price: '320000', salePrice: '289000', category: 'e-bikes', stock: 6, lowStock: 5, status: 'active', rating: 4.7, sales: 45, reviewCount: 45, image: '/product-ebike-mountain.jpg', specs: { Range: '100km', Speed: '50km/h', Motor: '1000W' } },
+  { id: 5, name: 'Nexivora Air Helmet', slug: 'e-ride-air-helmet', description: 'Lightweight ventilated helmet with LED light.', price: '8500', category: 'accessories', stock: 50, lowStock: 10, status: 'active', rating: 4.5, sales: 312, reviewCount: 210, image: '/product-accessory-helmet.jpg', specs: { Weight: '280g', Sizes: 'M/L/XL', LED: 'Yes' } },
+  { id: 6, name: 'Nexivora Smart Lock', slug: 'e-ride-smart-lock', description: 'Fingerprint & Bluetooth smart lock.', price: '12000', salePrice: '9900', category: 'accessories', stock: 35, lowStock: 8, status: 'active', rating: 4.4, sales: 189, reviewCount: 156, image: '/product-accessory-lock.jpg', specs: { Type: 'Fingerprint', Battery: '1yr', Alarm: '110dB' } },
 ]
 
 // --- Load ---

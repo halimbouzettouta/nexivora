@@ -21,7 +21,7 @@ export default function ProductDetail() {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-black pt-[70px] flex items-center justify-center">
+      <div className="min-h-screen bg-black pt-[90px] flex items-center justify-center">
         <div className="text-center">
           <p className="text-white text-lg mb-4">{lang === 'ar' ? 'المنتج غير موجود' : lang === 'fr' ? 'Produit non trouvé' : 'Product not found'}</p>
           <Link to="/store" className="text-[#01D7D5] hover:underline">{t('cart.continue')}</Link>
@@ -45,7 +45,7 @@ export default function ProductDetail() {
   ]
 
   return (
-    <div className="min-h-screen bg-black pt-[70px]">
+    <div className="min-h-screen bg-black pt-[90px]">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-[5vw] py-12">
         <div className="flex items-center gap-2 text-sm text-[#484F58] mb-8">
           <Link to="/" className="hover:text-[#01D7D5]">{t('nav.home')}</Link>

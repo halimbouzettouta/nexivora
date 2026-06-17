@@ -28,7 +28,7 @@ export default function Contact() {
   }
 
   return (
-    <div className="min-h-screen bg-black pt-[70px]">
+    <div className="min-h-screen bg-black pt-[90px]">
       <div className="bg-black pt-16 pb-8 px-4 sm:px-6 lg:px-[5vw]">
         <div className="max-w-[1200px] mx-auto">
           <div className="flex items-center gap-2 text-sm text-[#484F58] mb-4">
@@ -117,7 +117,7 @@ export default function Contact() {
                   <Mail size={20} className="text-[#01D7D5] flex-shrink-0 mt-0.5" />
                   <div>
                     <p className="text-white text-sm font-medium">{t('contact.emailInfo')}</p>
-                    <p className="text-[#8B949E] text-sm">contact@eride-dz.com</p>
+                    <p className="text-[#8B949E] text-sm">contact@nexivora-dz.com</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">

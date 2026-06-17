@@ -1,17 +1,15 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router'
-import { Menu, X, ShoppingCart, Globe, LayoutDashboard, Shield } from 'lucide-react'
-import { useAuth } from '@/hooks/useAuth'
+import { Menu, X, ShoppingCart, Globe, LogIn, LogOut } from 'lucide-react'
 import { useCart } from '@/hooks/useCart'
 import { useLanguage } from '@/hooks/useLanguage'
+import { isMarketerLoggedIn, getMarketerSession, clearMarketerSession } from '@/hooks/marketerAuth'
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [userMenuOpen, setUserMenuOpen] = useState(false)
   const location = useLocation()
   const { toggleCart, totalItems } = useCart()
-  const { user, isAuthenticated, isAdmin, logout } = useAuth()
   const { lang, setLang, t } = useLanguage()
 
   const toggleLang = () => setLang(lang === 'en' ? 'ar' : lang === 'ar' ? 'fr' : 'en')
@@ -19,9 +17,9 @@ export default function Navigation() {
   const navLinks = [
     { label: t('nav.home'), path: '/' },
     { label: t('nav.store'), path: '/store' },
-    { label: t('nav.ranks'), path: '/#ranks' },
     { label: t('nav.blog'), path: '/blog' },
     { label: t('nav.dealers'), path: '/dealers' },
+    { label: t('nav.contact'), path: '/contact' },
   ]
 
   useEffect(() => {
@@ -32,7 +30,6 @@ export default function Navigation() {
 
   useEffect(() => {
     setMobileOpen(false)
-    setUserMenuOpen(false)
   }, [location.pathname])
 
   const isActive = (path: string) => {
@@ -41,20 +38,18 @@ export default function Navigation() {
     return location.pathname.startsWith(path)
   }
 
-  const isDashboardPage = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/admin')
-
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 h-[70px] flex items-center transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 h-[90px] flex items-center transition-all duration-300 ${
           scrolled
             ? 'bg-[rgba(10,10,10,0.9)] backdrop-blur-xl border-b border-[#30363D]'
             : 'bg-transparent border-b border-transparent'
         }`}
       >
         <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-[5vw] flex items-center justify-between">
-          <Link to="/" className="text-[#01D7D5] font-semibold text-lg tracking-[0.05em]">
-            E-RIDE
+          <Link to="/" className="flex items-center">
+            <img src="/nexivora-logo.png" alt="NEXIVORA" className="h-20 w-auto" />
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
@@ -69,28 +64,6 @@ export default function Navigation() {
                 {link.label}
               </Link>
             ))}
-            {isAuthenticated && !isDashboardPage && (
-              <Link
-                to="/dashboard"
-                className={`text-sm transition-colors duration-300 flex items-center gap-1.5 ${
-                  isActive('/dashboard') ? 'text-[#01D7D5]' : 'text-[#8B949E] hover:text-white'
-                }`}
-              >
-                <LayoutDashboard size={14} />
-                {t('nav.dashboard')}
-              </Link>
-            )}
-            {isAdmin && !isDashboardPage && (
-              <Link
-                to="/admin"
-                className={`text-sm transition-colors duration-300 flex items-center gap-1.5 ${
-                  isActive('/admin') ? 'text-[#01D7D5]' : 'text-[#EF4444] hover:text-[#EF4444]/80'
-                }`}
-              >
-                <Shield size={14} />
-                {t('nav.admin')}
-              </Link>
-            )}
           </div>
 
           <div className="flex items-center gap-3">
@@ -114,38 +87,16 @@ export default function Navigation() {
               )}
             </button>
 
-            {isAuthenticated && (
-              <div className="relative">
-                <button onClick={() => setUserMenuOpen(!userMenuOpen)} className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-[#01D7D5] flex items-center justify-center text-black text-xs font-bold">
-                    {user?.name?.charAt(0) || 'U'}
-                  </div>
-                </button>
-                {userMenuOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-48 bg-[#161B22] border border-[#30363D] rounded-xl shadow-xl py-2 z-50">
-                    <div className="px-4 py-2 border-b border-[#30363D]">
-                      <p className="text-white text-sm font-medium truncate">{user?.name || 'User'}</p>
-                      <p className="text-[#484F58] text-xs truncate">{user?.email || ''}</p>
-                    </div>
-                    <Link to="/dashboard" className="flex items-center gap-2 px-4 py-2 text-sm text-[#8B949E] hover:text-white hover:bg-[rgba(255,255,255,0.05)] transition-colors">
-                      <LayoutDashboard size={14} />
-                      {t('nav.dashboard')}
-                    </Link>
-                    {isAdmin && (
-                      <Link to="/admin" className="flex items-center gap-2 px-4 py-2 text-sm text-[#EF4444] hover:bg-[rgba(255,255,255,0.05)] transition-colors">
-                        <Shield size={14} />
-                        {t('nav.admin')}
-                      </Link>
-                    )}
-                    <button
-                      onClick={logout}
-                      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#8B949E] hover:text-[#EF4444] hover:bg-[rgba(255,255,255,0.05)] transition-colors border-t border-[#30363D] mt-1"
-                    >
-                      {t('nav.logout')}
-                    </button>
-                  </div>
-                )}
-              </div>
+            {isMarketerLoggedIn() ? (
+              <Link to="/dashboard" className="hidden sm:flex items-center gap-1.5 text-[#8B949E] hover:text-[#01D7D5] text-sm transition-colors">
+                <span className="w-7 h-7 rounded-full bg-[rgba(1,215,213,0.15)] flex items-center justify-center text-[#01D7D5] text-xs font-bold">
+                  {getMarketerSession()?.name?.charAt(0) || 'U'}
+                </span>
+              </Link>
+            ) : (
+              <Link to="/login" className="hidden sm:flex items-center gap-1.5 px-4 py-2 text-sm font-medium border border-[#30363D] text-[#8B949E] rounded-lg hover:border-[#01D7D5] hover:text-[#01D7D5] transition-colors">
+                <LogIn size={16} /> Member Login
+              </Link>
             )}
 
             <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden p-2 text-[#8B949E]">
@@ -156,7 +107,7 @@ export default function Navigation() {
       </nav>
 
       {mobileOpen && (
-        <div className="fixed inset-0 z-40 bg-black/95 pt-[70px]">
+        <div className="fixed inset-0 z-40 bg-black/95 pt-[90px]">
           <div className="flex flex-col items-center gap-6 pt-10">
             {navLinks.map((link) => (
               <Link
@@ -168,24 +119,63 @@ export default function Navigation() {
                 {link.label}
               </Link>
             ))}
-            {isAuthenticated && (
-              <>
-                <Link to="/dashboard" onClick={() => setMobileOpen(false)} className="text-lg font-medium text-[#8B949E] hover:text-[#01D7D5] flex items-center gap-2">
-                  <LayoutDashboard size={18} />
-                  {t('nav.dashboard')}
-                </Link>
-                {isAdmin && (
-                  <Link to="/admin" onClick={() => setMobileOpen(false)} className="text-lg font-medium text-[#EF4444] flex items-center gap-2">
-                    <Shield size={18} />
-                    {t('nav.admin')}
-                  </Link>
-                )}
-                <button onClick={() => { logout(); setMobileOpen(false); }} className="text-lg font-medium text-[#8B949E] hover:text-[#EF4444] mt-4">
-                  {t('nav.logout')}
-                </button>
-              </>
-            )}
 
+            {/* Mobile Cart */}
+            <button
+              onClick={() => { toggleCart(); setMobileOpen(false) }}
+              className="flex items-center gap-2 text-lg font-medium text-[#8B949E] hover:text-[#01D7D5] transition-colors"
+            >
+              <ShoppingCart size={20} />
+              {lang === 'ar' ? 'عربة التسوق' : lang === 'fr' ? 'Panier' : 'Cart'}
+              {totalItems > 0 && (
+                <span className="ml-1 w-5 h-5 bg-[#01D7D5] text-black text-[10px] font-bold rounded-full flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
+            </button>
+
+            {/* Mobile Language Toggle */}
+            <button
+              onClick={toggleLang}
+              className="flex items-center gap-2 text-lg font-medium text-[#8B949E] hover:text-[#01D7D5] transition-colors"
+            >
+              <Globe size={18} />
+              {lang === 'fr' ? 'Français' : lang === 'ar' ? 'العربية' : 'English'}
+            </button>
+
+            {/* Mobile Login / Dashboard */}
+            <div className="border-t border-[#30363D] w-48 pt-6 mt-2">
+              {isMarketerLoggedIn() ? (
+                <div className="flex flex-col items-center gap-4">
+                  <Link
+                    to="/dashboard"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2 text-lg font-medium text-[#01D7D5] hover:text-white transition-colors"
+                  >
+                    <span className="w-8 h-8 rounded-full bg-[rgba(1,215,213,0.15)] flex items-center justify-center text-[#01D7D5] text-sm font-bold">
+                      {getMarketerSession()?.name?.charAt(0) || 'U'}
+                    </span>
+                    {lang === 'ar' ? 'لوحة التحكم' : lang === 'fr' ? 'Tableau de bord' : 'Dashboard'}
+                  </Link>
+                  <button
+                    onClick={() => { clearMarketerSession(); setMobileOpen(false) }}
+                    className="flex items-center gap-2 text-lg font-medium text-[#EF4444] hover:text-[#EF4444]/80 transition-colors"
+                  >
+                    <LogOut size={18} />
+                    {lang === 'ar' ? 'تسجيل الخروج' : lang === 'fr' ? 'Déconnexion' : 'Logout'}
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  to="/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center justify-center gap-2 text-lg font-medium text-[#01D7D5] hover:text-white transition-colors"
+                >
+                  <LogIn size={18} />
+                  {lang === 'ar' ? 'تسجيل دخول المسوق' : lang === 'fr' ? 'Connexion Marketer' : 'Member Login'}
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       )}

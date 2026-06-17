@@ -34,7 +34,7 @@ export default function Footer() {
           {/* Brand Column */}
           <div>
             <Link to="/" className="text-[#01D7D5] font-semibold text-xl tracking-[0.05em]">
-              E-RIDE
+              NEXIVORA
             </Link>
             <p className="text-[#8B949E] text-sm mt-2">{t('footer.tagline')}</p>
             <div className="flex items-center gap-4 mt-6">

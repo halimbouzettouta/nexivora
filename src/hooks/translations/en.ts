@@ -9,6 +9,7 @@ export const en: Record<string, string> = {
   'nav.logout': 'Logout',
   'nav.dashboard': 'Dashboard',
   'nav.admin': 'Admin Panel',
+  'nav.contact': 'Contact',
   'nav.lang': 'EN / AR',
 
   // Hero
@@ -16,7 +17,7 @@ export const en: Record<string, string> = {
   'hero.title': 'Ride the Future',
   'hero.subtitle': 'Premium electric bikes and scooters. Join our referral program and earn commissions on every sale.',
   'hero.shop': 'Shop Now',
-  'hero.join': 'Become a Marketer',
+  'hero.join': 'Find a Dealer',
 
   // Products Section
   'products.title': 'OUR COLLECTION',
@@ -32,6 +33,23 @@ export const en: Record<string, string> = {
   'cat.escooters': 'E-Scooters',
   'cat.accessories': 'Accessories',
 
+  // Why Choose Us
+  'why.badge': 'WHY NEXIVORA',
+  'why.title': 'Built for Algeria',
+  'why.desc': 'Premium electric vehicles with local support, warranty coverage, and nationwide service.',
+  'why.electric': '100% Electric',
+  'why.electricDesc': 'Zero emissions, zero fuel costs. Charge at home and ride for pennies per kilometer.',
+  'why.range': 'Up to 80km Range',
+  'why.rangeDesc': 'Ride up to 80km on a single charge. Go further without worrying about running out of power.',
+  'why.shipping': 'Free Delivery',
+  'why.shippingDesc': 'Free shipping to all 48 wilayas across Algeria. Cash on delivery available.',
+  'why.support': '24/7 Support',
+  'why.supportDesc': 'Our team is always available by phone, WhatsApp, or email to help you.',
+  'why.quality': 'European Quality',
+  'why.qualityDesc': 'Components sourced from top European manufacturers. Built to last on Algerian roads.',
+  'why.fastCharge': 'Fast Charging',
+  'why.fastChargeDesc': 'Full charge in just 3-4 hours. Plug in overnight and ride all day long.',
+
   // Ranks Section
   'ranks.title': 'RANK SYSTEM',
   'ranks.subtitle': 'Climb the Ladder, Earn More',
@@ -43,8 +61,8 @@ export const en: Record<string, string> = {
   'ranks.reward': 'Reward',
 
   // Testimonials
-  'testimonials.title': 'SUCCESS STORIES',
-  'testimonials.subtitle': 'What Our Marketers Say',
+  'testimonials.title': 'CUSTOMER REVIEWS',
+  'testimonials.subtitle': 'What Riders Say About Us',
 
   // Dealers Preview
   'dealers.title': 'FIND A DEALER',
@@ -70,7 +88,7 @@ export const en: Record<string, string> = {
   'footer.shipping': 'Shipping & Returns',
   'footer.terms': 'Terms of Service',
   'footer.privacy': 'Privacy Policy',
-  'footer.copyright': '© 2025 E-Ride Algeria. All rights reserved.',
+  'footer.copyright': '© 2025 Nexivora Algeria. All rights reserved.',
   'footer.powered': 'Powered by clean energy.',
 
   // Store Page
@@ -132,7 +150,7 @@ export const en: Record<string, string> = {
   'track.timeline': 'Order Timeline',
 
   // About
-  'about.title': 'ABOUT E-RIDE',
+  'about.title': 'ABOUT NEXIVORA',
   'about.subtitle': "Algeria's Electric Future",
   'about.mission': 'Our Mission',
   'about.missionText': 'To accelerate the transition to sustainable transportation in Algeria by providing high-quality electric bikes and scooters at accessible prices.',
@@ -140,7 +158,7 @@ export const en: Record<string, string> = {
   'about.visionText': 'A cleaner, quieter Algeria where electric mobility is the standard, not the exception.',
   'about.values': 'Our Values',
   'about.sustainability': 'Sustainability',
-  'about.sustainabilityText': 'Every ride on an E-Ride vehicle reduces carbon emissions and noise pollution.',
+  'about.sustainabilityText': 'Every ride on an Nexivora vehicle reduces carbon emissions and noise pollution.',
   'about.quality': 'Quality',
   'about.qualityText': 'We source only the best components and rigorously test every product.',
   'about.community': 'Community',
@@ -312,16 +330,16 @@ export const en: Record<string, string> = {
   'dash.months': 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec',
 
   // Registration / Referral
-  'register.title': 'Join E-Ride Network',
+  'register.title': 'Join Nexivora Network',
   'register.subtitle': 'Become a Marketer',
   'register.noRef': 'You need a referral link to join our network.',
-  'register.noRefDesc': 'E-Ride Algeria operates on a referral-only basis. Contact an existing marketer to get your invitation link.',
+  'register.noRefDesc': 'Nexivora Algeria operates on a referral-only basis. Contact an existing marketer to get your invitation link.',
   'register.noRefAction': 'Find a Marketer',
   'register.refFrom': "You're joining through",
   'register.refNetwork': 'Network marketer',
   'register.joinBtn': 'Join Now',
   'register.joinDesc': 'Click below to create your marketer account. You will be connected to the referrer network.',
-  'register.success': 'Welcome to E-Ride!',
+  'register.success': 'Welcome to Nexivora!',
   'register.successDesc': 'Your marketer account has been created. You can now access your dashboard and start sharing your referral link.',
   'register.invalid': 'Invalid Referral Link',
   'register.invalidDesc': 'This referral code does not exist. Please check the link or contact the person who shared it with you.',
@@ -336,7 +354,7 @@ export const en: Record<string, string> = {
 
   // Affiliate CTA
   'affiliate.title': 'Earn 5% Commission on Every Sale',
-  'affiliate.desc': 'Plus unlock team performance bonuses as you climb the ranks. Join hundreds of marketers already earning with E-Ride Algeria.',
+  'affiliate.desc': 'Plus unlock team performance bonuses as you climb the ranks. Join hundreds of marketers already earning with Nexivora Algeria.',
   'affiliate.learnMore': 'Learn More',
   'affiliate.tags': '5% Direct Commission · 5% Team Bonus · Weekly Payouts',
 
@@ -374,12 +392,12 @@ export const en: Record<string, string> = {
   'edu.badge': 'LEARN & RIDE',
 
   // Testimonials
-  'testimonial.quote1': 'The referral program changed my life. I started sharing my link on social media and within 3 months I hit Gold rank. The commission system is fair and payments are always on time.',
-  'testimonial.quote2': 'Building my team was the best decision I made. The 5% team bonus adds up quickly when you have motivated marketers under you. E-Ride gives us all the tools we need.',
-  'testimonial.quote3': 'I joined as a side hustle and now earn more from commissions than my day job. The products practically sell themselves - everyone wants an electric scooter!',
-  'testimonial.quote4': 'From Starter to Diamond in 8 months. The rank rewards are incredible - I got a free electric scooter at Platinum and a luxury trip at Diamond. Best program in Algeria.',
-  'testimonial.quote5': 'The dashboard makes it so easy to track everything - my sales, commissions, team performance. Customer support is responsive and the community is amazing.',
-  'testimonial.quote6': 'I love that I can work from anywhere. I share my referral link on WhatsApp groups and Instagram stories. The 5% commission on every sale is generous.',
+  'review.text1': 'The X1 E-Bike is incredible. Smooth ride, long battery life, and the build quality is top notch. I commute 15km daily in Algiers and it handles hills with ease.',
+  'review.text2': 'Bought the Pro Scooter for my son to get to university. It is fast, reliable, and he loves it. Customer service was very helpful with setup. Highly recommend!',
+  'review.text3': 'Beautiful design and solid performance. I was worried about charging but it is so easy - just plug in overnight. Perfect for getting around the city.',
+  'review.text4': 'Best purchase I made this year. The electric motor is silent and powerful. I save so much on fuel costs now. Delivery to Oran was fast and free.',
+  'review.text5': 'The Lite Scooter is perfect for short trips to the market and visiting friends. Lightweight, folds easily, and the battery lasts longer than advertised. Love it!',
+  'review.text6': 'Great quality for the price. The warranty gave me peace of mind. When I had a small issue with the brakes, support sent a technician the next day. Excellent service.',
 
   // Sections
   'section.loyaltyBadge': 'LOYALTY REWARDS',
@@ -393,14 +411,14 @@ export const en: Record<string, string> = {
   'section.levelUpDesc': 'Higher spending tiers unlock exclusive rewards and early access.',
   'section.points': 'Points',
   'section.reward': 'Reward',
-  'section.howBadge': 'THE PROCESS',
-  'section.howTitle': 'Three Steps to Start Earning',
-  'section.step1': 'Sign Up',
-  'section.step2': 'Share & Sell',
-  'section.step3': 'Earn & Grow',
-  'section.step1Desc': 'Create your marketer account in minutes. Get your unique referral link instantly.',
-  'section.step2Desc': 'Share your link with friends, family, and followers. Every purchase earns you 5% commission.',
-  'section.step3Desc': 'Track your sales, climb ranks, unlock rewards, and build your team.',
+  'section.howBadge': 'HOW IT WORKS',
+  'section.howTitle': 'Three Steps to Your Ride',
+  'section.step1': 'Browse & Choose',
+  'section.step2': 'Order & Pay',
+  'section.step3': 'Ride & Enjoy',
+  'section.step1Desc': 'Explore our collection of electric bikes and scooters. Find the perfect match for your needs.',
+  'section.step2Desc': 'Place your order online with cash on delivery or card payment. Free shipping across Algeria.',
+  'section.step3Desc': 'Get your vehicle delivered, charged and ready to go. Enjoy the freedom of electric mobility.',
   'section.subBadge': 'MAINTENANCE & WARRANTY',
   'section.subTitle': 'Protect Your Investment',
   'section.subDesc': 'Choose a plan that keeps your ride in perfect condition.',

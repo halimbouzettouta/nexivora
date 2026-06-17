@@ -9,7 +9,7 @@
 // Default admin password: "Eride2025!"
 
 const DEFAULT_PASSWORD_HASH = '841dc700f7cc7aea003f93a6b3d6c00ed8b199966a57791f3c57ec1cc91dae15' // SHA-256 of "Eride2025!"
-const PASSWORD_STORAGE_KEY = 'eride-admin-pwd-hash'
+const PASSWORD_STORAGE_KEY = 'nxv-admin-pwd-hash'
 
 // Get current password hash (checks localStorage first, falls back to default)
 function getPasswordHash(): string {
@@ -53,8 +53,8 @@ export function setAdminSession() {
   const token = Array.from(crypto.getRandomValues(new Uint8Array(32)))
     .map((b) => b.toString(16).padStart(2, '0'))
     .join('')
-  localStorage.setItem('eride-admin-token', token)
-  localStorage.setItem('eride-admin-user', JSON.stringify({
+  localStorage.setItem('nxv-admin-token', token)
+  localStorage.setItem('nxv-admin-user', JSON.stringify({
     id: 'admin-001',
     name: 'Admin',
     email: 'admin@eride.dz',
@@ -65,8 +65,8 @@ export function setAdminSession() {
 
 // Check if admin session exists
 export function getAdminSession() {
-  const token = localStorage.getItem('eride-admin-token')
-  const user = localStorage.getItem('eride-admin-user')
+  const token = localStorage.getItem('nxv-admin-token')
+  const user = localStorage.getItem('nxv-admin-user')
   if (!token || !user) return null
   try {
     return { token, user: JSON.parse(user) }
@@ -77,8 +77,8 @@ export function getAdminSession() {
 
 // Clear admin session
 export function clearAdminSession() {
-  localStorage.removeItem('eride-admin-token')
-  localStorage.removeItem('eride-admin-user')
+  localStorage.removeItem('nxv-admin-token')
+  localStorage.removeItem('nxv-admin-user')
 }
 
 // Check if user is admin

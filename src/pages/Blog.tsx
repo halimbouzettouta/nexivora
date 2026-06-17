@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import { Search, Clock } from 'lucide-react'
 import { useLanguage } from '@/hooks/useLanguage'
 
-interface Article {
+export interface Article {
   slug: string
   title: string
   excerpt: string
@@ -12,9 +12,10 @@ interface Article {
   date: string
   image: string
   content?: string
+  tags: string[]
 }
 
-const MOCK_ARTICLES: Article[] = [
+export const MOCK_ARTICLES: Article[] = [
   {
     slug: 'choosing-your-first-e-bike',
     title: 'Choosing Your First E-Bike: A Complete Guide',
@@ -22,8 +23,9 @@ const MOCK_ARTICLES: Article[] = [
     category: 'Guides',
     readTime: 8,
     date: '2025-05-15',
-    image: '/article-choose-ebike.jpg',
-    content: 'Electric bikes are transforming how Algerians commute. With rising fuel costs and increasing environmental awareness, e-bikes offer a practical, affordable alternative. This guide covers motor types (hub vs mid-drive), battery capacities, range considerations, and local regulations. We also review the best e-bikes available in the Algerian market right now.',
+    image: '/article-guide.jpg',
+    content: `Electric bikes are transforming how Algerians commute. With rising fuel costs and increasing environmental awareness, e-bikes offer a practical, affordable alternative to traditional transportation.\n\n## Motor Types\n\nThe two main motor types are hub motors and mid-drive motors. Hub motors are simpler, quieter, and require less maintenance, making them ideal for city commuters. Mid-drive motors offer better weight distribution and hill-climbing performance, perfect for the varied terrain around Algerian cities.\n\n## Battery Range\n\nMost e-bikes offer between 40-100km of range on a single charge. For daily commuting in Algiers or Oran, a 60km range is typically sufficient. Consider your daily distance and whether you'll have access to charging at work.\n\n## Legal Requirements\n\nIn Algeria, e-bikes with motors under 250W and top speeds of 25km/h are classified as bicycles and don't require registration. Higher-powered models may require a license plate and insurance.\n\n## Our Recommendations\n\nFor city commuters: The Nexivora City Pro offers excellent value with its 80km range and comfortable riding position. For adventure seekers: The Nexivora Mountain X handles both city streets and mountain trails with ease.`,
+    tags: ['E-Bikes', 'Buying Guide', 'Algeria'],
   },
   {
     slug: 'battery-care-tips',
@@ -32,8 +34,9 @@ const MOCK_ARTICLES: Article[] = [
     category: 'Maintenance',
     readTime: 5,
     date: '2025-05-10',
-    image: '/article-maintenance.jpg',
-    content: 'Your e-bike battery is the most expensive component. Proper care can extend its life from 2 years to 5+ years. Key tips: avoid extreme temperatures, charge to 80% for daily use, store at 50% charge during long periods, and never let it fully discharge.',
+    image: '/article-battery.jpg',
+    content: `Your e-bike battery is the most expensive component, typically costing 30-40% of the total bike price. Proper care can extend its life from 2 years to 5+ years.\n\n## Charging Best Practices\n\n- Charge to 80% for daily use; only charge to 100% before long rides\n- Avoid letting the battery drop below 20%\n- Use the original charger\n- Charge at room temperature when possible\n\n## Storage Tips\n\n- Store at 50% charge during long periods of non-use\n- Keep in a cool, dry place away from direct sunlight\n- Remove the battery if storing the bike outdoors\n\n## Temperature Considerations\n\nAlgerian summers can be harsh on batteries. Avoid leaving your e-bike in direct sunlight for extended periods. In extreme heat (above 40°C), battery performance may temporarily decrease.`,
+    tags: ['Battery', 'Maintenance', 'Tips'],
   },
   {
     slug: 'algeria-electric-revolution',
@@ -43,17 +46,19 @@ const MOCK_ARTICLES: Article[] = [
     readTime: 6,
     date: '2025-04-28',
     image: '/article-industry.jpg',
-    content: 'From Algiers to Oran, electric two-wheelers are becoming a common sight. Government initiatives, improving infrastructure, and growing environmental consciousness are driving adoption. We explore the trends shaping this transformation.',
+    content: `From Algiers to Oran, electric two-wheelers are becoming an increasingly common sight on Algerian streets. This shift is driven by multiple factors converging at the right time.\n\n## Economic Factors\n\nWith fuel prices fluctuating and the cost of car ownership rising, many Algerians are looking for affordable alternatives. An e-bike costs as little as 2 DZD per 10km to operate, compared to 150+ DZD for a car.\n\n## Environmental Awareness\n\nYoung Algerians are increasingly conscious of environmental issues. Electric mobility produces zero direct emissions and significantly reduces noise pollution in crowded urban areas.\n\n## Government Support\n\nRecent initiatives promoting clean transportation have created a favorable environment for e-mobility adoption. Infrastructure improvements, including dedicated bike lanes in major cities, are making cycling safer and more convenient.`,
+    tags: ['Industry', 'Algeria', 'Trends'],
   },
   {
-    slug: 'referral-program-guide',
-    title: 'How to Earn with Our Referral Program',
-    excerpt: 'A step-by-step guide to maximizing your income through the E-Ride referral and rank system.',
-    category: 'Marketing',
+    slug: 'understanding-your-motor',
+    title: 'Understanding Your E-Bike Motor',
+    excerpt: 'A deep dive into how electric bike motors work and what to look for when choosing one.',
+    category: 'Technology',
     readTime: 7,
     date: '2025-04-20',
-    image: '/article-referral.jpg',
-    content: 'Our referral program is one of the most generous in Algeria. Learn how to climb from Starter to Diamond rank, earning up to 10% commission on direct sales and team overrides. We share strategies from our top marketers.',
+    image: '/article-motor.jpg',
+    content: `The motor is the heart of your e-bike, and understanding how it works can help you make better purchasing decisions and get the most out of your ride.\n\n## Hub Motors vs Mid-Drive\n\nHub motors are located in the wheel hub (front or rear). They're quieter, simpler, and require virtually no maintenance. Rear hub motors offer better traction, especially on hills.\n\nMid-drive motors are positioned at the crank. They provide better weight distribution, more natural pedaling feel, and superior hill-climbing thanks to leveraging your bike's gears.\n\n## Power Ratings\n\nMotor power is measured in watts. 250W is standard for city commuting, 500W handles hills with ease, and 750W+ is for off-road and heavy loads. Remember: in Algeria, 250W motors are classified as bicycles with no registration required.\n\n## Torque and Acceleration\n\nTorque (measured in Nm) determines how quickly you accelerate and how well you climb hills. 40-50 Nm is good for flat cities, while 60-80 Nm handles steep terrain with ease.`,
+    tags: ['Motor', 'Technology', 'Guide'],
   },
   {
     slug: 'safety-gear-essentials',
@@ -63,24 +68,26 @@ const MOCK_ARTICLES: Article[] = [
     readTime: 4,
     date: '2025-04-12',
     image: '/article-safety.jpg',
-    content: 'Safety should never be compromised. This article covers the must-have gear: certified helmets, reflective clothing, front and rear lights, gloves, and mirrors. We also discuss Algerian road safety laws for e-bikes.',
+    content: `Safety should never be compromised when riding an e-bike or e-scooter. Here's the essential gear every rider should invest in.\n\n## Helmet (Mandatory)\n\nA certified helmet is the single most important piece of safety equipment. Look for CE or CPSC certification. Our Nexivora Air Helmet offers excellent ventilation and includes an integrated LED light for night riding.\n\n## Lights and Reflectors\n\nFront white light and rear red light are essential for night riding. Reflective clothing increases visibility during dawn and dusk when most accidents occur.\n\n## Gloves and Eye Protection\n\nGloves protect your hands in case of falls and improve grip. Sunglasses or clear glasses shield your eyes from dust, insects, and wind.`,
+    tags: ['Safety', 'Gear', 'Essentials'],
   },
   {
-    slug: 'winter-riding-tips',
-    title: 'Riding in Winter: Tips & Precautions',
-    excerpt: 'How to safely ride your e-bike during the rainy season and colder months in Algeria.',
+    slug: 'charging-best-practices',
+    title: 'Best Charging Practices for E-Scooters',
+    excerpt: 'How to properly charge your electric scooter for maximum battery life and performance.',
     category: 'Maintenance',
     readTime: 5,
     date: '2025-03-30',
-    image: '/article-riding-tips.jpg',
-    content: 'Winter riding requires extra preparation. Learn about tire pressure adjustments, waterproofing your electronics, proper clothing layering, and battery performance in cold weather. Stay safe and keep riding year-round.',
+    image: '/article-charging.jpg',
+    content: `Proper charging habits are the key to a long-lasting battery and consistent performance from your electric scooter.\n\n## Daily Charging Routine\n\nCharge your scooter after every ride if the battery is below 50%. Avoid leaving it plugged in for extended periods after reaching 100%. Unplug within 30 minutes of full charge.\n\n## Environment Matters\n\nAlways charge indoors at room temperature. Charging in extreme heat or cold damages the battery cells permanently. In Algerian summers, charge during cooler evening hours when possible.\n\n## Long-Term Storage\n\nIf storing your scooter for more than 2 weeks, charge the battery to exactly 50%. Store in a cool, dry place. Check the charge level monthly and top up to 50% if needed.\n\n## Travel Tips\n\nUse a surge protector when charging in public places. Carry your charger with you for longer rides. Some cafes and co-working spaces in Algiers now offer free charging stations for e-vehicles.`,
+    tags: ['Charging', 'Battery', 'Tips'],
   },
 ]
 
 const getCategories = (isAr: boolean, isFr: boolean) =>
-  isAr ? ['جميع الفئات', 'أدلة', 'صيانة', 'أخبار الصناعة', 'تسويق', 'سلامة']
-  : isFr ? ['Toutes les Catégories', 'Guides', 'Entretien', 'Actualités', 'Marketing', 'Sécurité']
-  : ['All Categories', 'Guides', 'Maintenance', 'Industry News', 'Marketing', 'Safety']
+  isAr ? ['جميع الفئات', 'أدلة', 'صيانة', 'أخبار الصناعة', 'تقنية', 'سلامة']
+  : isFr ? ['Toutes les Catégories', 'Guides', 'Entretien', 'Actualités', 'Technologie', 'Sécurité']
+  : ['All Categories', 'Guides', 'Maintenance', 'Industry News', 'Technology', 'Safety']
 
 export default function Blog() {
   const { t, lang } = useLanguage()
@@ -98,10 +105,10 @@ export default function Blog() {
       if (search && !a.title.toLowerCase().includes(search.toLowerCase()) && !a.excerpt.toLowerCase().includes(search.toLowerCase())) return false
       return true
     })
-  }, [activeCategory, search, isAr])
+  }, [activeCategory, search, isAr, lang])
 
   return (
-    <div className="min-h-screen bg-black pt-[70px]">
+    <div className="min-h-screen bg-black pt-[90px]">
       <div className="bg-black text-center pt-32 pb-20 px-4">
         <div className="flex items-center justify-center gap-2 text-sm text-[#484F58] mb-4">
           <Link to="/" className="hover:text-[#01D7D5]">{t('nav.home')}</Link><span>/</span><span className="text-[#8B949E]">{t('nav.blog')}</span>

@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useCart } from '@/hooks/useCart'
 import { useToastStore } from '@/hooks/useToast'
+import { saveOrder } from '@/hooks/orderStore'
+import { getMarketerSession } from '@/hooks/marketerAuth'
 import { CreditCard, Banknote, Smartphone, Check, Truck } from 'lucide-react'
 import { useLanguage } from '@/hooks/useLanguage'
 
@@ -21,7 +23,7 @@ export default function Checkout() {
 
   if (items.length === 0 && step !== 3) {
     return (
-      <div className="min-h-screen bg-black pt-[70px] flex items-center justify-center">
+      <div className="min-h-screen bg-black pt-[90px] flex items-center justify-center">
         <div className="text-center">
           <h3 className="text-white font-semibold text-xl mb-2">{t('cart.empty')}</h3>
           <button onClick={() => navigate('/store')} className="px-6 py-3 bg-[#01D7D5] text-black rounded-lg mt-4">
@@ -35,13 +37,44 @@ export default function Checkout() {
   const handlePlaceOrder = () => {
     const orderNum = `ER-${Date.now()}-${Math.floor(Math.random() * 1000)}`
     setOrderNumber(orderNum)
+
+    // Check referral code priority:
+    // 1. URL param ref=CODE
+    // 2. sessionStorage from referral link visit
+    // 3. Logged-in marketer's own referral code
+    const urlParams = new URLSearchParams(window.location.search)
+    const sessionRef = sessionStorage.getItem('nxv_order_ref')
+    const marketer = getMarketerSession()
+    const marketerRef = marketer?.referralCode || null
+    const refCode = urlParams.get('ref') || sessionRef || marketerRef || null
+
+    // Save order to localStorage
+    saveOrder({
+        id: orderNum,
+        orderNumber: orderNum,
+        customerName: form.fullName || 'Guest',
+        customerPhone: form.phone || '',
+        customerEmail: form.email || '',
+        address: form.address || '',
+        city: form.city || '',
+        items: items.map(i => ({ productId: i.productId, name: i.name, price: i.price, quantity: i.quantity, image: i.image })),
+        subtotal: totalPrice,
+        shipping: shippingCost,
+        total: totalPrice + shippingCost,
+        paymentMethod: paymentMethod,
+        shippingMethod: shippingMethod,
+        status: 'pending',
+        createdAt: new Date().toISOString(),
+        marketerReferralCode: refCode,
+      })
+
     setStep(3)
     clearCart()
     addToast({ title: 'Order Placed!', message: `Your order ${orderNum} has been placed successfully.`, type: 'success' })
   }
 
   return (
-    <div className="min-h-screen bg-black pt-[70px]">
+    <div className="min-h-screen bg-black pt-[90px]">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-[5vw] py-12">
         <h1 className="text-white font-semibold text-3xl mb-8">{t('checkout.title')}</h1>
 
@@ -96,12 +129,64 @@ export default function Checkout() {
                     className="w-full bg-[#161B22] border border-[#30363D] text-white rounded-lg px-4 py-3 focus:border-[#01D7D5] focus:outline-none"
                   >
                     <option value="">{t('checkout.city')}</option>
-                    <option value="Algiers">Algiers</option>
-                    <option value="Oran">Oran</option>
-                    <option value="Constantine">Constantine</option>
-                    <option value="Annaba">Annaba</option>
-                    <option value="Setif">Setif</option>
+                    <option value="Adrar">Adrar</option>
+                    <option value="Chlef">Chlef</option>
+                    <option value="Laghouat">Laghouat</option>
+                    <option value="Oum El Bouaghi">Oum El Bouaghi</option>
+                    <option value="Batna">Batna</option>
+                    <option value="Bejaia">Bejaia</option>
+                    <option value="Biskra">Biskra</option>
+                    <option value="Bechar">Bechar</option>
                     <option value="Blida">Blida</option>
+                    <option value="Bouira">Bouira</option>
+                    <option value="Tamanrasset">Tamanrasset</option>
+                    <option value="Tebessa">Tebessa</option>
+                    <option value="Tlemcen">Tlemcen</option>
+                    <option value="Tiaret">Tiaret</option>
+                    <option value="Tizi Ouzou">Tizi Ouzou</option>
+                    <option value="Algiers">Algiers</option>
+                    <option value="Djelfa">Djelfa</option>
+                    <option value="Jijel">Jijel</option>
+                    <option value="Setif">Setif</option>
+                    <option value="Saida">Saida</option>
+                    <option value="Skikda">Skikda</option>
+                    <option value="Sidi Bel Abbes">Sidi Bel Abbes</option>
+                    <option value="Annaba">Annaba</option>
+                    <option value="Guelma">Guelma</option>
+                    <option value="Constantine">Constantine</option>
+                    <option value="Medea">Medea</option>
+                    <option value="Mostaganem">Mostaganem</option>
+                    <option value="MSila">M'Sila</option>
+                    <option value="Mascara">Mascara</option>
+                    <option value="Ouargla">Ouargla</option>
+                    <option value="Oran">Oran</option>
+                    <option value="El Bayadh">El Bayadh</option>
+                    <option value="Illizi">Illizi</option>
+                    <option value="Bordj Bou Arreridj">Bordj Bou Arreridj</option>
+                    <option value="Boumerdes">Boumerdes</option>
+                    <option value="El Tarf">El Tarf</option>
+                    <option value="Tindouf">Tindouf</option>
+                    <option value="Tissemsilt">Tissemsilt</option>
+                    <option value="El Oued">El Oued</option>
+                    <option value="Khenchela">Khenchela</option>
+                    <option value="Souk Ahras">Souk Ahras</option>
+                    <option value="Tipaza">Tipaza</option>
+                    <option value="Mila">Mila</option>
+                    <option value="Ain Defla">Ain Defla</option>
+                    <option value="Naama">Naama</option>
+                    <option value="Ain Temouchent">Ain Temouchent</option>
+                    <option value="Ghardaia">Ghardaia</option>
+                    <option value="Relizane">Relizane</option>
+                    <option value="El Mghair">El Mghair</option>
+                    <option value="El Menia">El Menia</option>
+                    <option value="Ouled Djellal">Ouled Djellal</option>
+                    <option value="Bordj Badji Mokhtar">Bordj Badji Mokhtar</option>
+                    <option value="Beni Abbes">Beni Abbes</option>
+                    <option value="Timimoun">Timimoun</option>
+                    <option value="Touggourt">Touggourt</option>
+                    <option value="Djanet">Djanet</option>
+                    <option value="In Salah">In Salah</option>
+                    <option value="In Guezzam">In Guezzam</option>
                   </select>
                 </div>
               </div>

@@ -9,6 +9,7 @@ export const fr: Record<string, string> = {
   'nav.logout': 'Déconnexion',
   'nav.dashboard': 'Tableau de bord',
   'nav.admin': 'Panneau Admin',
+  'nav.contact': 'Contact',
   'nav.lang': 'EN / AR / FR',
 
   // Hero
@@ -16,7 +17,7 @@ export const fr: Record<string, string> = {
   'hero.title': 'Roulez vers le Futur',
   'hero.subtitle': 'Vélos et trottinettes électriques premium. Rejoignez notre programme de parrainage et gagnez des commissions sur chaque vente.',
   'hero.shop': 'Acheter',
-  'hero.join': 'Devenir Marketer',
+  'hero.join': 'Trouver un Concessionnaire',
 
   // Products Section
   'products.title': 'NOTRE COLLECTION',
@@ -32,6 +33,23 @@ export const fr: Record<string, string> = {
   'cat.escooters': 'Trottinettes',
   'cat.accessories': 'Accessoires',
 
+  // Why Choose Us
+  'why.badge': 'POURQUOI NEXIVORA',
+  'why.title': 'Conçu pour l\'Algérie',
+  'why.desc': 'Véhicules électriques premium avec support local, garantie complète et service national.',
+  'why.electric': '100% Électrique',
+  'why.electricDesc': 'Zéro émission, zéro coût de carburant. Chargez à domicile et roulez pour quelques centimes le kilomètre.',
+  'why.range': 'Jusqu\'à 80km d\'Autonomie',
+  'why.rangeDesc': 'Roulez jusqu\'à 80km sur une seule charge. Allez plus loin sans craindre de tomber en panne.',
+  'why.shipping': 'Livraison Gratuite',
+  'why.shippingDesc': 'Livraison gratuite dans les 48 wilayas d\'Algérie. Paiement à la livraison disponible.',
+  'why.support': 'Support 24/7',
+  'why.supportDesc': 'Notre équipe est toujours disponible par téléphone, WhatsApp ou email pour vous aider.',
+  'why.quality': 'Qualité Européenne',
+  'why.qualityDesc': 'Composants des meilleurs fabricants européens. Conçus pour durer sur les routes algériennes.',
+  'why.fastCharge': 'Charge Rapide',
+  'why.fastChargeDesc': 'Charge complète en seulement 3-4 heures. Branchez la nuit et roulez toute la journée.',
+
   // Ranks Section
   'ranks.title': 'SYSTÈME DE RANGS',
   'ranks.subtitle': 'Montez les Échelons, Gagnez Plus',
@@ -43,8 +61,8 @@ export const fr: Record<string, string> = {
   'ranks.reward': 'Récompense',
 
   // Testimonials
-  'testimonials.title': 'HISTOIRES DE SUCCÈS',
-  'testimonials.subtitle': 'Ce que Disent Nos Marketers',
+  'testimonials.title': 'AVIS CLIENTS',
+  'testimonials.subtitle': 'Ce que Disent Nos Clients',
 
   // Dealers Preview
   'dealers.title': 'TROUVER UN CONCESSIONNAIRE',
@@ -70,7 +88,7 @@ export const fr: Record<string, string> = {
   'footer.shipping': 'Livraison & Retours',
   'footer.terms': 'Conditions d\'Utilisation',
   'footer.privacy': 'Politique de Confidentialité',
-  'footer.copyright': '© 2025 E-Ride Algérie. Tous droits réservés.',
+  'footer.copyright': '© 2025 Nexivora Algérie. Tous droits réservés.',
   'footer.powered': 'Propulsé par l\'énergie propre.',
 
   // Store Page
@@ -132,7 +150,7 @@ export const fr: Record<string, string> = {
   'track.timeline': 'Chronologie',
 
   // About
-  'about.title': 'À PROPOS D\'E-RIDE',
+  'about.title': 'À PROPOS D\'NEXIVORA',
   'about.subtitle': "L'Avenir Électrique de l'Algérie",
   'about.mission': 'Notre Mission',
   'about.missionText': 'Accélérer la transition vers un transport durable en Algérie en fournissant des vélos et trottinettes électriques de haute qualité à des prix accessibles.',
@@ -140,7 +158,7 @@ export const fr: Record<string, string> = {
   'about.visionText': 'Une Algérie plus propre et plus silencieuse où la mobilité électrique est la norme, pas l\'exception.',
   'about.values': 'Nos Valeurs',
   'about.sustainability': 'Durabilité',
-  'about.sustainabilityText': 'Chaque trajet sur un véhicule E-Ride réduit les émissions de carbone et la pollution sonore.',
+  'about.sustainabilityText': 'Chaque trajet sur un véhicule Nexivora réduit les émissions de carbone et la pollution sonore.',
   'about.quality': 'Qualité',
   'about.qualityText': 'Nous ne sourçons que les meilleurs composants et testons rigoureusement chaque produit.',
   'about.community': 'Communauté',
@@ -312,16 +330,16 @@ export const fr: Record<string, string> = {
   'dash.months': 'Jan,Fév,Mar,Avr,Mai,Jun,Jul,Août,Sep,Oct,Nov,Déc',
 
   // Registration / Referral
-  'register.title': 'Rejoignez le Réseau E-Ride',
+  'register.title': 'Rejoignez le Réseau Nexivora',
   'register.subtitle': 'Devenez Marketer',
   'register.noRef': 'Vous avez besoin d\'un lien de parrainage pour rejoindre notre réseau.',
-  'register.noRefDesc': 'E-Ride Algérie fonctionne exclusivement sur parrainage. Contactez un marketer existant pour obtenir votre lien d\'invitation.',
+  'register.noRefDesc': 'Nexivora Algérie fonctionne exclusivement sur parrainage. Contactez un marketer existant pour obtenir votre lien d\'invitation.',
   'register.noRefAction': 'Trouver un Marketer',
   'register.refFrom': 'Vous rejoignez via',
   'register.refNetwork': 'Marketer du réseau',
   'register.joinBtn': 'Rejoindre',
   'register.joinDesc': 'Cliquez ci-dessous pour créer votre compte marketer. Vous serez connecté au réseau du parrain.',
-  'register.success': 'Bienvenue chez E-Ride !',
+  'register.success': 'Bienvenue chez Nexivora !',
   'register.successDesc': 'Votre compte marketer a été créé. Vous pouvez maintenant accéder à votre tableau de bord et commencer à partager votre lien de parrainage.',
   'register.invalid': 'Lien de Parrainage Invalide',
   'register.invalidDesc': 'Ce code de parrainage n\'existe pas. Veuillez vérifier le lien ou contacter la personne qui vous l\'a partagé.',
@@ -336,7 +354,7 @@ export const fr: Record<string, string> = {
 
   // Affiliate CTA
   'affiliate.title': 'Gagnez 5% de Commission sur Chaque Vente',
-  'affiliate.desc': 'Débloquez des bonus de performance d\'équipe en montant les rangs. Rejoignez des centaines de marketers qui gagnent avec E-Ride Algérie.',
+  'affiliate.desc': 'Débloquez des bonus de performance d\'équipe en montant les rangs. Rejoignez des centaines de marketers qui gagnent avec Nexivora Algérie.',
   'affiliate.learnMore': 'En Savoir Plus',
   'affiliate.tags': 'Commission Directe 5% · Bonus Équipe 5% · Paiements Hebdomadaires',
 
@@ -374,12 +392,12 @@ export const fr: Record<string, string> = {
   'edu.badge': 'APPRENDRE & ROULER',
 
   // Testimonials
-  'testimonial.quote1': 'Le programme de parrainage a changé ma vie. J\'ai commencé à partager mon lien sur les réseaux sociaux et en 3 mois j\'ai atteint le rang Or. Le système de commission est juste et les paiements sont toujours ponctuels.',
-  'testimonial.quote2': 'Construire mon équipe était la meilleure décision. Le bonus équipe de 5% s\'accumule rapidement avec des marketers motivés. E-Ride nous donne tous les outils nécessaires.',
-  'testimonial.quote3': 'J\'ai rejoint comme complément et maintenant je gagne plus en commissions que dans mon emploi principal. Les produits se vendent tout seuls - tout le monde veut une trottinette électrique !',
-  'testimonial.quote4': 'De Starter à Diamant en 8 mois. Les récompenses sont incroyables - une trottinette gratuite au Platine et un voyage de luxe au Diamant. Le meilleur programme en Algérie.',
-  'testimonial.quote5': 'Le tableau de bord rend le suivi facile - mes ventes, commissions, performance équipe. Le support client est réactif et la communauté est géniale.',
-  'testimonial.quote6': 'J\'adore pouvoir travailler de n\'importe où. Je partage mon lien dans des groupes WhatsApp et stories Instagram. La commission de 5% est généreuse.',
+  'review.text1': 'Le X1 E-Bike est incroyable. Conduite douce, batterie longue durée et qualité de fabrication au top. Je fais 15km par jour à Alger et il gère les côtes sans effort.',
+  'review.text2': 'J\'ai acheté la Pro Scooter pour mon fils pour l\'université. Rapide, fiable et il l\'adore. Le service client a été très utile pour l\'installation. Fortement recommandé !',
+  'review.text3': 'Design magnifique et performance solide. J\'étais inquiet pour la charge mais c\'est tellement facile - branchez simplement la nuit. Parfait pour se déplacer en ville.',
+  'review.text4': 'Le meilleur achat de l\'année. Le moteur électrique est silencieux et puissant. J\'économise tellement sur le carburant maintenant. La livraison à Oran a été rapide et gratuite.',
+  'review.text5': 'La Lite Scooter est parfaite pour les courts trajets au marché et chez les amis. Légère, se plie facilement, et la batterie dure plus longtemps qu\'annoncé. J\'adore !',
+  'review.text6': 'Excellente qualité pour le prix. La garantie m\'a rassuré. Quand j\'ai eu un petit problème avec les freins, le support a envoyé un technicien le lendemain. Service excellent.',
 
   // Sections
   'section.loyaltyBadge': 'RÉCOMPENSES FIDÉLITÉ',
@@ -393,14 +411,14 @@ export const fr: Record<string, string> = {
   'section.levelUpDesc': 'Les niveaux de dépense supérieurs débloquent des récompenses exclusives et un accès anticipé.',
   'section.points': 'Points',
   'section.reward': 'Récompense',
-  'section.howBadge': 'LE PROCESSUS',
-  'section.howTitle': 'Trois Étapes pour Commencer à Gagner',
-  'section.step1': 'Inscrivez-vous',
-  'section.step2': 'Partagez & Vendez',
-  'section.step3': 'Gagnez & Progressez',
-  'section.step1Desc': 'Créez votre compte marketer en minutes. Obtenez votre lien de parrainage unique instantanément.',
-  'section.step2Desc': 'Partagez votre lien avec vos proches. Chaque achat vous rapporte 5% de commission.',
-  'section.step3Desc': 'Suivez vos ventes, montez les rangs, débloquez des récompenses et construisez votre équipe.',
+  'section.howBadge': 'COMMENT ÇA MARCHE',
+  'section.howTitle': 'Trois Étapes pour Rouler',
+  'section.step1': 'Parcourez & Choisissez',
+  'section.step2': 'Commandez & Payez',
+  'section.step3': 'Roulez & Profitez',
+  'section.step1Desc': 'Explorez notre collection de vélos et trottinettes électriques. Trouvez celui qui vous convient.',
+  'section.step2Desc': 'Passez commande en ligne avec paiement à la livraison ou par carte. Livraison gratuite en Algérie.',
+  'section.step3Desc': 'Recevez votre véhicule livré, chargé et prêt à partir. Profitez de la liberté de la mobilité électrique.',
   'section.subBadge': 'ENTRETIEN & GARANTIE',
   'section.subTitle': 'Protégez Votre Investissement',
   'section.subDesc': 'Choisissez un plan qui garde votre véhicule en parfait état.',

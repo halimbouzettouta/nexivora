@@ -18,14 +18,6 @@ const rankReqKeys: Record<string, string> = {
   Diamond: 'rank.reqDiamond',
 }
 
-const rankRewardKeys: Record<string, string> = {
-  Starter: 'rank.welcomeKit',
-  Silver: 'rank.shoppingVoucher',
-  Gold: 'rank.premiumSmartphone',
-  Platinum: 'rank.electricScooter',
-  Diamond: 'rank.tripBonus',
-}
-
 export default function RankSystem() {
   const { data: ranks } = trpc.rank.list.useQuery()
   const { t } = useLanguage()
@@ -63,15 +55,9 @@ export default function RankSystem() {
               <h4 className="font-semibold text-xl mb-1" style={{ color: rank.color }}>
                 {rank.name}
               </h4>
-              <p className="text-[#8B949E] text-xs mb-4">
+              <p className="text-[#8B949E] text-xs">
                 {t(rankReqKeys[rank.name] || 'rank.entryLevel')}
               </p>
-              <div
-                className="inline-block px-4 py-2 rounded-full text-xs font-medium"
-                style={{ backgroundColor: `${rank.color}18`, color: rank.color }}
-              >
-                {t(rankRewardKeys[rank.name] || 'rank.welcomeKit')}
-              </div>
             </div>
           ))}
         </div>

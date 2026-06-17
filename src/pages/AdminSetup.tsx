@@ -54,7 +54,7 @@ export default function AdminSetup() {
   }
 
   return (
-    <div className="min-h-screen bg-black pt-[70px]">
+    <div className="min-h-screen bg-black pt-[90px]">
       <div className="max-w-[800px] mx-auto px-4 sm:px-6 lg:px-[5vw] py-12">
         {/* Header */}
         <div className="text-center mb-10">

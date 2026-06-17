@@ -3,12 +3,12 @@ import { MapPin, Phone, Mail, Clock, Plus, Edit2, Trash2, Search } from 'lucide-
 import StatusBadge from './StatusBadge'
 
 const dealers = [
-  { id: 1, name: 'E-Ride Algiers Center', city: 'Algiers', address: '123 Blvd Mohamed VI', phone: '+213 23 45 67 89', email: 'algiers@eride-dz.com', hours: 'Sun-Thu 9AM-6PM', status: 'active', sales: '8.5M', manager: 'Amine Khelifi' },
-  { id: 2, name: 'E-Ride Oran', city: 'Oran', address: '45 Rue d\'Oran', phone: '+213 41 23 45 67', email: 'oran@eride-dz.com', hours: 'Sun-Thu 9AM-6PM', status: 'active', sales: '4.2M', manager: 'Samir Boualem' },
-  { id: 3, name: 'E-Ride Constantine', city: 'Constantine', address: '78 Rue Freres Bouadou', phone: '+213 31 45 67 89', email: 'constantine@eride-dz.com', hours: 'Sun-Thu 9AM-6PM', status: 'active', sales: '3.8M', manager: 'Hakim Meddah' },
-  { id: 4, name: 'E-Ride Annaba', city: 'Annaba', address: '12 Blvd Republique', phone: '+213 38 12 34 56', email: 'annaba@eride-dz.com', hours: 'Sun-Thu 9AM-6PM', status: 'active', sales: '2.1M', manager: 'Lyes Merad' },
-  { id: 5, name: 'E-Ride Setif', city: 'Setif', address: '33 Rue Emir Abdelkader', phone: '+213 36 78 90 12', email: 'setif@eride-dz.com', hours: 'Sun-Thu 9AM-6PM', status: 'active', sales: '1.9M', manager: 'Rafik Benali' },
-  { id: 6, name: 'E-Ride Blida', city: 'Blida', address: '5 Rue de la Gare', phone: '+213 25 34 56 78', email: 'blida@eride-dz.com', hours: 'Sun-Thu 9AM-6PM', status: 'inactive', sales: '0', manager: 'Nadia Sahraoui' },
+  { id: 1, name: 'Nexivora Algiers Center', city: 'Algiers', address: '123 Blvd Mohamed VI', phone: '+213 23 45 67 89', email: 'algiers@nexivora-dz.com', hours: 'Sun-Thu 9AM-6PM', status: 'active', sales: '8.5M', manager: 'Amine Khelifi' },
+  { id: 2, name: 'Nexivora Oran', city: 'Oran', address: '45 Rue d\'Oran', phone: '+213 41 23 45 67', email: 'oran@nexivora-dz.com', hours: 'Sun-Thu 9AM-6PM', status: 'active', sales: '4.2M', manager: 'Samir Boualem' },
+  { id: 3, name: 'Nexivora Constantine', city: 'Constantine', address: '78 Rue Freres Bouadou', phone: '+213 31 45 67 89', email: 'constantine@nexivora-dz.com', hours: 'Sun-Thu 9AM-6PM', status: 'active', sales: '3.8M', manager: 'Hakim Meddah' },
+  { id: 4, name: 'Nexivora Annaba', city: 'Annaba', address: '12 Blvd Republique', phone: '+213 38 12 34 56', email: 'annaba@nexivora-dz.com', hours: 'Sun-Thu 9AM-6PM', status: 'active', sales: '2.1M', manager: 'Lyes Merad' },
+  { id: 5, name: 'Nexivora Setif', city: 'Setif', address: '33 Rue Emir Abdelkader', phone: '+213 36 78 90 12', email: 'setif@nexivora-dz.com', hours: 'Sun-Thu 9AM-6PM', status: 'active', sales: '1.9M', manager: 'Rafik Benali' },
+  { id: 6, name: 'Nexivora Blida', city: 'Blida', address: '5 Rue de la Gare', phone: '+213 25 34 56 78', email: 'blida@nexivora-dz.com', hours: 'Sun-Thu 9AM-6PM', status: 'inactive', sales: '0', manager: 'Nadia Sahraoui' },
 ]
 
 export default function DealersTab() {

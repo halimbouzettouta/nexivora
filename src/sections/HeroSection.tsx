@@ -5,7 +5,7 @@ import { useLanguage } from '@/hooks/useLanguage'
 
 export default function HeroSection() {
   const contentRef = useRef<HTMLDivElement>(null)
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
 
   useEffect(() => {
     const el = contentRef.current
@@ -17,6 +17,12 @@ export default function HeroSection() {
       child.style.animation = `fade-in-up 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${0.3 + i * 0.2}s forwards`
     }
   }, [])
+
+  const subtitle = lang === 'ar'
+    ? 'دراجات و سكوترات كهربائية فاخرة مصممة للطرق الجزائرية. شحن مجاني وضمان شامل.'
+    : lang === 'fr'
+      ? 'Vélos et trottinettes électriques premium conçus pour les routes algériennes. Livraison gratuite et garantie complète.'
+      : 'Premium electric bikes and scooters built for Algerian roads. Free shipping & full warranty.'
 
   return (
     <section className="relative w-full min-h-[100dvh] bg-black flex items-center justify-center overflow-hidden">
@@ -55,7 +61,7 @@ export default function HeroSection() {
           className="text-[#8B949E] leading-relaxed max-w-[520px] mx-auto mb-10"
           style={{ fontSize: 'clamp(16px, 1.8vw, 20px)' }}
         >
-          {t('hero.subtitle')}
+          {subtitle}
         </p>
         <div className="flex items-center justify-center gap-4 flex-wrap">
           <Link
@@ -65,10 +71,10 @@ export default function HeroSection() {
             {t('hero.shop')}
           </Link>
           <Link
-            to="/dashboard"
+            to="/dealers"
             className="px-9 py-3.5 border border-[#30363D] text-white font-medium rounded-lg hover:border-[#01D7D5] hover:text-[#01D7D5] transition-all duration-300"
           >
-            {t('hero.join')}
+            {lang === 'ar' ? 'ابحث عن موزع' : lang === 'fr' ? 'Trouver un Concessionnaire' : 'Find a Dealer'}
           </Link>
         </div>
       </div>

@@ -3,17 +3,17 @@ import { CreditCard, CheckCircle, Clock, AlertTriangle, Edit2, Plus } from 'luci
 import StatusBadge from './StatusBadge'
 
 const activeSubs = [
-  { id: 1, customer: 'Ahmed Benali', plan: 'Premium Maintenance', price: '1,500', cycle: 'monthly', status: 'active', startDate: '2025-01-15', nextBilling: '2025-07-15', product: 'E-Ride City Pro' },
-  { id: 2, customer: 'Karim Hadj', plan: 'Basic Maintenance', price: '500', cycle: 'monthly', status: 'active', startDate: '2025-03-01', nextBilling: '2025-07-01', product: 'E-Ride Trail Blazer' },
-  { id: 3, customer: 'Sofia Mansouri', plan: 'Extended Warranty', price: '15,000', cycle: 'one_time', status: 'active', startDate: '2025-02-10', nextBilling: '2026-02-10', product: 'E-Ride Mountain X' },
-  { id: 4, customer: 'Omar Khalef', plan: 'Premium Maintenance', price: '1,500', cycle: 'monthly', status: 'canceled', startDate: '2024-10-01', nextBilling: '—', product: 'E-Ride City Pro' },
-  { id: 5, customer: 'Yasmine D.', plan: 'Basic Maintenance', price: '500', cycle: 'monthly', status: 'active', startDate: '2025-05-20', nextBilling: '2025-07-20', product: 'E-Ride Urban Glide' },
+  { id: 1, customer: 'Ahmed Benali', plan: 'Premium Maintenance', price: '1,500', cycle: 'monthly', status: 'active', startDate: '2025-01-15', nextBilling: '2025-07-15', product: 'Nexivora City Pro' },
+  { id: 2, customer: 'Karim Hadj', plan: 'Basic Maintenance', price: '500', cycle: 'monthly', status: 'active', startDate: '2025-03-01', nextBilling: '2025-07-01', product: 'Nexivora Trail Blazer' },
+  { id: 3, customer: 'Sofia Mansouri', plan: 'Extended Warranty', price: '15,000', cycle: 'one_time', status: 'active', startDate: '2025-02-10', nextBilling: '2026-02-10', product: 'Nexivora Mountain X' },
+  { id: 4, customer: 'Omar Khalef', plan: 'Premium Maintenance', price: '1,500', cycle: 'monthly', status: 'canceled', startDate: '2024-10-01', nextBilling: '—', product: 'Nexivora City Pro' },
+  { id: 5, customer: 'Yasmine D.', plan: 'Basic Maintenance', price: '500', cycle: 'monthly', status: 'active', startDate: '2025-05-20', nextBilling: '2025-07-20', product: 'Nexivora Urban Glide' },
 ]
 
 const maintenanceRequests = [
-  { id: 1, customer: 'Ahmed Benali', product: 'E-Ride City Pro', issue: 'Battery not charging fully', status: 'scheduled', date: '2025-06-15', dealer: 'E-Ride Algiers' },
-  { id: 2, customer: 'Karim Hadj', product: 'E-Ride Trail Blazer', issue: 'Brake adjustment needed', status: 'completed', date: '2025-06-08', dealer: 'E-Ride Constantine' },
-  { id: 3, customer: 'Sofia M.', product: 'E-Ride Mountain X', issue: 'Motor noise', status: 'pending', date: '2025-06-12', dealer: 'E-Ride Algiers' },
+  { id: 1, customer: 'Ahmed Benali', product: 'Nexivora City Pro', issue: 'Battery not charging fully', status: 'scheduled', date: '2025-06-15', dealer: 'Nexivora Algiers' },
+  { id: 2, customer: 'Karim Hadj', product: 'Nexivora Trail Blazer', issue: 'Brake adjustment needed', status: 'completed', date: '2025-06-08', dealer: 'Nexivora Constantine' },
+  { id: 3, customer: 'Sofia M.', product: 'Nexivora Mountain X', issue: 'Motor noise', status: 'pending', date: '2025-06-12', dealer: 'Nexivora Algiers' },
 ]
 
 const plans = [

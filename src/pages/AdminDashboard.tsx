@@ -90,12 +90,12 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-black pt-[70px]">
+    <div className="min-h-screen bg-black pt-[90px]">
       <div className="flex">
         {/* Sidebar */}
-        <aside className="hidden lg:block w-[260px] min-h-[calc(100vh-70px)] bg-[#0A0A0A] border-r border-[#30363D] fixed top-[70px] left-0 bottom-0 overflow-y-auto z-40">
+        <aside className="hidden lg:block w-[260px] min-h-[calc(100vh-90px)] bg-[#0A0A0A] border-r border-[#30363D] fixed top-[90px] left-0 bottom-0 overflow-y-auto z-40">
           <Link to="/" className="block px-6 py-5 text-[#01D7D5] font-semibold text-base tracking-[0.05em]">
-            E-RIDE
+            NEXIVORA
           </Link>
           <div className="px-3 pb-1">
             <span className="px-4 text-[10px] uppercase tracking-wider text-[#484F58] font-medium">Admin</span>

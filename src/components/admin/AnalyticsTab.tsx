@@ -8,11 +8,11 @@ const kpiCards = [
 ]
 
 const topProducts = [
-  { name: 'E-Ride City Pro', sales: 142, revenue: '26.3M', trend: '+24%' },
-  { name: 'E-Ride Urban Glide', sales: 98, revenue: '12.3M', trend: '+18%' },
-  { name: 'E-Ride Trail Blazer', sales: 67, revenue: '17.4M', trend: '+32%' },
-  { name: 'E-Ride Mountain X', sales: 45, revenue: '14.4M', trend: '+15%' },
-  { name: 'E-Ride Air Helmet', sales: 312, revenue: '2.7M', trend: '+8%' },
+  { name: 'Nexivora City Pro', sales: 142, revenue: '26.3M', trend: '+24%' },
+  { name: 'Nexivora Urban Glide', sales: 98, revenue: '12.3M', trend: '+18%' },
+  { name: 'Nexivora Trail Blazer', sales: 67, revenue: '17.4M', trend: '+32%' },
+  { name: 'Nexivora Mountain X', sales: 45, revenue: '14.4M', trend: '+15%' },
+  { name: 'Nexivora Air Helmet', sales: 312, revenue: '2.7M', trend: '+8%' },
 ]
 
 const acquisitionFunnel = [
@@ -24,7 +24,7 @@ const acquisitionFunnel = [
 ]
 
 const aiInsights = [
-  { icon: <Zap size={14} />, text: 'Product "E-Ride City Pro" is trending up 34% — consider increasing stock to 25 units', type: 'trend' },
+  { icon: <Zap size={14} />, text: 'Product "Nexivora City Pro" is trending up 34% — consider increasing stock to 25 units', type: 'trend' },
   { icon: <AlertTriangle size={14} />, text: 'Marketer Ahmed B. has 0 sales this week — a follow-up message may help re-engage', type: 'alert' },
   { icon: <Lightbulb size={14} />, text: 'Weekend conversion rate is 23% higher — schedule campaigns for Friday/Saturday', type: 'insight' },
   { icon: <AlertTriangle size={14} />, text: '3 accounts (IDs: 44, 67, 91) show suspicious activity pattern — review recommended', type: 'warning' },

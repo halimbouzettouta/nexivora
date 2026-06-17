@@ -3,6 +3,7 @@ import Navigation from './Navigation'
 import Footer from './Footer'
 import CartDrawer from './CartDrawer'
 import ToastContainer from './ToastContainer'
+import ChatBot from './ChatBot'
 
 export default function Layout() {
   return (
@@ -14,6 +15,7 @@ export default function Layout() {
       <Footer />
       <CartDrawer />
       <ToastContainer />
+      <ChatBot />
     </div>
   )
 }

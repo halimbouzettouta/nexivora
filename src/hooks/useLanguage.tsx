@@ -19,13 +19,13 @@ const dictionaries: Record<Lang, Record<string, string>> = { en, ar, fr }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>(() => {
-    const saved = localStorage.getItem('eride-lang')
+    const saved = localStorage.getItem('nxv-lang')
     return (saved === 'ar' ? 'ar' : 'en') as Lang
   })
 
   const setLang = (l: Lang) => {
     setLangState(l)
-    localStorage.setItem('eride-lang', l)
+    localStorage.setItem('nxv-lang', l)
     document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr'
     document.documentElement.lang = l
   }

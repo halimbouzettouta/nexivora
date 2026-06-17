@@ -1,73 +1,67 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Search, Printer, Eye, Download } from 'lucide-react'
-import { trpc } from '@/providers/trpc'
 import StatusBadge from './StatusBadge'
+import { getOrders, getOrderStats, updateOrderStatus, type Order } from '@/hooks/orderStore'
 
 const statusOptions = ['All', 'Pending', 'Processing', 'Shipped', 'Delivered', 'Completed', 'Canceled', 'Refunded']
+const statusTransitions: Record<string, string[]> = {
+  pending: ['Processing', 'Shipped', 'Canceled'],
+  processing: ['Shipped', 'Canceled'],
+  shipped: ['Delivered', 'Canceled'],
+  delivered: ['Completed'],
+  completed: [],
+  canceled: [],
+  refunded: [],
+}
 
 export default function OrdersTab() {
   const [statusFilter, setStatusFilter] = useState('All')
   const [search, setSearch] = useState('')
+  const [allOrders, setAllOrders] = useState<Order[]>([])
   const [selectedOrders, setSelectedOrders] = useState<string[]>([])
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null)
 
-  const { data: allOrders, isLoading } = trpc.order.list.useQuery({})
+  // Load orders from localStorage
+  const refresh = () => setAllOrders(getOrders())
+  useEffect(() => {
+    refresh()
+    const interval = setInterval(refresh, 2000)
+    return () => clearInterval(interval)
+  }, [])
 
-  // Calculate stats from real data
-  const stats = [
-    { label: 'Total Orders', value: allOrders?.length?.toString() || '0', color: '#01D7D5' },
-    { label: 'Pending', value: allOrders?.filter(o => o.status === 'pending').length?.toString() || '0', color: '#F59E0B' },
-    { label: 'Processing', value: allOrders?.filter(o => o.status === 'processing').length?.toString() || '0', color: '#3B82F6' },
-    { label: 'Completed', value: allOrders?.filter(o => o.status === 'delivered' || o.status === 'completed').length?.toString() || '0', color: '#01D7D5' },
+  const stats = getOrderStats()
+
+  const statCards = [
+    { label: 'Total Orders', value: String(stats.total), color: '#01D7D5' },
+    { label: 'Pending', value: String(stats.pending), color: '#F59E0B' },
+    { label: 'Processing', value: String(stats.processing), color: '#3B82F6' },
+    { label: 'Completed', value: String(stats.delivered), color: '#01D7D5' },
   ]
 
-  const filtered = (allOrders || []).filter((o) => {
+  const filtered = allOrders.filter((o) => {
     const matchStatus = statusFilter === 'All' || o.status === statusFilter.toLowerCase()
     const matchSearch = !search ||
-      (o.orderNumber?.toLowerCase() || '').includes(search.toLowerCase()) ||
-      (typeof o.shippingAddress === 'object' && o.shippingAddress !== null
-        ? (o.shippingAddress as Record<string, string>).fullName?.toLowerCase().includes(search.toLowerCase())
-        : false)
+      o.orderNumber.toLowerCase().includes(search.toLowerCase()) ||
+      o.customerName.toLowerCase().includes(search.toLowerCase())
     return matchStatus && matchSearch
   })
+
+  const selectedOrder = allOrders.find(o => o.id === selectedOrderId)
 
   const toggleSelect = (id: string) => {
     setSelectedOrders((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id])
   }
 
-  const getCustomerName = (order: any) => {
-    if (typeof order.shippingAddress === 'object' && order.shippingAddress !== null) {
-      return (order.shippingAddress as Record<string, string>).fullName || 'Unknown'
-    }
-    return 'Unknown'
-  }
-
-  const getCustomerEmail = (order: any) => {
-    if (typeof order.shippingAddress === 'object' && order.shippingAddress !== null) {
-      return (order.shippingAddress as Record<string, string>).email || ''
-    }
-    return ''
-  }
-
-  const getCity = (order: any) => {
-    if (typeof order.shippingAddress === 'object' && order.shippingAddress !== null) {
-      return (order.shippingAddress as Record<string, string>).city || ''
-    }
-    return ''
-  }
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="text-[#8B949E] text-sm">Loading orders...</div>
-      </div>
-    )
+  const handleStatusChange = (orderId: string, newStatus: string) => {
+    updateOrderStatus(orderId, newStatus.toLowerCase() as Order['status'])
+    refresh()
   }
 
   return (
     <div className="space-y-6">
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        {stats.map((s) => (
+        {statCards.map((s) => (
           <div key={s.label} className="bg-[#161B22] border border-[#30363D] rounded-xl p-4">
             <p className="text-[11px] uppercase tracking-wider text-[#484F58] mb-1">{s.label}</p>
             <p className="text-white font-semibold text-xl" style={{ color: s.color }}>{s.value}</p>
@@ -90,84 +84,117 @@ export default function OrdersTab() {
             </button>
           ))}
         </div>
-        <button className="flex items-center gap-2 px-4 py-2.5 border border-[#30363D] rounded-lg text-sm text-[#8B949E] hover:border-[#01D7D5] hover:text-white transition-colors">
-          <Download size={14} /> Export
+        <button onClick={() => { refresh(); alert(`${getOrders().length} orders refreshed`) }}
+          className="flex items-center gap-2 px-4 py-2.5 border border-[#30363D] rounded-lg text-sm text-[#8B949E] hover:border-[#01D7D5] hover:text-white transition-colors">
+          <Download size={14} /> Refresh
         </button>
       </div>
 
-      {/* Bulk Actions */}
-      {selectedOrders.length > 0 && (
-        <div className="flex items-center gap-3 bg-[rgba(1,215,213,0.05)] border border-[#01D7D5]/20 rounded-lg p-3">
-          <span className="text-[#8B949E] text-sm">{selectedOrders.length} selected</span>
-          <div className="flex gap-2">
-            {['Processing', 'Shipped', 'Delivered', 'Canceled'].map((s) => (
-              <button key={s} className="px-3 py-1.5 bg-[#161B22] border border-[#30363D] rounded text-xs text-white hover:border-[#01D7D5] transition-colors">
-                Mark {s}
-              </button>
-            ))}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Orders Table */}
+        <div className="lg:col-span-2">
+          <div className="bg-[#161B22] border border-[#30363D] rounded-xl overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-[#484F58] text-xs uppercase tracking-wider bg-[#0A0A0A]">
+                    <th className="text-left py-3 px-3 w-8"><input type="checkbox" className="rounded border-[#30363D] bg-[#161B22]" /></th>
+                    <th className="text-left py-3 px-3">Order #</th>
+                    <th className="text-left py-3 px-3">Customer</th>
+                    <th className="text-left py-3 px-3">Items</th>
+                    <th className="text-left py-3 px-3">Total</th>
+                    <th className="text-left py-3 px-3">Status</th>
+                    <th className="text-left py-3 px-3">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.length === 0 && (
+                    <tr>
+                      <td colSpan={7} className="py-12 text-center text-[#484F58]">
+                        {allOrders.length === 0 ? 'No orders yet. Orders appear here when customers check out.' : 'No orders match your filters.'}
+                      </td>
+                    </tr>
+                  )}
+                  {filtered.map((o) => (
+                    <tr key={o.id} onClick={() => setSelectedOrderId(o.id)}
+                      className={`border-t border-[#30363D]/50 cursor-pointer transition-colors ${selectedOrderId === o.id ? 'bg-[rgba(1,215,213,0.05)]' : 'hover:bg-[rgba(255,255,255,0.02)]'}`}>
+                      <td className="py-3 px-3" onClick={(e) => e.stopPropagation()}>
+                        <input type="checkbox" checked={selectedOrders.includes(o.id)} onChange={() => toggleSelect(o.id)} className="rounded border-[#30363D] bg-[#161B22]" />
+                      </td>
+                      <td className="py-3 px-3 text-white font-mono text-xs">{o.orderNumber}</td>
+                      <td className="py-3 px-3">
+                        <p className="text-white text-sm">{o.customerName}</p>
+                        <p className="text-[#484F58] text-xs">{o.customerPhone || o.customerEmail}</p>
+                      </td>
+                      <td className="py-3 px-3 text-[#8B949E] text-xs">{o.items.length} items</td>
+                      <td className="py-3 px-3 text-white">{o.total.toLocaleString()} DZD</td>
+                      <td className="py-3 px-3"><StatusBadge status={o.status} /></td>
+                      <td className="py-3 px-3 text-[#484F58] text-xs">{new Date(o.createdAt).toLocaleDateString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="flex items-center justify-between p-4 border-t border-[#30363D]">
+              <p className="text-[#484F58] text-xs">Showing {filtered.length} of {allOrders.length} orders</p>
+            </div>
           </div>
         </div>
-      )}
 
-      {/* Orders Table */}
-      <div className="bg-[#161B22] border border-[#30363D] rounded-xl overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-[#484F58] text-xs uppercase tracking-wider bg-[#0A0A0A]">
-                <th className="text-left py-3 px-3 w-8"><input type="checkbox" className="rounded border-[#30363D] bg-[#161B22]" /></th>
-                <th className="text-left py-3 px-3">Order #</th>
-                <th className="text-left py-3 px-3">Customer</th>
-                <th className="text-left py-3 px-3">Products</th>
-                <th className="text-left py-3 px-3">Total</th>
-                <th className="text-left py-3 px-3">Status</th>
-                <th className="text-left py-3 px-3">Payment</th>
-                <th className="text-left py-3 px-3">Date</th>
-                <th className="text-left py-3 px-3">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.length === 0 && (
-                <tr>
-                  <td colSpan={9} className="py-12 text-center text-[#484F58]">
-                    {allOrders?.length === 0 ? 'No orders yet. Orders will appear here when customers place them.' : 'No orders match your filters.'}
-                  </td>
-                </tr>
-              )}
-              {filtered.map((o) => (
-                <tr key={o.id} className="border-t border-[#30363D]/50 hover:bg-[rgba(255,255,255,0.02)] transition-colors">
-                  <td className="py-3 px-3">
-                    <input type="checkbox" checked={selectedOrders.includes(String(o.id))} onChange={() => toggleSelect(String(o.id))} className="rounded border-[#30363D] bg-[#161B22]" />
-                  </td>
-                  <td className="py-3 px-3 text-white font-mono text-xs">{o.orderNumber}</td>
-                  <td className="py-3 px-3">
-                    <p className="text-white text-sm">{getCustomerName(o)}</p>
-                    <p className="text-[#484F58] text-xs">{getCustomerEmail(o)}</p>
-                  </td>
-                  <td className="py-3 px-3 text-[#8B949E] text-xs max-w-[180px] truncate">{o.products || '—'}</td>
-                  <td className="py-3 px-3 text-white">{parseFloat(o.total || '0').toLocaleString()} DZD</td>
-                  <td className="py-3 px-3"><StatusBadge status={o.status || 'pending'} /></td>
-                  <td className="py-3 px-3 text-[#8B949E] text-xs uppercase">{o.paymentMethod || 'cod'}</td>
-                  <td className="py-3 px-3 text-[#484F58] text-xs">{o.createdAt ? new Date(o.createdAt).toLocaleDateString() : '—'}</td>
-                  <td className="py-3 px-3">
-                    <div className="flex gap-1.5">
-                      <button className="p-1.5 text-[#484F58] hover:text-[#01D7D5] transition-colors rounded hover:bg-[rgba(1,215,213,0.1)]"><Eye size={14} /></button>
-                      <button className="p-1.5 text-[#484F58] hover:text-white transition-colors rounded hover:bg-[rgba(255,255,255,0.05)]"><Printer size={14} /></button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {/* Pagination */}
-        <div className="flex items-center justify-between p-4 border-t border-[#30363D]">
-          <p className="text-[#484F58] text-xs">Showing {filtered.length} of {allOrders?.length || 0} orders</p>
-          <div className="flex gap-1">
-            {['Prev', '1', 'Next'].map((p) => (
-              <button key={p} className={`px-3 py-1.5 rounded text-xs ${p === '1' ? 'bg-[rgba(1,215,213,0.15)] text-[#01D7D5]' : 'text-[#484F58] hover:text-white'}`}>{p}</button>
-            ))}
-          </div>
+        {/* Order Detail Panel */}
+        <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-5">
+          {selectedOrder ? (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-white font-medium">{selectedOrder.orderNumber}</h3>
+                <StatusBadge status={selectedOrder.status} />
+              </div>
+
+              <div className="space-y-2 text-sm">
+                <p className="text-[#8B949E]"><span className="text-[#484F58]">Customer:</span> {selectedOrder.customerName}</p>
+                <p className="text-[#8B949E]"><span className="text-[#484F58]">Phone:</span> {selectedOrder.customerPhone || '—'}</p>
+                <p className="text-[#8B949E]"><span className="text-[#484F58]">Address:</span> {selectedOrder.address || '—'}</p>
+                <p className="text-[#8B949E]"><span className="text-[#484F58]">City:</span> {selectedOrder.city || '—'}</p>
+                <p className="text-[#8B949E]"><span className="text-[#484F58]">Payment:</span> {selectedOrder.paymentMethod}</p>
+              </div>
+
+              <div className="border-t border-[#30363D] pt-3">
+                <p className="text-[#484F58] text-xs uppercase mb-2">Items</p>
+                {selectedOrder.items.map((item, i) => (
+                  <div key={i} className="flex justify-between text-sm mb-1">
+                    <span className="text-[#8B949E]">{item.name} x{item.quantity}</span>
+                    <span className="text-white">{(item.price * item.quantity).toLocaleString()} DZD</span>
+                  </div>
+                ))}
+                <div className="border-t border-[#30363D] pt-2 mt-2">
+                  <div className="flex justify-between text-sm"><span className="text-[#484F58]">Subtotal</span><span className="text-white">{selectedOrder.subtotal.toLocaleString()} DZD</span></div>
+                  <div className="flex justify-between text-sm"><span className="text-[#484F58]">Shipping</span><span className="text-white">{selectedOrder.shipping.toLocaleString()} DZD</span></div>
+                  <div className="flex justify-between text-sm font-semibold mt-1"><span className="text-white">Total</span><span className="text-[#01D7D5]">{selectedOrder.total.toLocaleString()} DZD</span></div>
+                </div>
+              </div>
+
+              {/* Status change buttons */}
+              <div className="border-t border-[#30363D] pt-3">
+                <p className="text-[#484F58] text-xs uppercase mb-2">Change Status</p>
+                <div className="flex flex-wrap gap-2">
+                  {(statusTransitions[selectedOrder.status] || []).map((nextStatus) => (
+                    <button key={nextStatus} onClick={() => handleStatusChange(selectedOrder.id, nextStatus)}
+                      className="px-3 py-1.5 bg-[#0A0A0A] border border-[#30363D] rounded text-xs text-white hover:border-[#01D7D5] transition-colors">
+                      Mark {nextStatus}
+                    </button>
+                  ))}
+                  {statusTransitions[selectedOrder.status]?.length === 0 && (
+                    <p className="text-[#484F58] text-xs">No further transitions available</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <Eye size={32} className="text-[#30363D] mx-auto mb-3" />
+              <p className="text-[#484F58] text-sm">Select an order to view details and manage status</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

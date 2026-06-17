@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router'
+import { useEffect } from 'react'
 import Layout from './components/Layout'
 import AdminGuard from './components/AdminGuard'
 import MarketerGuard from './components/MarketerGuard'
@@ -18,10 +19,25 @@ import AdminDashboard from './pages/AdminDashboard'
 import AdminSetup from './pages/AdminSetup'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import ForgotPassword from './pages/ForgotPassword'
 import AdminLogin from './pages/AdminLogin'
 import NotFound from './pages/NotFound'
 
 export default function App() {
+  // Capture referral code from URL and persist in sessionStorage
+  useEffect(() => {
+    const checkRef = () => {
+      const hash = window.location.hash
+      const refMatch = hash.match(/[?&]ref=([^&]+)/)
+      if (refMatch) {
+        sessionStorage.setItem('nxv_order_ref', refMatch[1])
+      }
+    }
+    checkRef()
+    window.addEventListener('hashchange', checkRef)
+    return () => window.removeEventListener('hashchange', checkRef)
+  }, [])
+
   return (
     <Routes>
       <Route element={<Layout />}>
@@ -44,6 +60,7 @@ export default function App() {
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/admin-login" element={<AdminLogin />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

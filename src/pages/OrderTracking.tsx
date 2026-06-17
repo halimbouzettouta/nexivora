@@ -35,7 +35,7 @@ export default function OrderTracking() {
   }
 
   return (
-    <div className="min-h-screen bg-black pt-[70px]">
+    <div className="min-h-screen bg-black pt-[90px]">
       <div className="max-w-[800px] mx-auto px-4 sm:px-6 lg:px-[5vw] py-12">
         <div className="flex items-center gap-2 text-sm text-[#484F58] mb-6">
           <Link to="/" className="hover:text-[#01D7D5]">{t('nav.home')}</Link>

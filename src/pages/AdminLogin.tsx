@@ -35,7 +35,7 @@ export default function AdminLogin() {
   }
 
   const handleReset = () => {
-    localStorage.removeItem('eride-admin-pwd-hash')
+    localStorage.removeItem('nexivora-admin-pwd-hash')
     setError('')
     setSuccess(lang === 'ar' ? 'تم إعادة تعيين كلمة المرور. حاول مرة أخرى.' : lang === 'fr' ? 'Mot de passe réinitialisé. Essayez de vous reconnecter.' : 'Password reset to default. Try logging in again.')
     setPassword(DEFAULT_PASSWORD)
@@ -53,7 +53,7 @@ export default function AdminLogin() {
             {lang === 'ar' ? 'دخول المشرف' : lang === 'fr' ? 'Connexion Admin' : 'Admin Login'}
           </h1>
           <p className="text-[#8B949E] text-sm">
-            {lang === 'ar' ? 'لوحة تحكم إي-رايد - دخول حصري' : lang === 'fr' ? 'Panneau Admin E-Ride - Accès Restreint' : 'E-Ride Admin Panel - Restricted Access'}
+            {lang === 'ar' ? 'لوحة تحكم إي-رايد - دخول حصري' : lang === 'fr' ? 'Panneau Admin Nexivora - Accès Restreint' : 'Nexivora Admin Panel - Restricted Access'}
           </p>
         </div>
 

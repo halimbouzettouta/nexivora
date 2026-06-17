@@ -52,7 +52,7 @@ export default function Store() {
   }
 
   return (
-    <div className="min-h-screen bg-black pt-[70px]">
+    <div className="min-h-screen bg-black pt-[90px]">
       <div className="bg-black text-center pt-32 pb-20 px-4">
         <div className="flex items-center justify-center gap-2 text-xs mb-4">
           <Link to="/" className="hover:text-[#01D7D5]">{t('nav.home')}</Link><span>/</span><span className="text-[#8B949E]">{t('nav.store')}</span>
