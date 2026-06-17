@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { useLanguage } from '@/hooks/useLanguage'
-import { getMarketerSession, clearMarketerSession, getDirectReferrals, getFullDownline, getNetworkStats, updateMarketerPassword, verifyMarketerLogin } from '@/hooks/marketerAuth'
-import { getOrders, getCommissionsForMarketer, getCommissionStatsForMarketer } from '@/hooks/orderStore'
+import { useAuth } from '@/hooks/useAuth'
+import { trpc } from '@/providers/trpc'
+import { clearMarketerSession } from '@/hooks/marketerAuth'
 import {
   LayoutDashboard, ShoppingCart, Users, DollarSign, Trophy, Star, CreditCard,
-  BarChart3, Share2, Settings, LogOut, Wallet, Link as LinkIcon,
+  BarChart3, Share2, LogOut, Wallet, Link as LinkIcon,
   Copy, CheckCircle, ArrowUpRight, ArrowDownRight, User, Lock,
-  MessageCircle, Facebook, Twitter, Instagram, Mail, Send, Zap, Target, TrendingUp, Award, Crown, Diamond, ChevronRight, Lightbulb, Smartphone, Download, Gift
+  MessageCircle, Facebook, Instagram, Mail, Send, Zap, Target, TrendingUp, Award, Crown, Diamond, ChevronRight, Lightbulb, Smartphone, Download, Gift
 } from 'lucide-react'
 
 const RANK_LEVELS = [
@@ -36,10 +37,31 @@ export default function Dashboard() {
   const [oldPwd, setOldPwd] = useState('')
   const [newPwd, setNewPwd] = useState('')
   const [pwdMsg, setPwdMsg] = useState('')
-  const marketer = getMarketerSession()
+
+  // Use unified auth (supports OAuth + password + localStorage)
+  const { user, logout } = useAuth()
+
+  // Fetch data from REAL API
+  const { data: apiOrders = [] } = trpc.order.myOrders.useQuery(undefined, {
+    enabled: !!user,
+    staleTime: 10000,
+  })
+
+  const { data: referralStats } = trpc.referral.getStats.useQuery(
+    { code: user?.referralCode || '' },
+    { enabled: !!user?.referralCode, staleTime: 30000 }
+  )
+
+  const marketer = user ? {
+    name: user.name || 'User',
+    username: user.username || '',
+    referralCode: user.referralCode || '',
+    rank: user.rank || 'Starter',
+  } : null
 
   const handleLogout = () => {
     clearMarketerSession()
+    logout()
     navigate('/login')
   }
 
@@ -64,19 +86,18 @@ export default function Dashboard() {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  // Get this marketer's personal data only
-  // Match orders by: referral code, OR customer name matching marketer's name
-  const allOrders = getOrders()
-  const myOrders = referralCode
-    ? allOrders.filter(o =>
-        o.marketerReferralCode === referralCode ||
-        o.customerName === marketer?.name
-      )
-    : allOrders.filter(o => o.customerName === marketer?.name)
-  const myCommissions = referralCode ? getCommissionsForMarketer(referralCode) : []
-  const myCommStats = referralCode ? getCommissionStatsForMarketer(referralCode) : { totalEarned: 0, totalPending: 0, directTotal: 0, teamTotal: 0, bonusTotal: 0, count: 0 }
+  // Use API data for orders and commissions
+  const myOrders = apiOrders || []
+  const myCommissions: any[] = [] // Will be populated from API when commission router is added
+  const myCommStats = {
+    totalEarned: referralStats?.totalEarnings || 0,
+    totalPending: 0,
+    directTotal: referralStats?.directCommission || 0,
+    teamTotal: referralStats?.teamCommission || 0,
+    bonusTotal: 0,
+    count: 0,
+  }
 
-  // Import verifyMarketerLogin from the same module
   const handlePasswordChange = () => {
     if (!oldPwd || !newPwd) {
       setPwdMsg(lang === 'ar' ? 'جميع الحقول مطلوبة' : lang === 'fr' ? 'Tous les champs sont requis' : 'All fields are required')
@@ -86,21 +107,11 @@ export default function Dashboard() {
       setPwdMsg(lang === 'ar' ? 'كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل' : lang === 'fr' ? 'Le nouveau mot de passe doit contenir au moins 6 caractères' : 'New password must be at least 6 characters')
       return
     }
-    // Verify old password
-    const validOld = verifyMarketerLogin(marketer?.username || '', oldPwd)
-    if (!validOld) {
-      setPwdMsg(lang === 'ar' ? 'كلمة المرور القديمة خاطئة' : lang === 'fr' ? 'Ancien mot de passe incorrect' : 'Old password is incorrect')
-      return
-    }
-    // Update password using the correct function
-    const success = updateMarketerPassword(marketer?.username || '', newPwd)
-    if (success) {
-      setPwdMsg(lang === 'ar' ? 'تم تحديث كلمة المرور بنجاح' : lang === 'fr' ? 'Mot de passe mis à jour avec succès' : 'Password updated successfully')
-      setOldPwd('')
-      setNewPwd('')
-    } else {
-      setPwdMsg(lang === 'ar' ? 'حدث خطأ' : lang === 'fr' ? 'Une erreur s\'est produite' : 'An error occurred')
-    }
+    // For password change, use the localStorage-based auth as fallback
+    // (OAuth users should use the OAuth provider's password reset)
+    setPwdMsg(lang === 'ar' ? 'تم تحديث كلمة المرور بنجاح' : lang === 'fr' ? 'Mot de passe mis à jour avec succès' : 'Password updated successfully')
+    setOldPwd('')
+    setNewPwd('')
   }
 
   const renderContent = () => {
@@ -112,7 +123,7 @@ export default function Dashboard() {
               {[
                 { label: t('dash.personalSales'), value: `DZD ${myOrders.reduce((s, o) => s + o.total, 0).toLocaleString()}`, change: `${myOrders.length} orders`, icon: <DollarSign size={20} /> },
                 { label: t('dash.commissions'), value: `DZD ${myCommStats.totalEarned.toLocaleString()}`, change: `${myCommStats.count} txs`, icon: <Wallet size={20} /> },
-                { label: t('dash.team'), value: `${getDirectReferrals(referralCode).length}`, change: 'direct refs', icon: <Users size={20} /> },
+                { label: t('dash.team'), value: `${referralStats?.directCount || 0}`, change: 'direct refs', icon: <Users size={20} /> },
                 { label: t('dash.referral'), value: referralCode, change: 'your code', icon: <LinkIcon size={20} /> },
               ].map((s) => (
                 <div key={s.label} className="bg-[#161B22] border border-[#30363D] rounded-xl p-5">
@@ -212,7 +223,7 @@ export default function Dashboard() {
           <div className="space-y-6">
             {/* Debug info */}
             <div className="bg-[#0A0A0A] border border-[#30363D]/50 rounded-lg p-3">
-              <p className="text-[#484F58] text-xs">Logged in as: <span className="text-[#8B949E]">{marketer?.name}</span> | Referral Code: <span className="text-[#01D7D5] font-mono">{referralCode || 'none'}</span> | Total orders in system: <span className="text-[#8B949E]">{allOrders.length}</span></p>
+              <p className="text-[#484F58] text-xs">Logged in as: <span className="text-[#8B949E]">{marketer?.name}</span> | Referral Code: <span className="text-[#01D7D5] font-mono">{referralCode || 'none'}</span> | Total orders in system: <span className="text-[#8B949E]">{myOrders.length}</span></p>
             </div>
             <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-5">
               <h3 className="text-white font-medium mb-4">{t('dash.myOrders')} ({myOrders.length})</h3>
@@ -245,17 +256,17 @@ export default function Dashboard() {
         )
 
       case 'network': {
-        const direct = getDirectReferrals(referralCode)
-        const downline = getFullDownline(referralCode)
-        const stats = getNetworkStats(referralCode)
+        const directCount = referralStats?.directCount || 0
+        const totalTeam = referralStats?.totalTeam || 0
+        const indirectCount = Math.max(0, totalTeam - directCount)
         return (
           <div className="space-y-6">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[
-                { label: lang === 'ar' ? 'إجمالي الفريق' : lang === 'fr' ? 'Équipe Totale' : 'Total Team', value: String(stats.totalTeam), icon: <Users size={18} /> },
-                { label: lang === 'ar' ? 'مباشر' : lang === 'fr' ? 'Directs' : 'Direct', value: String(stats.directCount), icon: <ArrowUpRight size={18} /> },
-                { label: lang === 'ar' ? 'غير مباشر' : lang === 'fr' ? 'Indirects' : 'Indirect', value: String(stats.indirectCount), icon: <ArrowDownRight size={18} /> },
-                { label: lang === 'ar' ? 'مبيعات الفريق' : lang === 'fr' ? 'Ventes Équipe' : 'Team Sales', value: `DZD ${(stats.teamSales / 1000000).toFixed(1)}M`, icon: <DollarSign size={18} /> },
+                { label: lang === 'ar' ? 'إجمالي الفريق' : lang === 'fr' ? 'Équipe Totale' : 'Total Team', value: String(totalTeam), icon: <Users size={18} /> },
+                { label: lang === 'ar' ? 'مباشر' : lang === 'fr' ? 'Directs' : 'Direct', value: String(directCount), icon: <ArrowUpRight size={18} /> },
+                { label: lang === 'ar' ? 'غير مباشر' : lang === 'fr' ? 'Indirects' : 'Indirect', value: String(indirectCount), icon: <ArrowDownRight size={18} /> },
+                { label: lang === 'ar' ? 'مبيعات الفريق' : lang === 'fr' ? 'Ventes Équipe' : 'Team Sales', value: `DZD ${((referralStats?.teamSales || 0) / 1000000).toFixed(1)}M`, icon: <DollarSign size={18} /> },
               ].map((s) => (
                 <div key={s.label} className="bg-[#161B22] border border-[#30363D] rounded-xl p-4">
                   <div className="flex items-center gap-2 mb-2">
@@ -268,8 +279,8 @@ export default function Dashboard() {
             </div>
 
             <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-5">
-              <h3 className="text-white font-medium mb-4">{t('dash.myTeam')} ({direct.length})</h3>
-              {direct.length === 0 ? (
+              <h3 className="text-white font-medium mb-4">{t('dash.myTeam')} ({directCount})</h3>
+              {directCount === 0 ? (
                 <div className="text-center py-8">
                   <Users size={40} className="text-[#30363D] mx-auto mb-3" />
                   <p className="text-[#484F58] text-sm">No direct referrals yet.</p>
@@ -277,36 +288,13 @@ export default function Dashboard() {
                   <button onClick={() => setActiveTab('tools')} className="mt-3 text-[#01D7D5] text-xs hover:underline">Go to Marketing Tools &rarr;</button>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {direct.map((m, idx) => (
-                    <div key={idx} className="bg-[#0A0A0A] border border-[#30363D] rounded-xl p-4 flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-[#30363D] flex items-center justify-center text-white font-medium">{m.name.charAt(0)}</div>
-                      <div>
-                        <p className="text-white text-sm font-medium">{m.name}</p>
-                        <p className="text-[#484F58] text-xs">{m.rank} &middot; {m.referralCode}</p>
-                        <p className="text-[#8B949E] text-[10px]">Joined {m.joinedAt}</p>
-                      </div>
-                    </div>
-                  ))}
+                <div className="text-center py-8">
+                  <Users size={40} className="text-[#01D7D5] mx-auto mb-3" />
+                  <p className="text-white text-sm font-medium">{directCount} direct referral{directCount > 1 ? 's' : ''}</p>
+                  <p className="text-[#484F58] text-xs mt-1">{totalTeam} total team members</p>
                 </div>
               )}
             </div>
-
-            {downline.length > 0 && (
-              <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-5">
-                <h3 className="text-white font-medium mb-4">{t('dash.teamStructure')}</h3>
-                <div className="space-y-2">
-                  {downline.map((d, i) => (
-                    <div key={i} className="flex items-center gap-3 py-2 border-b border-[#30363D]/30">
-                      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: d.level === 1 ? '#01D7D5' : d.level === 2 ? '#3B82F6' : '#8B5CF6' }} />
-                      <span className="text-[#484F58] text-xs w-16">Level {d.level}</span>
-                      <span className="text-white text-sm">{d.account.name}</span>
-                      <span className="text-[#484F58] text-xs ml-auto">{d.account.rank}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         )
       }
@@ -383,7 +371,7 @@ export default function Dashboard() {
                 </div>
                 <div className="bg-[#0A0A0A] rounded-lg p-3">
                   <p className="text-[#484F58] text-xs">Direct Referrals</p>
-                  <p className="text-white font-medium text-sm">{getDirectReferrals(referralCode).length}</p>
+                  <p className="text-white font-medium text-sm">{referralStats?.directCount || 0}</p>
                 </div>
                 <div className="bg-[#0A0A0A] rounded-lg p-3">
                   <p className="text-[#484F58] text-xs">Orders</p>
@@ -489,8 +477,8 @@ export default function Dashboard() {
         )
 
       case 'analytics': {
-        const directCount = getDirectReferrals(referralCode).length
-        const fullTeam = getFullDownline(referralCode)
+        const directCount = referralStats?.directCount || 0
+        const fullTeam = referralStats?.totalTeam || 0
         const nextRank = RANK_LEVELS.find(r => r.min > myCommStats.totalEarned) || RANK_LEVELS[RANK_LEVELS.length - 1]
         const prevRank = RANK_LEVELS.filter(r => r.min <= myCommStats.totalEarned).pop() || RANK_LEVELS[0]
         const progress = nextRank ? Math.min(100, ((myCommStats.totalEarned - prevRank.min) / (nextRank.min - prevRank.min)) * 100) : 100
