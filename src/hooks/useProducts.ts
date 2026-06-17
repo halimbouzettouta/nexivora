@@ -1,42 +1,50 @@
-import { useState, useEffect, useCallback } from 'react'
-import { loadProducts, saveProducts, addProduct, updateProduct, deleteProduct, getProductStats, subscribeProducts, type Product } from './productStore'
+import { trpc } from '@/providers/trpc'
 
-export function useProducts() {
-  const [products, setProducts] = useState<Product[]>(loadProducts)
-
-  // Re-load when storage changes from other tabs/components
-  useEffect(() => {
-    const handleStorage = () => setProducts(loadProducts())
-    window.addEventListener('storage', handleStorage)
-    return () => window.removeEventListener('storage', handleStorage)
-  }, [])
-
-  // Subscribe to internal pub/sub
-  useEffect(() => {
-    const unsub = subscribeProducts(() => setProducts(loadProducts()))
-    return () => { unsub() }
-  }, [])
-
-  const refresh = useCallback(() => setProducts(loadProducts()), [])
-
-  const add = useCallback((product: Omit<Product, 'id'>) => {
-    addProduct(product)
-    setProducts(loadProducts())
-  }, [])
-
-  const update = useCallback((id: number, changes: Partial<Product>) => {
-    updateProduct(id, changes)
-    setProducts(loadProducts())
-  }, [])
-
-  const remove = useCallback((id: number) => {
-    deleteProduct(id)
-    setProducts(loadProducts())
-  }, [])
-
-  const stats = getProductStats()
-
-  return { products, add, update, remove, refresh, stats, save: saveProducts }
+export interface Product {
+  id: number
+  name: string
+  description: string
+  category: string
+  categoryId?: number
+  price: string
+  salePrice: string | null
+  stock: number
+  specs?: any
+  images?: any
+  image?: string
+  rating: string
+  reviewCount: number
+  slug?: string
+  status?: string
 }
 
-export type { Product }
+export function useProducts() {
+  const utils = trpc.useUtils()
+
+  const listQuery = (category?: string, search?: string, sortBy?: string) => {
+    return trpc.product.list.useQuery(
+      { category: category === 'all' ? undefined : category, search, sortBy: sortBy as any, limit: 50 },
+      { staleTime: 60_000 }
+    )
+  }
+
+  const featuredQuery = () => {
+    return trpc.product.getFeatured.useQuery(undefined, { staleTime: 60_000 })
+  }
+
+  const getById = (id: number) => {
+    return trpc.product.getById.useQuery({ id }, { staleTime: 60_000, enabled: !!id })
+  }
+
+  const categoriesQuery = () => {
+    return trpc.product.categories.useQuery(undefined, { staleTime: 300_000 })
+  }
+
+  return {
+    listQuery,
+    featuredQuery,
+    getById,
+    categoriesQuery,
+    utils,
+  }
+}

@@ -1,13 +1,29 @@
 import { Link, useParams } from 'react-router'
 import { ArrowLeft, Clock, Share2, Heart } from 'lucide-react'
 import { useLanguage } from '@/hooks/useLanguage'
-import { MOCK_ARTICLES } from './Blog'
+import { trpc } from '@/providers/trpc'
 
 export default function ArticleDetail() {
   const { slug } = useParams<{ slug: string }>()
   const { t, lang } = useLanguage()
 
-  const article = MOCK_ARTICLES.find((a) => a.slug === slug)
+  // Fetch article from REAL API
+  const { data: article, isLoading } = trpc.article.getBySlug.useQuery(
+    { slug: slug || '' },
+    { enabled: !!slug, staleTime: 60_000 }
+  )
+
+  // Fetch related articles
+  const { data: allArticles = [] } = trpc.article.list.useQuery({ limit: 10 }, { staleTime: 60_000 })
+  const related = allArticles?.items?.filter((a: any) => a.slug !== slug).slice(0, 3) || []
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black pt-[90px] flex items-center justify-center">
+        <p className="text-[#484F58]">Loading article...</p>
+      </div>
+    )
+  }
 
   if (!article) {
     return (
@@ -28,7 +44,7 @@ export default function ArticleDetail() {
         </Link>
 
         <div className="aspect-[21/9] rounded-xl overflow-hidden mb-8 bg-[#161B22] border border-[#30363D]">
-          <img src={article.image} alt={article.title} className="w-full h-full object-cover" />
+          <img src={article.featuredImage || '/article-industry.jpg'} alt={article.title} className="w-full h-full object-cover" />
         </div>
 
         <span className="text-[#484F58] text-xs uppercase tracking-wider">{article.category}</span>
@@ -36,10 +52,10 @@ export default function ArticleDetail() {
 
         <div className="flex items-center justify-between mb-8 pb-6 border-b border-[#30363D]">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#30363D] flex items-center justify-center text-xs font-medium text-white">ER</div>
+            <div className="w-10 h-10 rounded-full bg-[#30363D] flex items-center justify-center text-xs font-medium text-white">NX</div>
             <div>
               <p className="text-white text-sm">Nexivora Team</p>
-              <p className="text-[#484F58] text-xs">{article.date} &middot; {article.readTime} {t('blog.readTime')}</p>
+              <p className="text-[#484F58] text-xs">{article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : ''} &middot; {article.readTime || 5} {t('blog.readTime')}</p>
             </div>
           </div>
           <div className="flex gap-2">
@@ -53,28 +69,33 @@ export default function ArticleDetail() {
           <div className="text-[#E6EDF3] leading-relaxed whitespace-pre-line">{article.content}</div>
         </div>
 
-        <div className="flex flex-wrap gap-2 mb-10">
-          {article.tags.map((tag) => (
-            <span key={tag} className="bg-[#161B22] border border-[#30363D] text-[#8B949E] text-xs px-3 py-1 rounded-full">{tag}</span>
-          ))}
-        </div>
-
-        <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-6">
-          <h3 className="text-white font-medium mb-2">{lang === 'ar' ? 'مقالات ذات صلة' : lang === 'fr' ? 'Articles Similaires' : 'Related Articles'}</h3>
-          <div className="space-y-3">
-            {MOCK_ARTICLES.filter((a) => a.slug !== article.slug).slice(0, 3).map((a) => (
-              <Link key={a.slug} to={`/blog/${a.slug}`} className="flex items-center gap-3 group">
-                <div className="w-16 h-10 rounded-lg bg-[#0A0A0A] border border-[#30363D] overflow-hidden shrink-0">
-                  <img src={a.image} alt={a.title} className="w-full h-full object-cover" />
-                </div>
-                <div>
-                  <p className="text-white text-sm group-hover:text-[#01D7D5] transition-colors">{a.title}</p>
-                  <p className="text-[#484F58] text-[10px] flex items-center gap-1"><Clock size={8} /> {a.readTime} {t('blog.readTime')}</p>
-                </div>
-              </Link>
+        {article.tags && (
+          <div className="flex flex-wrap gap-2 mb-10">
+            {(typeof article.tags === 'string' ? JSON.parse(article.tags) : article.tags).map((tag: string) => (
+              <span key={tag} className="bg-[#161B22] border border-[#30363D] text-[#8B949E] text-xs px-3 py-1 rounded-full">{tag}</span>
             ))}
           </div>
-        </div>
+        )}
+
+        {/* Related Articles */}
+        {related.length > 0 && (
+          <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-6">
+            <h3 className="text-white font-medium mb-2">{lang === 'ar' ? 'مقالات ذات صلة' : lang === 'fr' ? 'Articles Similaires' : 'Related Articles'}</h3>
+            <div className="space-y-3">
+              {related.map((a: any) => (
+                <Link key={a.id} to={`/blog/${a.slug}`} className="flex items-center gap-3 group">
+                  <div className="w-16 h-10 rounded-lg bg-[#0A0A0A] border border-[#30363D] overflow-hidden shrink-0">
+                    <img src={a.featuredImage || '/article-industry.jpg'} alt={a.title} className="w-full h-full object-cover" />
+                  </div>
+                  <div>
+                    <p className="text-white text-sm group-hover:text-[#01D7D5] transition-colors">{a.title}</p>
+                    <p className="text-[#484F58] text-[10px] flex items-center gap-1"><Clock size={8} /> {a.readTime || 5} {t('blog.readTime')}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
