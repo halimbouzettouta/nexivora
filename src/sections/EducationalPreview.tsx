@@ -11,12 +11,20 @@ const categoryColors: Record<string, string> = {
   'Safety': '#EF4444',
 }
 
+// Fallback articles when API is unavailable
+const FALLBACK_ARTICLES = [
+  { id: 1, slug: 'choosing-your-first-e-bike', title: 'Choosing Your First E-Bike: A Complete Guide', excerpt: 'Everything you need to know before buying your first electric bike in Algeria. From motor types to battery range, we cover it all.', category: 'Guides', readTime: 8, featuredImage: '/article-guide.jpg' },
+  { id: 2, slug: 'battery-care-tips', title: 'E-Bike Battery Care: Extend Your Range', excerpt: 'Simple maintenance tips to double your battery lifespan and maximize range on every ride.', category: 'Maintenance', readTime: 5, featuredImage: '/article-battery.jpg' },
+  { id: 3, slug: 'algeria-electric-revolution', title: "Algeria's Electric Mobility Revolution", excerpt: 'How electric bikes and scooters are changing urban transportation across Algerian cities.', category: 'Industry News', readTime: 6, featuredImage: '/article-industry.jpg' },
+  { id: 4, slug: 'understanding-your-motor', title: 'Understanding Your E-Bike Motor', excerpt: 'A deep dive into how electric bike motors work and what to look for when choosing one.', category: 'Technology', readTime: 7, featuredImage: '/article-motor.jpg' },
+]
+
 export default function EducationalPreview() {
   const { t, lang } = useLanguage()
 
-  // Fetch articles from REAL API
+  // Fetch from API with fallback
   const { data: articlesData, isLoading } = trpc.article.list.useQuery({ limit: 4 }, { staleTime: 60_000 })
-  const articles = articlesData?.items || []
+  const articles = (articlesData?.items && articlesData.items.length > 0) ? articlesData.items : FALLBACK_ARTICLES
 
   return (
     <section className="w-full bg-[#0A0A0A] py-20 px-4 sm:px-6 lg:px-[5vw]">
@@ -32,7 +40,17 @@ export default function EducationalPreview() {
         </h2>
 
         {isLoading ? (
-          <div className="text-center py-12"><p className="text-[#484F58]">Loading articles...</p></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            {FALLBACK_ARTICLES.map((a) => (
+              <div key={a.id} className="bg-[#161B22] border border-[#30363D] rounded-xl overflow-hidden animate-pulse">
+                <div className="aspect-video bg-[#0A0A0A]" />
+                <div className="p-4 space-y-2">
+                  <div className="h-3 bg-[#30363D] rounded w-1/3" />
+                  <div className="h-4 bg-[#30363D] rounded w-3/4" />
+                </div>
+              </div>
+            ))}
+          </div>
         ) : (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
