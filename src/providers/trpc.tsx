@@ -7,14 +7,15 @@ import type { ReactNode } from "react";
 
 export const trpc = createTRPCReact<AppRouter>();
 
+// Create query client with error handling
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 1,
+      retry: false,
       refetchOnWindowFocus: false,
       staleTime: 60_000,
-      // When API fails, don't crash - just return no data
-      // Components should handle empty data gracefully
+      // Return empty data instead of crashing on error
+      // Components handle empty data as loading/fallback state
     },
     mutations: {
       retry: 0,
@@ -27,11 +28,24 @@ const trpcClient = trpc.createClient({
     httpBatchLink({
       url: "/api/trpc",
       transformer: superjson,
+      // Add error handling for failed requests
+      headers() {
+        return {
+          'x-trpc-source': 'react',
+        }
+      },
       fetch(input, init) {
         return globalThis.fetch(input, {
           ...(init ?? {}),
           credentials: "include",
-        });
+        }).catch((err) => {
+          // Silently handle network errors - components will use fallback data
+          console.warn('[tRPC] API unavailable, using fallback data')
+          return new Response(JSON.stringify({ error: { message: 'API unavailable' } }), {
+            status: 503,
+            headers: { 'content-type': 'application/json' }
+          })
+        })
       },
     }),
   ],
