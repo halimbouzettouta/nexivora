@@ -19,10 +19,10 @@ export default function HeroSection() {
   }, [])
 
   const subtitle = lang === 'ar'
-    ? 'دراجات و سكوترات كهربائية فاخرة مصممة للطرق الجزائرية. شحن مجاني وضمان شامل.'
+    ? 'دراجات و سكوترات كهربائية فاخرة مصممة للطريق. شحن مجاني وضمان شامل.'
     : lang === 'fr'
-      ? 'Vélos et trottinettes électriques premium conçus pour les routes algériennes. Livraison gratuite et garantie complète.'
-      : 'Premium electric bikes and scooters built for Algerian roads. Free shipping & full warranty.'
+      ? 'Vélos et trottinettes électriques premium conçus pour la route. Livraison gratuite et garantie complète.'
+      : 'Premium electric bikes and scooters built for the road ahead. Free shipping & full warranty.'
 
   return (
     <section className="relative w-full min-h-[100dvh] bg-black flex items-center justify-center overflow-hidden">

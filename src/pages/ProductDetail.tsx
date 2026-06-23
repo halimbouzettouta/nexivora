@@ -5,6 +5,15 @@ import { useLanguage } from '@/hooks/useLanguage'
 import { useProducts } from '@/hooks/useProducts'
 import { ShoppingCart, Heart, Star, Minus, Plus, Share2, Truck, Battery, Gauge } from 'lucide-react'
 
+const FALLBACK_PRODUCTS = [
+  { id: 1, name: 'Nexivora City Pro', description: 'Premium foldable electric bike designed for urban commuting. 500W motor, 48V 20Ah battery, 65km range, dual disc brakes, LED display, 5 pedal-assist levels.', price: '185000', salePrice: '169000', stock: 12, category: 'bikes', specs: { motor: '500W Brushless', battery: '48V 20Ah', range: '65km', speed: '45km/h', weight: '22kg', charging: '4-6 hours' }, images: ['ebike-premium'], slug: 'nexivora-city-pro', rating: '4.8', reviewCount: 24, status: 'active' },
+  { id: 2, name: 'Nexivora Urban Glide', description: 'Sleek urban commuter scooter with dual suspension and 10-inch pneumatic tires. Perfect for daily commutes.', price: '125000', salePrice: null, stock: 8, category: 'scooters', specs: { motor: '350W Hub', battery: '36V 15Ah', range: '40km', speed: '30km/h', weight: '14kg', charging: '3-4 hours' }, images: ['escooter-urban'], slug: 'nexivora-urban-glide', rating: '4.6', reviewCount: 18, status: 'active' },
+  { id: 3, name: 'Nexivora Trail Blazer', description: 'Rugged off-road electric scooter. Dual 1000W motors, all-terrain tires, IPX5 water resistance.', price: '285000', salePrice: '259000', stock: 5, category: 'scooters', specs: { motor: 'Dual 1000W', battery: '52V 30Ah', range: '80km', speed: '65km/h', weight: '35kg', charging: '8-10 hours' }, images: ['escooter-offroad'], slug: 'nexivora-trail-blazer', rating: '4.9', reviewCount: 12, status: 'active' },
+  { id: 4, name: 'Nexivora Metro Mini', description: 'Ultra-compact folding e-bike. Perfect for city dwellers with limited storage space.', price: '95000', salePrice: null, stock: 20, category: 'bikes', specs: { motor: '250W Hub', battery: '36V 10Ah', range: '35km', speed: '25km/h', weight: '16kg', charging: '3-4 hours' }, images: ['ebike-premium'], slug: 'nexivora-metro-mini', rating: '4.5', reviewCount: 31, status: 'active' },
+  { id: 5, name: 'Nexivora Speedster X1', description: 'High-performance road e-bike with carbon fiber frame and hydraulic disc brakes.', price: '320000', salePrice: '299000', stock: 3, category: 'bikes', specs: { motor: '750W Mid-Drive', battery: '48V 25Ah', range: '100km', speed: '55km/h', weight: '18kg', charging: '5-6 hours' }, images: ['ebike-premium'], slug: 'nexivora-speedster-x1', rating: '4.7', reviewCount: 8, status: 'active' },
+  { id: 6, name: 'Nexivora Cargo Hauler', description: 'Heavy-duty electric cargo bike with extended frame and 150kg load capacity.', price: '210000', salePrice: null, stock: 7, category: 'bikes', specs: { motor: '750W Hub', battery: '48V 20Ah', range: '55km', speed: '35km/h', weight: '32kg', charging: '5-6 hours' }, images: ['ebike-premium'], slug: 'nexivora-cargo-hauler', rating: '4.4', reviewCount: 15, status: 'active' },
+]
+
 export default function ProductDetail() {
   const { t, lang } = useLanguage()
   const params = useParams<{ slug: string }>()
@@ -20,14 +29,14 @@ export default function ProductDetail() {
 
   const { data: apiProduct, isLoading } = getById(isNumericId ? productId : 1)
 
-  // If slug is not numeric, we still show the product with ID 1 as fallback
-  // In a real app you'd have a getBySlug endpoint
-  const product = isNumericId ? apiProduct : null
+  // Fallback to local products when API is unavailable (static deployment)
+  const fallbackProduct = FALLBACK_PRODUCTS.find((p) => p.id === productId)
+  const product = apiProduct || fallbackProduct || null
 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-black pt-[90px] flex items-center justify-center">
-        <p className="text-[#484F58]">Loading product...</p>
+        <p className="text-[#484F58]">{lang === 'ar' ? 'جار التحميل...' : lang === 'fr' ? 'Chargement...' : 'Loading...'}</p>
       </div>
     )
   }
@@ -37,6 +46,7 @@ export default function ProductDetail() {
       <div className="min-h-screen bg-black pt-[90px] flex items-center justify-center">
         <div className="text-center">
           <p className="text-white text-lg mb-4">{lang === 'ar' ? 'المنتج غير موجود' : lang === 'fr' ? 'Produit non trouvé' : 'Product not found'}</p>
+          <Link to="/store" className="text-[#01D7D5] hover:underline">{lang === 'ar' ? 'تصفح المتجر' : lang === 'fr' ? 'Parcourir le magasin' : 'Browse Store'}</Link>
           <Link to="/store" className="text-[#01D7D5] hover:underline">{t('cart.continue')}</Link>
         </div>
       </div>

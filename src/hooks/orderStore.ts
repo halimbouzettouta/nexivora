@@ -1,27 +1,6 @@
 const ORDERS_KEY = 'nxv-orders'
 const COMMISSIONS_KEY = 'nxv-commissions'
 
-// ─── MIGRATE OLD DATA ───
-// Orders saved under old key 'eride-orders' need to be copied to new key
-(function migrateOldData() {
-  try {
-    const oldOrders = localStorage.getItem('eride-orders')
-    const newOrders = localStorage.getItem(ORDERS_KEY)
-    if (oldOrders && !newOrders) {
-      localStorage.setItem(ORDERS_KEY, oldOrders)
-      console.log('[MIGRATE] Copied', JSON.parse(oldOrders).length, 'orders from old key')
-    }
-    const oldComms = localStorage.getItem('eride-commissions')
-    const newComms = localStorage.getItem(COMMISSIONS_KEY)
-    if (oldComms && !newComms) {
-      localStorage.setItem(COMMISSIONS_KEY, oldComms)
-      console.log('[MIGRATE] Copied', JSON.parse(oldComms).length, 'commissions from old key')
-    }
-  } catch (e) {
-    console.error('[MIGRATE] Error:', e)
-  }
-})()
-
 export interface OrderItem {
   productId: number
   name: string

@@ -219,7 +219,7 @@ export default function AdminSetup() {
 
         <div className="text-center mt-8">
           <Link to="/" className="text-[#484F58] text-sm hover:text-[#8B949E] transition-colors">
-            ← Back to Home
+            {lang === 'ar' ? '← العودة للرئيسية' : lang === 'fr' ? '← Retour à l\'accueil' : '← Back to Home'}
           </Link>
         </div>
       </div>

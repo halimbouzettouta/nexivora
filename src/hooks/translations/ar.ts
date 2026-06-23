@@ -19,6 +19,11 @@ export const ar: Record<string, string> = {
   'hero.shop': 'تسوق الآن',
   'hero.join': 'ابحث عن موزع',
 
+  // Featured Section
+  'featured.title': 'مجموعتنا',
+  'featured.subtitle': 'دراجات و سكوترات كهربائية',
+  'featured.viewAll': 'عرض جميع المنتجات',
+
   // Products Section
   'products.title': 'مجموعتنا',
   'products.subtitle': 'دراجات و سكوترات كهربائية',
@@ -35,18 +40,18 @@ export const ar: Record<string, string> = {
 
   // Why Choose Us
   'why.badge': 'لماذا نكسيفورا',
-  'why.title': 'مصممة للجزائر',
+  'why.title': 'مصممة للطريق',
   'why.desc': 'مركبات كهربائية فاخرة مع دعم محلي وتغطية ضمان وخدمة على مستوى الوطن.',
   'why.electric': '100% كهربائية',
   'why.electricDesc': 'صفر انبعاثات، صفر تكاليف وقود. اشحن في المنزل وانطلق بتكلفة زهيدة.',
   'why.range': 'مدى حتى 80 كم',
   'why.rangeDesc': 'انطلق حتى 80 كم في شحنة واحدة. اذهب أبعد بدون قلق من نفاد الطاقة.',
   'why.shipping': 'توصيل مجاني',
-  'why.shippingDesc': 'شحن مجاني لجميع الولايات الـ 48 في الجزائر. الدفع عند الاستلام متاح.',
+  'why.shippingDesc': 'توصيل مجاني لباب منزلك. الدفع عند الاستلام متاح.',
   'why.support': 'دعم 24/7',
   'why.supportDesc': 'فريقنا متاح دائماً بالهاتف أو الواتساب أو البريد الإلكتروني لمساعدتك.',
   'why.quality': 'جودة أوروبية',
-  'why.qualityDesc': 'مكونات من أفضل المصنعين الأوروبيين. مصممة لتدوم على طرق الجزائر.',
+  'why.qualityDesc': 'مكونات من أفضل المصنعين الأوروبيين. مصممة لتدوم على أي طريق.',
   'why.fastCharge': 'شحن سريع',
   'why.fastChargeDesc': 'شحنة كاملة في 3-4 ساعات فقط. وصلها ليلاً وانطلق طوال اليوم.',
 

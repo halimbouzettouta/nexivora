@@ -3,19 +3,30 @@ import { ArrowLeft, Clock, Share2, Heart } from 'lucide-react'
 import { useLanguage } from '@/hooks/useLanguage'
 import { trpc } from '@/providers/trpc'
 
+const FALLBACK_ARTICLES = [
+  { id: 1, slug: 'choosing-your-first-e-bike', title: 'Choosing Your First E-Bike: A Complete Guide', excerpt: 'Everything you need to know before buying your first electric bike. From motor types to battery range, we cover it all.', category: 'Guides', readTime: 8, date: '2025-05-15', publishedAt: '2025-05-15', featuredImage: '/article-guide.jpg', content: 'Electric bikes are transforming how people commute. With so many options on the market, choosing your first e-bike can feel overwhelming. This guide walks you through the key factors: motor power (250W for casual riding, 500W+ for hills), battery capacity (measured in watt-hours), frame style (step-through vs. diamond), and budget considerations. We also cover local regulations and test ride tips to ensure you make the right choice.' },
+  { id: 2, slug: 'battery-care-tips', title: 'E-Bike Battery Care: Extend Your Range', excerpt: 'Simple maintenance tips to double your battery lifespan and maximize range on every ride.', category: 'Maintenance', readTime: 5, date: '2025-05-10', publishedAt: '2025-05-10', featuredImage: '/article-battery.jpg', content: 'Your e-bike battery is the most expensive component and deserves proper care. Always store your battery at room temperature, avoid extreme heat or cold. Charge it regularly and avoid letting it drain completely below 20%. Use the manufacturer charger only. Clean the contacts monthly with a dry cloth. Following these simple tips can extend your battery life by 2-3 years and maintain optimal range.' },
+  { id: 3, slug: 'electric-mobility-revolution', title: 'Electric Mobility Revolution', excerpt: 'How electric bikes and scooters are changing urban transportation across cities around the world.', category: 'Industry News', readTime: 6, date: '2025-04-28', publishedAt: '2025-04-28', featuredImage: '/article-industry.jpg', content: 'From cities worldwide, electric two-wheelers are becoming the preferred mode of urban transport. With zero emissions, low operating costs, and the ability to bypass traffic, e-bikes and e-scooters offer a compelling alternative to cars and public transit. Governments are investing in charging infrastructure and bike lanes, while companies are innovating with swappable batteries and smart connectivity. The future of urban mobility is electric.' },
+  { id: 4, slug: 'understanding-your-motor', title: 'Understanding Your E-Bike Motor', excerpt: 'A deep dive into how electric bike motors work and what to look for when choosing one.', category: 'Technology', readTime: 7, date: '2025-04-20', publishedAt: '2025-04-20', featuredImage: '/article-motor.jpg', content: 'The motor is the heart of your e-bike. There are three main types: hub motors (in the wheel, quiet and low maintenance), mid-drive motors (near the pedals, better balance and hill climbing), and friction drive motors (less common). Power ratings range from 250W to 750W+. Torque, measured in Newton-meters (Nm), determines how well your bike climbs hills. A good e-bike motor should deliver smooth, natural assistance that feels like an extension of your own pedaling.' },
+  { id: 5, slug: 'safety-gear-essentials', title: 'Safety Gear Every Rider Needs', excerpt: 'The essential protective equipment you should never ride without, from helmets to lights.', category: 'Safety', readTime: 4, date: '2025-04-12', publishedAt: '2025-04-12', featuredImage: '/article-safety.jpg', content: 'Safety should never be compromised when riding an electric vehicle. The absolute must-haves are: a certified helmet (CE or CPSC), front and rear lights for visibility, reflective clothing for night riding, gloves for grip and protection, and a bell or horn to alert pedestrians. Consider adding knee and elbow pads for higher-speed scooters. Remember, being visible and predictable is just as important as protective gear.' },
+  { id: 6, slug: 'charging-best-practices', title: 'Best Charging Practices for E-Scooters', excerpt: 'How to properly charge your electric scooter for maximum battery life and performance.', category: 'Maintenance', readTime: 5, date: '2025-03-30', publishedAt: '2025-03-30', featuredImage: '/article-charging.jpg', content: 'Proper charging habits are the key to a long-lasting e-scooter battery. Always charge after every ride, even if the battery is not fully depleted. Avoid overcharging by unplugging once full (within 1-2 hours). Charge in a dry, ventilated area away from flammable materials. Never charge a wet scooter. If storing for extended periods, keep the battery at 50-70% charge. These habits will maximize both battery life and daily range.' },
+]
+
 export default function ArticleDetail() {
   const { slug } = useParams<{ slug: string }>()
   const { t, lang } = useLanguage()
 
-  // Fetch article from REAL API
-  const { data: article, isLoading } = trpc.article.getBySlug.useQuery(
+  // Fetch article from API (fallback on static deployment)
+  const { data: apiArticle, isLoading } = trpc.article.getBySlug.useQuery(
     { slug: slug || '' },
     { enabled: !!slug, staleTime: 60_000 }
   )
+  const article = apiArticle || FALLBACK_ARTICLES.find((a) => a.slug === slug) || null
 
   // Fetch related articles
-  const { data: allArticles = [] } = trpc.article.list.useQuery({ limit: 10 }, { staleTime: 60_000 })
-  const related = allArticles?.items?.filter((a: any) => a.slug !== slug).slice(0, 3) || []
+  const { data: apiAllArticles } = trpc.article.list.useQuery({ limit: 10 }, { staleTime: 60_000 })
+  const allArticles = apiAllArticles?.items?.length ? apiAllArticles.items : FALLBACK_ARTICLES
+  const related = allArticles.filter((a: any) => a.slug !== slug).slice(0, 3)
 
   if (isLoading) {
     return (

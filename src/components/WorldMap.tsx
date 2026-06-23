@@ -285,7 +285,7 @@ export default function WorldMap() {
             <MapPin size={12} className="text-[#01D7D5]" />
             <span className="text-white text-xs font-medium">{hoveredDealer.name}</span>
           </div>
-          <span className="text-[#484F58] text-[10px]">{hoveredDealer.city}, Algeria</span>
+          <span className="text-[#484F58] text-[10px]">{hoveredDealer.city}</span>
         </div>
       )}
     </div>

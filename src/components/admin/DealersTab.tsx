@@ -3,12 +3,12 @@ import { MapPin, Phone, Mail, Clock, Plus, Edit2, Trash2, Search } from 'lucide-
 import StatusBadge from './StatusBadge'
 
 const dealers = [
-  { id: 1, name: 'Nexivora Algiers Center', city: 'Algiers', address: '123 Blvd Mohamed VI', phone: '+213 23 45 67 89', email: 'algiers@nexivora-dz.com', hours: 'Sun-Thu 9AM-6PM', status: 'active', sales: '8.5M', manager: 'Amine Khelifi' },
-  { id: 2, name: 'Nexivora Oran', city: 'Oran', address: '45 Rue d\'Oran', phone: '+213 41 23 45 67', email: 'oran@nexivora-dz.com', hours: 'Sun-Thu 9AM-6PM', status: 'active', sales: '4.2M', manager: 'Samir Boualem' },
-  { id: 3, name: 'Nexivora Constantine', city: 'Constantine', address: '78 Rue Freres Bouadou', phone: '+213 31 45 67 89', email: 'constantine@nexivora-dz.com', hours: 'Sun-Thu 9AM-6PM', status: 'active', sales: '3.8M', manager: 'Hakim Meddah' },
-  { id: 4, name: 'Nexivora Annaba', city: 'Annaba', address: '12 Blvd Republique', phone: '+213 38 12 34 56', email: 'annaba@nexivora-dz.com', hours: 'Sun-Thu 9AM-6PM', status: 'active', sales: '2.1M', manager: 'Lyes Merad' },
-  { id: 5, name: 'Nexivora Setif', city: 'Setif', address: '33 Rue Emir Abdelkader', phone: '+213 36 78 90 12', email: 'setif@nexivora-dz.com', hours: 'Sun-Thu 9AM-6PM', status: 'active', sales: '1.9M', manager: 'Rafik Benali' },
-  { id: 6, name: 'Nexivora Blida', city: 'Blida', address: '5 Rue de la Gare', phone: '+213 25 34 56 78', email: 'blida@nexivora-dz.com', hours: 'Sun-Thu 9AM-6PM', status: 'inactive', sales: '0', manager: 'Nadia Sahraoui' },
+  { id: 1, name: 'Nexivora London', city: 'London', address: '45 Electric Avenue, London', phone: '+44 20 7946 0958', email: 'london@nexivora.com', hours: 'Mon-Sat 9AM-6PM', status: 'active', sales: '12.5M', manager: 'James Mitchell' },
+  { id: 2, name: 'Nexivora Paris', city: 'Paris', address: '78 Rue de la Mobilité, Paris', phone: '+33 1 42 86 82 00', email: 'paris@nexivora.com', hours: 'Mon-Sat 9AM-7PM', status: 'active', sales: '9.8M', manager: 'Marie Dubois' },
+  { id: 3, name: 'Nexivora Dubai', city: 'Dubai', address: '12 Sheikh Zayed Road, Dubai', phone: '+971 4 123 4567', email: 'dubai@nexivora.com', hours: 'Sun-Thu 9AM-8PM', status: 'active', sales: '8.2M', manager: 'Omar Hassan' },
+  { id: 4, name: 'Nexivora New York', city: 'New York', address: '350 5th Avenue, New York', phone: '+1 212-736-3100', email: 'newyork@nexivora.com', hours: 'Mon-Sat 10AM-7PM', status: 'active', sales: '11.3M', manager: 'Sarah Chen' },
+  { id: 5, name: 'Nexivora Tokyo', city: 'Tokyo', address: '1-1 Shibuya Crossing, Tokyo', phone: '+81 3-1234-5678', email: 'tokyo@nexivora.com', hours: 'Mon-Sat 10AM-8PM', status: 'active', sales: '7.1M', manager: 'Yuki Tanaka' },
+  { id: 6, name: 'Nexivora Sydney', city: 'Sydney', address: '100 Harbour Street, Sydney', phone: '+61 2 9374 4000', email: 'sydney@nexivora.com', hours: 'Mon-Sat 9AM-6PM', status: 'inactive', sales: '0', manager: 'Emma Wilson' },
 ]
 
 export default function DealersTab() {
@@ -22,7 +22,7 @@ export default function DealersTab() {
         {[
           { label: 'Total Dealers', value: `${dealers.length}` },
           { label: 'Active', value: `${dealers.filter((d) => d.status === 'active').length}` },
-          { label: 'Top Dealer', value: 'Algiers' },
+          { label: 'Top Dealer', value: 'Nexivora HQ' },
           { label: 'Total Sales', value: 'DZD 20.5M' },
         ].map((s) => (
           <div key={s.label} className="bg-[#161B22] border border-[#30363D] rounded-xl p-4">

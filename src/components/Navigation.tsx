@@ -95,7 +95,7 @@ export default function Navigation() {
               </Link>
             ) : (
               <Link to="/login" className="hidden sm:flex items-center gap-1.5 px-4 py-2 text-sm font-medium border border-[#30363D] text-[#8B949E] rounded-lg hover:border-[#01D7D5] hover:text-[#01D7D5] transition-colors">
-                <LogIn size={16} /> Member Login
+                <LogIn size={16} /> {lang === 'ar' ? 'تسجيل الدخول' : lang === 'fr' ? 'Connexion' : 'Login'}
               </Link>
             )}
 
@@ -172,7 +172,7 @@ export default function Navigation() {
                   className="flex items-center justify-center gap-2 text-lg font-medium text-[#01D7D5] hover:text-white transition-colors"
                 >
                   <LogIn size={18} />
-                  {lang === 'ar' ? 'تسجيل دخول المسوق' : lang === 'fr' ? 'Connexion Marketer' : 'Member Login'}
+                  {lang === 'ar' ? 'تسجيل الدخول' : lang === 'fr' ? 'Connexion' : 'Login'}
                 </Link>
               )}
             </div>

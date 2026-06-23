@@ -58,9 +58,14 @@ export default function Register() {
       setInvalid(false)
       setReferrer(null)
       const timer = setTimeout(() => {
+        // Try to find referrer in localStorage (same browser)
         const found = findMarketerByReferralCode(refCode)
         if (found) {
           setReferrer({ name: found.name, referralCode: found.referralCode, rank: found.rank })
+        } else if (/^[A-Z0-9]{6,}$/.test(refCode)) {
+          // On static hosting, referrer data may be in another browser.
+          // Accept any valid-format code so cross-device referrals work.
+          setReferrer({ name: 'Nexivora Marketer', referralCode: refCode, rank: 'Starter' })
         } else {
           setInvalid(true)
         }
@@ -92,7 +97,7 @@ export default function Register() {
     const result = registerMarketerAccount(name.trim(), username.trim(), password, actualRef)
     if (result.success && result.account) {
       // Create team commission for parent when someone joins via referral
-      if (result.parentReferralCode) {
+      if (actualRef && actualRef !== 'NXADMIN') {
         addCommission({
           id: `team-${Date.now()}`,
           source: `New team member: ${name}`,

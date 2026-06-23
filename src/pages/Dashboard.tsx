@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { useLanguage } from '@/hooks/useLanguage'
 import { useAuth } from '@/hooks/useAuth'
 import { trpc } from '@/providers/trpc'
-import { clearMarketerSession } from '@/hooks/marketerAuth'
+import { clearMarketerSession, getMarketerSession } from '@/hooks/marketerAuth'
+import { getOrders, getCommissionsForMarketer, getCommissionStatsForMarketer } from '@/hooks/orderStore'
 import {
   LayoutDashboard, ShoppingCart, Users, DollarSign, Trophy, Star, CreditCard,
   BarChart3, Share2, LogOut, Wallet, Link as LinkIcon,
@@ -41,22 +42,48 @@ export default function Dashboard() {
   // Use unified auth (supports OAuth + password + localStorage)
   const { user, logout } = useAuth()
 
-  // Fetch data from REAL API
+  // Get current marketer session for referral code
+  const marketerSession = getMarketerSession()
+
+  // Fetch data from REAL API (with localStorage fallback)
   const { data: apiOrders = [] } = trpc.order.myOrders.useQuery(undefined, {
     enabled: !!user,
     staleTime: 10000,
   })
 
+  // Fallback to localStorage orders when API returns empty
+  const localOrders = useMemo(() => getOrders(), [apiOrders])
+  const allOrders = apiOrders.length > 0 ? apiOrders : localOrders
+
+  // Get marketer's referral code
+  const referralCode = user?.referralCode || marketerSession?.referralCode || ''
+
+  // Fetch commissions from localStorage
+  const myCommissions = useMemo(() =>
+    referralCode ? getCommissionsForMarketer(referralCode) : [],
+    [referralCode]
+  )
+  const myCommStats = useMemo(() =>
+    referralCode ? getCommissionStatsForMarketer(referralCode) : { totalEarned: 0, totalPending: 0, directTotal: 0, teamTotal: 0, bonusTotal: 0, count: 0 },
+    [referralCode]
+  )
+
+  // Calculate team stats from localStorage accounts
   const { data: referralStats } = trpc.referral.getStats.useQuery(
-    { code: user?.referralCode || '' },
-    { enabled: !!user?.referralCode, staleTime: 30000 }
+    { code: referralCode },
+    { enabled: !!referralCode, staleTime: 30000 }
   )
 
   const marketer = user ? {
     name: user.name || 'User',
     username: user.username || '',
-    referralCode: user.referralCode || '',
+    referralCode: referralCode,
     rank: user.rank || 'Starter',
+  } : marketerSession ? {
+    name: marketerSession.name || 'User',
+    username: marketerSession.username || '',
+    referralCode: marketerSession.referralCode || '',
+    rank: marketerSession.rank || 'Starter',
   } : null
 
   const handleLogout = () => {
@@ -77,7 +104,6 @@ export default function Dashboard() {
     { id: 'profile', label: lang === 'ar' ? 'الملف الشخصي' : lang === 'fr' ? 'Profil' : 'My Profile', icon: <User size={18} /> },
   ]
 
-  const referralCode = marketer?.referralCode || ''
   const referralLink = `${window.location.origin}/#/register?ref=${referralCode}`
 
   const handleCopy = () => {
@@ -86,17 +112,9 @@ export default function Dashboard() {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  // Use API data for orders and commissions
-  const myOrders = apiOrders || []
-  const myCommissions: any[] = [] // Will be populated from API when commission router is added
-  const myCommStats = {
-    totalEarned: referralStats?.totalEarnings || 0,
-    totalPending: 0,
-    directTotal: referralStats?.directCommission || 0,
-    teamTotal: referralStats?.teamCommission || 0,
-    bonusTotal: 0,
-    count: 0,
-  }
+  // Use API data when available, fallback to localStorage
+  const myOrders = allOrders || []
+  // Commissions and stats now come from localStorage (see useMemo above)
 
   const handlePasswordChange = () => {
     if (!oldPwd || !newPwd) {
@@ -425,7 +443,7 @@ export default function Dashboard() {
               </div>
               <div className="flex flex-wrap gap-3">
                 {[
-                  { name: 'WhatsApp', icon: <MessageCircle size={18} />, color: '#25D366', url: `https://wa.me/?text=${encodeURIComponent('Join Nexivora Algeria! ' + referralLink)}` },
+                  { name: 'WhatsApp', icon: <MessageCircle size={18} />, color: '#25D366', url: `https://wa.me/?text=${encodeURIComponent('Join Nexivora! ' + referralLink)}` },
                   { name: 'Facebook', icon: <Facebook size={18} />, color: '#1877F2', url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}` },
                   { name: 'Instagram', icon: <Instagram size={18} />, color: '#E4405F', url: '#' },
                   { name: 'Email', icon: <Mail size={18} />, color: '#EA4335', url: `mailto:?subject=Join Nexivora&body=${encodeURIComponent('Join Nexivora: ' + referralLink)}` },
@@ -461,7 +479,7 @@ export default function Dashboard() {
               <h3 className="text-white font-medium mb-4 flex items-center gap-2"><Send size={18} className="text-[#01D7D5]" /> Ready-to-Use Messages</h3>
               <div className="space-y-3">
                 {[
-                  `Join me at Nexivora Algeria! Earn commissions on every electric bike sale. Sign up: ${referralLink}`,
+                  `Join me at Nexivora! Earn commissions on every electric bike sale. Sign up: ${referralLink}`,
                   `Looking for a side income? I'm part of Nexivora's marketer program. Earn commissions selling e-bikes. Join: ${referralLink}`,
                   `I just joined Nexivora! You can too. Become a marketer and start earning: ${referralLink}`,
                 ].map((msg, i) => (

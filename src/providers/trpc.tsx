@@ -7,48 +7,30 @@ import type { ReactNode } from "react";
 
 export const trpc = createTRPCReact<AppRouter>();
 
-// Create query client with error handling
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: {
-      retry: false,
-      refetchOnWindowFocus: false,
-      staleTime: 60_000,
-      // Return empty data instead of crashing on error
-      // Components handle empty data as loading/fallback state
-    },
-    mutations: {
-      retry: 0,
-    },
+    queries: { retry: false, refetchOnWindowFocus: false, staleTime: 60_000 },
+    mutations: { retry: 0 },
   },
 });
 
+// Safe fetch: detects HTML responses (static hosting) and returns empty JSON
+const safeFetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
+  try {
+    const response = await globalThis.fetch(input, { ...(init ?? {}), credentials: "include" });
+    const ct = response.headers.get('content-type') || '';
+    // Static hosting returns HTML for all routes - return empty JSON instead
+    if (ct.includes('text/html')) {
+      return new Response('{}', { status: 200, headers: { 'content-type': 'application/json' } });
+    }
+    return response;
+  } catch {
+    return new Response('{}', { status: 200, headers: { 'content-type': 'application/json' } });
+  }
+};
+
 const trpcClient = trpc.createClient({
-  links: [
-    httpBatchLink({
-      url: "/api/trpc",
-      transformer: superjson,
-      // Add error handling for failed requests
-      headers() {
-        return {
-          'x-trpc-source': 'react',
-        }
-      },
-      fetch(input, init) {
-        return globalThis.fetch(input, {
-          ...(init ?? {}),
-          credentials: "include",
-        }).catch((err) => {
-          // Silently handle network errors - components will use fallback data
-          console.warn('[tRPC] API unavailable, using fallback data')
-          return new Response(JSON.stringify({ error: { message: 'API unavailable' } }), {
-            status: 503,
-            headers: { 'content-type': 'application/json' }
-          })
-        })
-      },
-    }),
-  ],
+  links: [httpBatchLink({ url: "/api/trpc", transformer: superjson, fetch: safeFetch })],
 });
 
 export function TRPCProvider({ children }: { children: ReactNode }) {

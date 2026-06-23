@@ -84,18 +84,18 @@ export default function SettingsTab() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="text-[#8B949E] text-xs mb-1 block">Platform Name</label>
-                <input defaultValue="Nexivora Algeria" className="w-full bg-[#0A0A0A] border border-[#30363D] text-white rounded-lg px-4 py-2.5 focus:border-[#01D7D5] focus:outline-none" />
+                <input defaultValue="Nexivora" className="w-full bg-[#0A0A0A] border border-[#30363D] text-white rounded-lg px-4 py-2.5 focus:border-[#01D7D5] focus:outline-none" />
               </div>
               <div>
                 <label className="text-[#8B949E] text-xs mb-1 block">Currency</label>
                 <select className="w-full bg-[#0A0A0A] border border-[#30363D] text-white rounded-lg px-4 py-2.5 focus:border-[#01D7D5] focus:outline-none">
-                  <option>DZD (Algerian Dinar)</option>
+                  <option>DZD</option>
                 </select>
               </div>
               <div>
                 <label className="text-[#8B949E] text-xs mb-1 block">Timezone</label>
                 <select className="w-full bg-[#0A0A0A] border border-[#30363D] text-white rounded-lg px-4 py-2.5 focus:border-[#01D7D5] focus:outline-none">
-                  <option>Africa/Algiers (GMT+1)</option>
+                  <option>UTC+1</option>
                 </select>
               </div>
               <div>

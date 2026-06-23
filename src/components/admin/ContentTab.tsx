@@ -5,7 +5,7 @@ import StatusBadge from './StatusBadge'
 const articles = [
   { id: 1, title: 'How to Extend Your Battery Life', slug: 'extend-battery-life', category: 'Battery Care', status: 'published', views: 1245, date: '2025-05-15' },
   { id: 2, title: 'Best Charging Practices for E-Scooters', slug: 'charging-practices', category: 'Maintenance', status: 'published', views: 982, date: '2025-05-20' },
-  { id: 3, title: 'Safety Tips for Riding in Algerian Cities', slug: 'safety-tips-cities', category: 'Safety', status: 'published', views: 2103, date: '2025-05-25' },
+  { id: 3, title: 'Safety Tips for Riding in Global Cities', slug: 'safety-tips-cities', category: 'Safety', status: 'published', views: 2103, date: '2025-05-25' },
   { id: 4, title: 'Understanding Your E-Bike Motor', slug: 'understanding-ebike-motor', category: 'Technology', status: 'published', views: 756, date: '2025-06-01' },
   { id: 5, title: 'New Nexivora Trail Blazer Review', slug: 'trail-blazer-review', category: 'News', status: 'draft', views: 0, date: '2025-06-08' },
 ]

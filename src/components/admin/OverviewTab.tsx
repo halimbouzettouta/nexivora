@@ -1,12 +1,25 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import StatCard from './StatCard'
 import StatusBadge from './StatusBadge'
 import { TrendingUp, ShoppingCart, Users, DollarSign, AlertTriangle } from 'lucide-react'
 import { trpc } from '@/providers/trpc'
+import { getOrders } from '@/hooks/orderStore'
+import { getMarketerAccounts } from '@/hooks/marketerAuth'
 
 export default function OverviewTab() {
-  const { data: orders = [] } = trpc.order.list.useQuery(undefined, { staleTime: 10000 })
-  const { data: users = [] } = trpc.adminSetup.listUsers.useQuery(undefined, { staleTime: 30000 })
+  // Fetch from API with localStorage fallback
+  const { data: apiOrders = [] } = trpc.order.list.useQuery(undefined, { staleTime: 10000 })
+  const { data: apiUsers = [] } = trpc.adminSetup.listUsers.useQuery(undefined, { staleTime: 30000 })
+
+  const localOrders = useMemo(() => getOrders(), [apiOrders])
+  const orders = apiOrders.length > 0 ? apiOrders : localOrders
+
+  const localAccounts = useMemo(() => getMarketerAccounts(), [apiUsers])
+  const localUsers = localAccounts.map((a, idx) => ({
+    id: idx + 1, name: a.name, email: a.username, role: 'marketer', status: 'active',
+    createdAt: a.joinedAt, referralCode: a.referralCode, rank: a.rank,
+  }))
+  const users = apiUsers.length > 0 ? apiUsers : localUsers
 
   // Compute real revenue
   const totalRevenue = orders.reduce((sum: number, o: any) => sum + Number(o.total || 0), 0)

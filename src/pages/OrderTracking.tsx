@@ -8,15 +8,24 @@ export default function OrderTracking() {
   const { t, lang } = useLanguage()
   const [orderNumber, setOrderNumber] = useState('')
   const [searched, setSearched] = useState(false)
+  const [localOrder, setLocalOrder] = useState<any>(null)
 
-  const { data: order, isLoading } = trpc.order.getByNumber.useQuery(
+  // Try API first, fallback to localStorage
+  const { data: apiOrder, isLoading } = trpc.order.getByNumber.useQuery(
     { orderNumber },
     { enabled: searched && !!orderNumber, staleTime: 30_000 }
   )
 
+  const order = apiOrder || localOrder
+
   const handleSearch = () => {
     if (orderNumber.trim()) {
       setSearched(true)
+      setLocalOrder(null)
+      // Search localStorage as fallback for static deployment
+      const orders = JSON.parse(localStorage.getItem('nexivora_orders') || '[]')
+      const found = orders.find((o: any) => o.orderNumber === orderNumber.trim())
+      if (found) setLocalOrder(found)
     }
   }
 
@@ -62,7 +71,7 @@ export default function OrderTracking() {
         </div>
 
         {isLoading && (
-          <div className="text-center py-12"><p className="text-[#484F58]">Searching...</p></div>
+          <div className="text-center py-12"><p className="text-[#484F58]">{lang === 'ar' ? 'جار البحث...' : lang === 'fr' ? 'Recherche...' : 'Searching...'}</p></div>
         )}
 
         {!isLoading && searched && !order && (

@@ -6,9 +6,9 @@ import { ShoppingCart, ArrowRight } from 'lucide-react'
 
 // Fallback products when API is unavailable
 const FALLBACK_PRODUCTS = [
-  { id: 1, name: 'Nexivora City Pro', description: 'Premium foldable electric bike designed for urban commuting. 500W motor, 48V 20Ah battery.', category: 'e-bikes', categoryId: 1, price: '185000', salePrice: '169000', stock: 15, specs: { motor: '500W', battery: '48V 20Ah', range: '65km', speed: '45km/h' }, images: ['ebike-premium'], image: '/product-ebike-premium.jpg', rating: '4.5', reviewCount: 24, slug: 'city-pro' },
-  { id: 2, name: 'Nexivora Urban Glide', description: 'Sleek urban commuter scooter with dual suspension and 10-inch pneumatic tires.', category: 'e-scooters', categoryId: 2, price: '125000', salePrice: null, stock: 22, specs: { motor: '350W', battery: '36V 15Ah', range: '45km', speed: '35km/h' }, images: ['escooter-city'], image: '/product-escooter-city.jpg', rating: '4.3', reviewCount: 18, slug: 'urban-glide' },
-  { id: 3, name: 'Nexivora Trail Blazer', description: 'Rugged off-road electric scooter. Dual 1000W motors, all-terrain tires, IPX5 water resistance.', category: 'e-scooters', categoryId: 2, price: '285000', salePrice: '259000', stock: 8, specs: { motor: 'Dual 1000W', battery: '52V 28Ah', range: '80km', speed: '65km/h' }, images: ['escooter-offroad'], image: '/product-escooter-offroad.jpg', rating: '4.8', reviewCount: 12, slug: 'trail-blazer' },
+  { id: 1, name: 'Nexivora City Pro', description: 'Premium foldable electric bike designed for urban commuting. 500W motor, 48V 20Ah battery.', category: 'e-bikes', categoryId: 1, price: '185000', salePrice: '169000', stock: 15, images: ['ebike-premium'], image: '/product-ebike-premium.jpg', rating: '4.5', reviewCount: 24 },
+  { id: 2, name: 'Nexivora Urban Glide', description: 'Sleek urban commuter scooter with dual suspension and 10-inch pneumatic tires.', category: 'e-scooters', categoryId: 2, price: '125000', salePrice: null, stock: 22, images: ['escooter-city'], image: '/product-escooter-city.jpg', rating: '4.3', reviewCount: 18 },
+  { id: 3, name: 'Nexivora Trail Blazer', description: 'Rugged off-road electric scooter. Dual 1000W motors, all-terrain tires, IPX5 water resistance.', category: 'e-scooters', categoryId: 2, price: '285000', salePrice: '259000', stock: 8, images: ['escooter-offroad'], image: '/product-escooter-offroad.jpg', rating: '4.8', reviewCount: 12 },
 ]
 
 export default function FeaturedProducts() {
@@ -17,7 +17,7 @@ export default function FeaturedProducts() {
   const addItem = useCart((s) => s.addItem)
   const { data: apiProducts, isLoading } = featuredQuery()
 
-  // Use API data if available, otherwise fallback
+  // Use API data if available and has items, otherwise use fallback
   const products = (apiProducts && apiProducts.length > 0) ? apiProducts : FALLBACK_PRODUCTS
 
   const handleAddToCart = (product: any) => {

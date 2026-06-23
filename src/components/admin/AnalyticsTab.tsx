@@ -28,7 +28,7 @@ const aiInsights = [
   { icon: <AlertTriangle size={14} />, text: 'Marketer Ahmed B. has 0 sales this week — a follow-up message may help re-engage', type: 'alert' },
   { icon: <Lightbulb size={14} />, text: 'Weekend conversion rate is 23% higher — schedule campaigns for Friday/Saturday', type: 'insight' },
   { icon: <AlertTriangle size={14} />, text: '3 accounts (IDs: 44, 67, 91) show suspicious activity pattern — review recommended', type: 'warning' },
-  { icon: <Zap size={14} />, text: 'Oran region showing 45% growth — consider opening a second dealer location', type: 'trend' },
+  { icon: <Zap size={14} />, text: 'Dubai region showing 45% growth — consider opening a second dealer location', type: 'trend' },
   { icon: <Lightbulb size={14} />, text: 'Customers who buy helmets with scooters have 40% higher repeat purchase rate', type: 'insight' },
 ]
 
@@ -130,12 +130,12 @@ export default function AnalyticsTab() {
         <h3 className="text-white font-medium mb-4">Geographic Sales Distribution</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {[
-            { city: 'Algiers', sales: '44%', amount: '18.5M' },
-            { city: 'Oran', sales: '19%', amount: '8.2M' },
-            { city: 'Constantine', sales: '14%', amount: '6.1M' },
-            { city: 'Annaba', sales: '10%', amount: '4.3M' },
-            { city: 'Setif', sales: '9%', amount: '3.8M' },
-            { city: 'Blida', sales: '4%', amount: '1.6M' },
+            { city: 'London', sales: '28%', amount: '18.5M' },
+            { city: 'New York', sales: '22%', amount: '14.2M' },
+            { city: 'Paris', sales: '18%', amount: '11.8M' },
+            { city: 'Dubai', sales: '14%', amount: '9.1M' },
+            { city: 'Tokyo', sales: '12%', amount: '7.8M' },
+            { city: 'Sydney', sales: '6%', amount: '3.9M' },
           ].map((city) => (
             <div key={city.city} className="bg-[#0A0A0A] rounded-lg p-3 text-center">
               <p className="text-white text-sm font-medium">{city.city}</p>

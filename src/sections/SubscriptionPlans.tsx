@@ -8,6 +8,24 @@ const planMeta = [
   { recommended: false },
 ]
 
+const FALLBACK_PLANS = [
+  {
+    id: 1, name: 'Basic Maintenance', price: '2500', billingCycle: 'monthly',
+    description: 'Essential monthly maintenance to keep your ride in good condition.',
+    features: ['Monthly inspection', '10% discount on parts', 'Priority scheduling'],
+  },
+  {
+    id: 2, name: 'Premium Maintenance', price: '5000', billingCycle: 'monthly',
+    description: 'Comprehensive care package with weekly check-ups and emergency support.',
+    features: ['Weekly check-ups', '24/7 emergency support', '20% parts discount', 'Free pick-up & delivery'],
+  },
+  {
+    id: 3, name: 'Extended Warranty', price: '15000', billingCycle: 'one_time',
+    description: 'One-year extended warranty coverage for complete peace of mind.',
+    features: ['1 additional year of coverage', 'Full parts replacement', 'Free labor', 'Transferable'],
+  },
+]
+
 // Translation mapping for known plan data from API
 const PLAN_NAME_KEYS: Record<string, string> = {
   'Extended Warranty': 'plan.extendedWarranty',
@@ -36,9 +54,10 @@ const FEATURE_KEYS: Record<string, string> = {
 
 export default function SubscriptionPlans() {
   const { t, lang } = useLanguage()
-  const { data: plans } = trpc.subscription.list.useQuery()
+  const { data: apiPlans } = trpc.subscription.list.useQuery()
   const isFr = lang === 'fr'
   const isAr = lang === 'ar'
+  const plans = apiPlans && apiPlans.length > 0 ? apiPlans : FALLBACK_PLANS
 
   // Helper to translate plan data
   const getPlanName = (name: string) => {

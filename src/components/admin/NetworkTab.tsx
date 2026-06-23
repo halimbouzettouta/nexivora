@@ -10,6 +10,10 @@ interface NetworkNode {
   children: NetworkNode[]
 }
 
+const rankColors: Record<string, string> = {
+  Starter: '#8B949E', Silver: '#C0C0C0', Gold: '#FFD700', Platinum: '#E5E4E2', Diamond: '#B9F2FF',
+}
+
 function buildTree(accounts: MarketerAccount[], parentCode: string): NetworkNode[] {
   const children = accounts.filter(a => a.parentReferralCode === parentCode)
   return children.map(child => ({
@@ -25,10 +29,6 @@ function TreeNode({ node, level }: { node: NetworkNode; level: number }) {
   const [expanded, setExpanded] = useState(true)
   const hasChildren = node.children.length > 0
   const indent = Math.min(level, 5) * 24
-
-  const rankColors: Record<string, string> = {
-    Starter: '#8B949E', Silver: '#C0C0C0', Gold: '#FFD700', Platinum: '#E5E4E2', Diamond: '#B9F2FF',
-  }
 
   return (
     <div>
@@ -65,11 +65,13 @@ export default function NetworkTab() {
     setAccounts(accs)
   }, [])
 
-  // Find top-level marketers (no parent)
+  // Find top-level marketers (no parent) and all accounts for selection
   const topLevel = accounts.filter(a => !a.parentReferralCode)
+  // If no top-level, allow selecting any account as tree root
+  const selectableRoots = topLevel.length > 0 ? topLevel : accounts
 
   // Compute stats for selected root
-  const rootCode = selectedRoot || (topLevel[0]?.referralCode || '')
+  const rootCode = selectedRoot || (selectableRoots[0]?.referralCode || '')
   const direct = rootCode ? getDirectReferrals(rootCode) : []
   const fullDownline = rootCode ? getFullDownline(rootCode) : []
 
@@ -101,11 +103,11 @@ export default function NetworkTab() {
       </div>
 
       {/* Root selector */}
-      {topLevel.length > 0 && (
+      {selectableRoots.length > 0 && (
         <div className="bg-[#161B22] border border-[#30363D] rounded-xl p-4">
           <label className="text-[#484F58] text-xs uppercase tracking-wider block mb-2">View Network Tree For:</label>
           <div className="flex flex-wrap gap-2">
-            {topLevel.map(tl => (
+            {selectableRoots.map(tl => (
               <button
                 key={tl.referralCode}
                 onClick={() => setSelectedRoot(tl.referralCode)}
@@ -115,7 +117,7 @@ export default function NetworkTab() {
                     : 'text-[#8B949E] border border-[#30363D] hover:border-[#01D7D5]'
                 }`}
               >
-                {tl.name} ({direct.length} direct)
+                {tl.name} ({getDirectReferrals(tl.referralCode).length} direct)
               </button>
             ))}
           </div>

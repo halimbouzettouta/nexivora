@@ -11,9 +11,9 @@ const stats = [
 import { useLanguage } from '@/hooks/useLanguage'
 
 const valuesAr = [
-  { icon: <Zap size={32} />, title: 'الابتكار', desc: 'حلول التنقل الكهربائي الرائدة للسوق الجزائرية.' },
+  { icon: <Zap size={32} />, title: 'الابتكار', desc: 'حلول التنقل الكهربائي الرائدة للسوق العالمية.' },
   { icon: <Leaf size={32} />, title: 'الاستدامة', desc: 'ملتزمون بتقليل انبعاثات الكربون من خلال النقل النظيف.' },
-  { icon: <Users size={32} />, title: 'المجتمع', desc: 'بناء شبكة من الدراجين والمسوقين والشركاء في جميع أنحاء الجزائر.' },
+  { icon: <Users size={32} />, title: 'المجتمع', desc: 'بناء شبكة من الدراجين والمسوقين والشركاء في جميع أنحاء العالم.' },
   { icon: <Shield size={32} />, title: 'النزاهة', desc: 'أسعار شفافة، تسويق نزيه، ومنتجات موثوقة.' },
 ]
 
@@ -21,15 +21,15 @@ export default function About() {
   const { t } = useLanguage()
   const isAr = lang === 'ar'
   const valuesFr = [
-    { icon: <Zap size={32} />, title: 'Innovation', desc: 'Solutions de mobilité électrique pionnières pour le marché algérien.' },
+    { icon: <Zap size={32} />, title: 'Innovation', desc: 'Solutions de mobilité électrique pionnières pour le marché mondial.' },
     { icon: <Leaf size={32} />, title: 'Durabilité', desc: 'Engagés à réduire les émissions de carbone par le transport propre.' },
-    { icon: <Users size={32} />, title: 'Communauté', desc: 'Construire un réseau de cyclistes, marketers et partenaires en Algérie.' },
+    { icon: <Users size={32} />, title: 'Communauté', desc: 'Construire un réseau de cyclistes, marketers et partenaires dans le monde.' },
     { icon: <Shield size={32} />, title: 'Intégrité', desc: 'Prix transparents, marketing honnête et produits fiables.' },
   ]
   const values = isAr ? valuesAr : lang === 'fr' ? valuesFr : [
-    { icon: <Zap size={32} />, title: 'Innovation', desc: 'Pioneering electric mobility solutions for the Algerian market.' },
+    { icon: <Zap size={32} />, title: 'Innovation', desc: 'Pioneering electric mobility solutions for the global market.' },
     { icon: <Leaf size={32} />, title: 'Sustainability', desc: 'Committed to reducing carbon emissions through clean transportation.' },
-    { icon: <Users size={32} />, title: 'Community', desc: 'Building a network of riders, marketers, and partners across Algeria.' },
+    { icon: <Users size={32} />, title: 'Community', desc: 'Building a network of riders, marketers, and partners around the world.' },
     { icon: <Shield size={32} />, title: 'Integrity', desc: 'Transparent pricing, honest marketing, and reliable products.' },
   ]
 

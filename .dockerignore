@@ -1,5 +1,7 @@
 node_modules
-dist
+npm-debug.log
+.env.local
 .git
-*.swp
-*.log
+.gitignore
+README.md
+dist/public/*.map

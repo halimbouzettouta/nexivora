@@ -1,4 +1,3 @@
-// ─── RESET: New keys to start fresh ───
 const SESSION_KEY = 'nxv-session'
 const ACCOUNTS_KEY = 'nxv-accounts'
 
@@ -22,26 +21,6 @@ function hashPassword(password: string): string {
   }
   return hash.toString(16) + 'e7d9a2'
 }
-
-// ─── MIGRATE OLD DATA ───
-(function migrateOldAccounts() {
-  try {
-    const oldAccounts = localStorage.getItem('eride-marketer-accounts')
-    const newAccounts = localStorage.getItem('nxv-accounts')
-    if (oldAccounts && !newAccounts) {
-      localStorage.setItem('nxv-accounts', oldAccounts)
-      console.log('[MIGRATE] Copied', JSON.parse(oldAccounts).length, 'accounts from old key')
-    }
-    const oldSession = localStorage.getItem('eride-marketer-session')
-    const newSession = localStorage.getItem('nxv-session')
-    if (oldSession && !newSession) {
-      localStorage.setItem('nxv-session', oldSession)
-      console.log('[MIGRATE] Copied session from old key')
-    }
-  } catch (e) {
-    console.error('[MIGRATE] Error:', e)
-  }
-})()
 
 function getAccounts(): MarketerAccount[] {
   const stored = localStorage.getItem(ACCOUNTS_KEY)

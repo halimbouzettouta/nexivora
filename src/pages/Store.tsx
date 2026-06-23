@@ -5,34 +5,40 @@ import { useCart } from '@/hooks/useCart'
 import { useLanguage } from '@/hooks/useLanguage'
 import { ShoppingCart, Search } from 'lucide-react'
 
-const getCategoryTabs = (isAr: boolean, isFr: boolean) =>
-  isAr ? ['الكل', 'دراجات كهربائية', 'سكوترات كهربائية', 'إكسسوارات', 'قطع غيار']
-  : isFr ? ['Tous', 'Vélos Élec.', 'Trottinettes', 'Accessoires', 'Pièces']
-  : ['All', 'E-Bikes', 'E-Scooters', 'Accessories', 'Parts']
+// Fallback products when API is unavailable
+const FALLBACK_PRODUCTS = [
+  { id: 1, name: 'Nexivora City Pro', description: 'Premium foldable electric bike designed for urban commuting. 500W motor, 48V 20Ah battery.', category: 'e-bikes', categoryId: 1, price: '185000', salePrice: '169000', stock: 15, images: ['ebike-premium'], image: '/product-ebike-premium.jpg', rating: '4.5', reviewCount: 24 },
+  { id: 2, name: 'Nexivora Urban Glide', description: 'Sleek urban commuter scooter with dual suspension and 10-inch pneumatic tires.', category: 'e-scooters', categoryId: 2, price: '125000', salePrice: null, stock: 22, images: ['escooter-city'], image: '/product-escooter-city.jpg', rating: '4.3', reviewCount: 18 },
+  { id: 3, name: 'Nexivora Trail Blazer', description: 'Rugged off-road electric scooter. Dual 1000W motors, all-terrain tires, IPX5 water resistance.', category: 'e-scooters', categoryId: 2, price: '285000', salePrice: '259000', stock: 8, images: ['escooter-offroad'], image: '/product-escooter-offroad.jpg', rating: '4.8', reviewCount: 12 },
+  { id: 4, name: 'Nexivora Lite Scooter', description: 'Lightweight and compact electric scooter perfect for short commutes and quick errands.', category: 'e-scooters', categoryId: 2, price: '75000', salePrice: null, stock: 30, images: ['escooter-lite'], image: '/product-escooter-lite.jpg', rating: '4.1', reviewCount: 35 },
+  { id: 5, name: 'Nexivora X1 E-Bike', description: 'High-performance electric mountain bike with full suspension, hydraulic brakes, and 750W mid-drive motor.', category: 'e-bikes', categoryId: 1, price: '245000', salePrice: '229000', stock: 10, images: ['ebike-mountain'], image: '/product-ebike-mountain.jpg', rating: '4.7', reviewCount: 15 },
+  { id: 6, name: 'Nexivora Cargo Pro', description: 'Heavy-duty electric cargo bike designed for deliveries and transporting goods. 1000W motor with extended frame.', category: 'e-bikes', categoryId: 1, price: '320000', salePrice: '299000', stock: 5, images: ['ebike-cargo'], image: '/product-ebike-cargo.jpg', rating: '4.6', reviewCount: 8 },
+]
 
 const CAT_TAB_SLUG: Record<string, string> = {
   'All': 'all', 'E-Bikes': 'e-bikes', 'E-Scooters': 'e-scooters', 'Accessories': 'accessories', 'Parts': 'parts',
-  'الكل': 'all', 'دراجات كهربائية': 'e-bikes', 'سكوترات كهربائية': 'e-scooters', 'إكسسوارات': 'accessories', 'قطع غيار': 'parts',
-  'Tous': 'all', 'Vélos Élec.': 'e-bikes', 'Trottinettes': 'e-scooters', 'Pièces': 'parts',
+  '\u0627\u0644\u0643\u0644': 'all', '\u062f\u0631\u0627\u062c\u0627\u062a \u0643\u0647\u0631\u0628\u0627\u0626\u064a\u0629': 'e-bikes', '\u0633\u0643\u0648\u062a\u0631\u0627\u062a \u0643\u0647\u0631\u0628\u0627\u0626\u064a\u0629': 'e-scooters', '\u0625\u0643\u0633\u0633\u0648\u0627\u0631\u0627\u062a': 'accessories', '\u0642\u0637\u0639 \u063a\u064a\u0627\u0631': 'parts',
+  'Tous': 'all', 'V\u00e9los \u00c9lec.': 'e-bikes', 'Trottinettes': 'e-scooters', 'Accessoires': 'accessories', 'Pi\u00e8ces': 'parts',
 }
 
 export default function Store() {
   const { t, lang } = useLanguage()
   const [searchParams, setSearchParams] = useSearchParams()
-  const { listQuery, categoriesQuery } = useProducts()
+  const { listQuery } = useProducts()
   const addItem = useCart((s) => s.addItem)
 
   const isAr = lang === 'ar'
+  const isFr = lang === 'fr'
   const activeCatSlug = searchParams.get('category') || 'all'
   const [search, setSearch] = useState('')
   const [sortBy, setSortBy] = useState('featured')
 
-  // Fetch from REAL API
+  // Fetch from API
   const { data: productsData, isLoading } = listQuery(activeCatSlug, search || undefined, sortBy)
-  const { data: categoriesData } = categoriesQuery()
-  
-  const products = productsData?.items || []
-  const categories = categoriesData || []
+
+  // Use API data if available and has items, otherwise use fallback
+  const apiProducts = productsData?.items || []
+  const products = apiProducts.length > 0 ? apiProducts : FALLBACK_PRODUCTS
 
   const handleCategoryChange = (tab: string) => {
     const slug = CAT_TAB_SLUG[tab] || 'all'
@@ -41,16 +47,20 @@ export default function Store() {
   }
 
   const handleAddToCart = (p: any) => {
-    addItem({ productId: p.id, name: p.name, price: parseFloat(p.salePrice || p.price), image: Array.isArray(p.images) ? p.images[0] : p.image || '', quantity: 1 })
+    addItem({ productId: p.id, name: p.name, price: parseFloat(p.salePrice || p.price), image: Array.isArray(p.images) ? `/product-${p.images[0]}.jpg` : (p.image || ''), quantity: 1 })
   }
 
-  // Map DB category to display tab
   const getCategoryLabel = () => {
-    if (activeCatSlug === 'all') return isAr ? 'الكل' : lang === 'fr' ? 'Tous' : 'All'
+    if (activeCatSlug === 'all') return isAr ? 'الكل' : isFr ? 'Tous' : 'All'
     return activeCatSlug
   }
   const activeTab = getCategoryLabel()
-  const categoryTabs = getCategoryTabs(isAr, lang === 'fr')
+
+  const categoryTabs = isAr
+    ? ['الكل', 'دراجات كهربائية', 'سكوترات كهربائية', 'إكسسوارات', 'قطع غيار']
+    : isFr
+      ? ['Tous', 'Vélos Élec.', 'Trottinettes', 'Accessoires', 'Pièces']
+      : ['All', 'E-Bikes', 'E-Scooters', 'Accessories', 'Parts']
 
   return (
     <div className="min-h-screen bg-black pt-[90px]">
@@ -59,7 +69,7 @@ export default function Store() {
           <Link to="/" className="hover:text-[#01D7D5]">{t('nav.home')}</Link><span>/</span><span className="text-[#8B949E]">{t('nav.store')}</span>
         </div>
         <h1 className="text-white font-semibold text-4xl md:text-5xl mb-2">{t('nav.store')}</h1>
-        <p className="text-[#8B949E] text-sm">{productsData?.total || 0} {isAr ? 'منتج' : lang === 'fr' ? 'produits' : 'products'}</p>
+        <p className="text-[#8B949E] text-sm">{products.length} {isAr ? 'منتج' : isFr ? 'produits' : 'products'}</p>
       </div>
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-[5vw] pb-20">
@@ -71,10 +81,10 @@ export default function Store() {
           </div>
           <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}
             className="bg-[#161B22] border border-[#30363D] text-white text-sm rounded-lg px-4 py-2.5 focus:border-[#01D7D5] focus:outline-none">
-            <option value="featured">{isAr ? 'الأكثر رواجاً' : lang === 'fr' ? 'Trier : Populaires' : 'Sort: Featured'}</option>
-            <option value="price_asc">{isAr ? 'السعر: من الأقل للأعلى' : lang === 'fr' ? 'Prix : Croissant' : 'Price: Low → High'}</option>
-            <option value="price_desc">{isAr ? 'السعر: من الأعلى للأقل' : lang === 'fr' ? 'Prix : Décroissant' : 'Price: High → Low'}</option>
-            <option value="rating">{isAr ? 'الأعلى تقييماً' : lang === 'fr' ? 'Mieux Notés' : 'Highest Rated'}</option>
+            <option value="featured">{isAr ? 'الأكثر رواجاً' : isFr ? 'Populaires' : 'Featured'}</option>
+            <option value="price_asc">{isAr ? 'السعر: من الأقل' : isFr ? 'Prix: Croissant' : 'Price: Low → High'}</option>
+            <option value="price_desc">{isAr ? 'السعر: من الأعلى' : isFr ? 'Prix: Décroissant' : 'Price: High → Low'}</option>
+            <option value="rating">{isAr ? 'الأعلى تقييماً' : isFr ? 'Mieux Notés' : 'Highest Rated'}</option>
           </select>
         </div>
 
@@ -86,9 +96,7 @@ export default function Store() {
         </div>
 
         {isLoading ? (
-          <div className="text-center py-24"><p className="text-[#8B949E] text-lg">{isAr ? 'جار التحميل...' : lang === 'fr' ? 'Chargement...' : 'Loading products...'}</p></div>
-        ) : products.length === 0 ? (
-          <div className="text-center py-24"><p className="text-[#8B949E] text-lg">{t('store.noResults')}</p></div>
+          <div className="text-center py-24"><p className="text-[#8B949E] text-lg">{isAr ? 'جار التحميل...' : isFr ? 'Chargement...' : 'Loading...'}</p></div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {products.map((product: any) => (
@@ -101,7 +109,7 @@ export default function Store() {
                     )}
                   </div>
                   <div className="p-4">
-                    <p className="text-[#8B949E] text-[10px] uppercase tracking-[0.1em]">{categories.find((c: any) => c.id === product.categoryId)?.name || 'Product'}</p>
+                    <p className="text-[#8B949E] text-[10px] uppercase tracking-[0.1em]">{product.category}</p>
                     <h3 className="text-white font-medium text-base mt-1 mb-1">{product.name}</h3>
                     <p className="text-[#484F58] text-xs mb-3 line-clamp-2">{product.description}</p>
                     <div className="flex items-center justify-between">

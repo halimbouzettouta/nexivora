@@ -1,5 +1,5 @@
 export const en: Record<string, string> = {
-  // Navigation
+  // Navigation,
   'nav.home': 'Home',
   'nav.store': 'Store',
   'nav.ranks': 'Ranks',
@@ -12,45 +12,50 @@ export const en: Record<string, string> = {
   'nav.contact': 'Contact',
   'nav.lang': 'EN / AR',
 
-  // Hero
-  'hero.badge': "⚡ ALGERIA'S ELECTRIC FUTURE",
+  // Hero,
+  'hero.badge': "⚡ THE ELECTRIC FUTURE",
   'hero.title': 'Ride the Future',
   'hero.subtitle': 'Premium electric bikes and scooters. Join our referral program and earn commissions on every sale.',
   'hero.shop': 'Shop Now',
   'hero.join': 'Find a Dealer',
 
-  // Products Section
+  // Featured Section,
+  'featured.title': 'OUR COLLECTION',
+  'featured.subtitle': 'Electric Bikes & Scooters',
+  'featured.viewAll': 'View All Products',
+
+  // Products Section,
   'products.title': 'OUR COLLECTION',
   'products.subtitle': 'Electric Bikes & Scooters',
-  'products.desc': 'Discover our premium selection of electric mobility vehicles, built for Algerian roads.',
+  'products.desc': 'Discover our premium selection of electric mobility vehicles, built for the road ahead.',
   'products.viewAll': 'View All Products',
   'products.addToCart': 'Add to Cart',
   'products.sale': 'SALE',
 
-  // Categories
+  // Categories,
   'cat.all': 'All',
   'cat.ebikes': 'Electric Bikes',
   'cat.escooters': 'E-Scooters',
   'cat.accessories': 'Accessories',
 
-  // Why Choose Us
+  // Why Choose Us,
   'why.badge': 'WHY NEXIVORA',
-  'why.title': 'Built for Algeria',
+  'why.title': 'Built for the Road',
   'why.desc': 'Premium electric vehicles with local support, warranty coverage, and nationwide service.',
   'why.electric': '100% Electric',
   'why.electricDesc': 'Zero emissions, zero fuel costs. Charge at home and ride for pennies per kilometer.',
   'why.range': 'Up to 80km Range',
   'why.rangeDesc': 'Ride up to 80km on a single charge. Go further without worrying about running out of power.',
   'why.shipping': 'Free Delivery',
-  'why.shippingDesc': 'Free shipping to all 48 wilayas across Algeria. Cash on delivery available.',
+  'why.shippingDesc': 'Free shipping to your doorstep. Cash on delivery available.',
   'why.support': '24/7 Support',
   'why.supportDesc': 'Our team is always available by phone, WhatsApp, or email to help you.',
   'why.quality': 'European Quality',
-  'why.qualityDesc': 'Components sourced from top European manufacturers. Built to last on Algerian roads.',
+  'why.qualityDesc': 'Components sourced from top European manufacturers. Built to last on any road.',
   'why.fastCharge': 'Fast Charging',
   'why.fastChargeDesc': 'Full charge in just 3-4 hours. Plug in overnight and ride all day long.',
 
-  // Ranks Section
+  // Ranks Section,
   'ranks.title': 'RANK SYSTEM',
   'ranks.subtitle': 'Climb the Ladder, Earn More',
   'ranks.desc': 'Our multi-level rank system rewards your performance. Higher ranks unlock better commissions, bonuses, and exclusive rewards.',
@@ -60,24 +65,24 @@ export const en: Record<string, string> = {
   'ranks.bonus': 'Bonus',
   'ranks.reward': 'Reward',
 
-  // Testimonials
+  // Testimonials,
   'testimonials.title': 'CUSTOMER REVIEWS',
   'testimonials.subtitle': 'What Riders Say About Us',
 
-  // Dealers Preview
+  // Dealers Preview,
   'dealers.title': 'FIND A DEALER',
-  'dealers.subtitle': 'Authorized Dealers Across Algeria',
+  'dealers.subtitle': 'Authorized Dealers Worldwide',
   'dealers.desc': 'Visit our network of dealers for test rides, purchases, and service.',
   'dealers.viewMap': 'View Full Map',
 
-  // Articles Preview
+  // Articles Preview,
   'articles.title': 'LEARN & RIDE',
   'articles.subtitle': 'Tips for a Better Ride',
   'articles.viewAll': 'View All Articles',
   'articles.readMore': 'Read More',
 
-  // Footer
-  'footer.tagline': "Algeria's Electric Future",
+  // Footer,
+  'footer.tagline': "The Electric Future",
   'footer.shop': 'Shop',
   'footer.company': 'Company',
   'footer.support': 'Support',
@@ -88,17 +93,17 @@ export const en: Record<string, string> = {
   'footer.shipping': 'Shipping & Returns',
   'footer.terms': 'Terms of Service',
   'footer.privacy': 'Privacy Policy',
-  'footer.copyright': '© 2025 Nexivora Algeria. All rights reserved.',
+  'footer.copyright': '© 2025 Nexivora. All rights reserved.',
   'footer.powered': 'Powered by clean energy.',
 
-  // Store Page
+  // Store Page,
   'store.title': 'OUR COLLECTION',
   'store.subtitle': 'Electric Bikes & Scooters',
   'store.search': 'Search products...',
   'store.sort': 'Sort',
   'store.noResults': 'No products found.',
 
-  // Product Detail
+  // Product Detail,
   'product.inStock': 'In Stock',
   'product.outOfStock': 'Out of Stock',
   'product.warranty': 'Warranty',
@@ -111,7 +116,7 @@ export const en: Record<string, string> = {
   'product.buyNow': 'Buy Now',
   'product.reviews': 'reviews',
 
-  // Cart
+  // Cart,
   'cart.title': 'Your Cart',
   'cart.empty': 'Your cart is empty.',
   'cart.continue': 'Continue Shopping',
@@ -122,7 +127,7 @@ export const en: Record<string, string> = {
   'cart.remove': 'Remove',
   'cart.note': 'Free shipping on orders over 50,000 DZD',
 
-  // Checkout
+  // Checkout,
   'checkout.title': 'Checkout',
   'checkout.info': 'Contact Information',
   'checkout.shipping': 'Shipping Address',
@@ -139,7 +144,7 @@ export const en: Record<string, string> = {
   'checkout.notes': 'Order Notes',
   'checkout.notesPlaceholder': 'Any special instructions...',
 
-  // Order Tracking
+  // Order Tracking,
   'track.title': 'Track Your Order',
   'track.enter': 'Enter your order number',
   'track.button': 'Track Order',
@@ -149,22 +154,22 @@ export const en: Record<string, string> = {
   'track.items': 'Items',
   'track.timeline': 'Order Timeline',
 
-  // About
+  // About,
   'about.title': 'ABOUT NEXIVORA',
-  'about.subtitle': "Algeria's Electric Future",
+  'about.subtitle': "The Electric Future",
   'about.mission': 'Our Mission',
-  'about.missionText': 'To accelerate the transition to sustainable transportation in Algeria by providing high-quality electric bikes and scooters at accessible prices.',
+  'about.missionText': 'To accelerate the transition to sustainable transportation worldwide by providing high-quality electric bikes and scooters at accessible prices.',
   'about.vision': 'Our Vision',
-  'about.visionText': 'A cleaner, quieter Algeria where electric mobility is the standard, not the exception.',
+  'about.visionText': 'A cleaner, quieter world where electric mobility is the standard, not the exception.',
   'about.values': 'Our Values',
   'about.sustainability': 'Sustainability',
   'about.sustainabilityText': 'Every ride on an Nexivora vehicle reduces carbon emissions and noise pollution.',
   'about.quality': 'Quality',
   'about.qualityText': 'We source only the best components and rigorously test every product.',
   'about.community': 'Community',
-  'about.communityText': 'Our referral program empowers Algerians to build income streams.',
+  'about.communityText': 'Our referral program empowers people worldwide to build income streams.',
 
-  // Blog
+  // Blog,
   'blog.title': 'LEARN & RIDE',
   'blog.subtitle': 'Tips, Guides & Industry News',
   'blog.search': 'Search articles...',
@@ -172,7 +177,7 @@ export const en: Record<string, string> = {
   'blog.all': 'All Categories',
   'blog.readTime': 'min read',
 
-  // Contact
+  // Contact,
   'contact.title': 'GET IN TOUCH',
   'contact.subtitle': 'We are Here to Help',
   'contact.name': 'Your Name',
@@ -187,14 +192,14 @@ export const en: Record<string, string> = {
   'contact.phone': 'Phone',
   'contact.hours': 'Working Hours',
 
-  // Dealers Page
+  // Dealers Page,
   'dealers.search': 'Search dealers...',
   'dealers.allRegions': 'All Regions',
   'dealers.call': 'Call',
   'dealers.directions': 'Directions',
   'dealers.hours': 'Hours',
 
-  // Login
+  // Login,
   'login.welcome': 'Welcome Back',
   'login.signin': 'Sign in to your account to continue',
   'login.adminNote': 'Admin users can access the admin panel at /admin after signing in.',
@@ -210,7 +215,7 @@ export const en: Record<string, string> = {
   'login.back': '← Back to Home',
   'login.adminSetup': '🔧 Admin Setup',
 
-  // Dashboard
+  // Dashboard,
   'dash.overview': 'Overview',
   'dash.referral': 'Referral Link',
   'dash.commissions': 'Commissions',
@@ -227,7 +232,7 @@ export const en: Record<string, string> = {
   'dash.recent': 'Recent Activity',
   'dash.leaderboard': 'Leaderboard',
 
-  // Admin
+  // Admin,
   'admin.title': 'Admin Dashboard',
   'admin.superAdmin': 'Super Admin',
   'admin.overview': 'Dashboard',
@@ -247,7 +252,7 @@ export const en: Record<string, string> = {
   'admin.settings': 'Settings',
   'admin.audit': 'Audit Log',
 
-  // Contact page specific
+  // Contact page specific,
   'contact.getInTouch': 'Get in Touch',
   'contact.helpText': "We're here to help. Reach out for support, partnership, or inquiries.",
   'contact.fullName': 'Full Name *',
@@ -267,7 +272,7 @@ export const en: Record<string, string> = {
   'contact.bizHours': 'Business Hours',
   'contact.followUs': 'Follow Us',
 
-  // Order Tracking
+  // Order Tracking,
   'track.orderNum': 'Order #',
   'track.placeholder': 'Enter order number (e.g., ER-2025-0042)',
   'track.trackBtn': 'Track',
@@ -284,12 +289,12 @@ export const en: Record<string, string> = {
   'track.expectedBy': 'Expected by',
   'track.tracking': 'Tracking',
 
-  // Dealers - regions (allRegions already defined above)
+  // Dealers - regions (allRegions already defined above),
   'dealers.center': 'Center',
   'dealers.west': 'West',
   'dealers.east': 'East',
 
-  // Dashboard
+  // Dashboard,
   'dash.salesPerf': 'Sales Performance',
   'dash.recentOrders': 'Recent Orders',
   'dash.viewAll': 'View All',
@@ -306,7 +311,7 @@ export const en: Record<string, string> = {
   'dash.myTeam': 'My Team Members',
   'dash.member': 'Member',
   'dash.sales': 'Sales',
-  // dash.rank, dash.team, dash.teamSales already defined above
+  // dash.rank, dash.team, dash.teamSales already defined above,
   'dash.joined': 'Joined',
   'dash.teamStructure': 'Team Structure',
   'dash.you': 'You',
@@ -329,11 +334,11 @@ export const en: Record<string, string> = {
   'dash.goldMarketer': 'Gold Marketer',
   'dash.months': 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec',
 
-  // Registration / Referral
+  // Registration / Referral,
   'register.title': 'Join Nexivora Network',
   'register.subtitle': 'Become a Marketer',
   'register.noRef': 'You need a referral link to join our network.',
-  'register.noRefDesc': 'Nexivora Algeria operates on a referral-only basis. Contact an existing marketer to get your invitation link.',
+  'register.noRefDesc': 'Nexivora operates on a referral-only basis. Contact an existing marketer to get your invitation link.',
   'register.noRefAction': 'Find a Marketer',
   'register.refFrom': "You're joining through",
   'register.refNetwork': 'Network marketer',
@@ -352,13 +357,13 @@ export const en: Record<string, string> = {
   'register.totalRefs': 'Total Team Members',
   'register.directRefs': 'Direct Referrals',
 
-  // Affiliate CTA
+  // Affiliate CTA,
   'affiliate.title': 'Earn 5% Commission on Every Sale',
-  'affiliate.desc': 'Plus unlock team performance bonuses as you climb the ranks. Join hundreds of marketers already earning with Nexivora Algeria.',
+  'affiliate.desc': 'Plus unlock team performance bonuses as you climb the ranks. Join hundreds of marketers already earning with Nexivora.',
   'affiliate.learnMore': 'Learn More',
   'affiliate.tags': '5% Direct Commission · 5% Team Bonus · Weekly Payouts',
 
-  // Rank System
+  // Rank System,
   'rank.entryLevel': 'Entry Level',
   'rank.reqSilver': 'DZD 500K personal sales',
   'rank.reqGold': 'DZD 2M total sales',
@@ -370,7 +375,7 @@ export const en: Record<string, string> = {
   'rank.electricScooter': 'Electric Scooter',
   'rank.tripBonus': 'Trip / Cash Bonus',
 
-  // Subscription plan translations (for API data)
+  // Subscription plan translations (for API data),
   'plan.extendedWarranty': 'Extended Warranty',
   'plan.premiumMaintenance': 'Premium Maintenance',
   'plan.basicMaintenance': 'Basic Maintenance',
@@ -388,18 +393,18 @@ export const en: Record<string, string> = {
   'plan.featureLabor': 'Free labor on repairs',
   'plan.featureAnnual': 'Annual deep service',
 
-  // Educational Preview
+  // Educational Preview,
   'edu.badge': 'LEARN & RIDE',
 
   // Testimonials
-  'review.text1': 'The X1 E-Bike is incredible. Smooth ride, long battery life, and the build quality is top notch. I commute 15km daily in Algiers and it handles hills with ease.',
+  'review.text1': 'The X1 E-Bike is incredible. Smooth ride, long battery life, and the build quality is top notch. I commute 15km daily and it handles hills with ease.',
   'review.text2': 'Bought the Pro Scooter for my son to get to university. It is fast, reliable, and he loves it. Customer service was very helpful with setup. Highly recommend!',
   'review.text3': 'Beautiful design and solid performance. I was worried about charging but it is so easy - just plug in overnight. Perfect for getting around the city.',
-  'review.text4': 'Best purchase I made this year. The electric motor is silent and powerful. I save so much on fuel costs now. Delivery to Oran was fast and free.',
+  'review.text4': 'Best purchase I made this year. The electric motor is silent and powerful. I save so much on fuel costs now. Delivery was fast and free.',
   'review.text5': 'The Lite Scooter is perfect for short trips to the market and visiting friends. Lightweight, folds easily, and the battery lasts longer than advertised. Love it!',
   'review.text6': 'Great quality for the price. The warranty gave me peace of mind. When I had a small issue with the brakes, support sent a technician the next day. Excellent service.',
 
-  // Sections
+  // Sections,
   'section.loyaltyBadge': 'LOYALTY REWARDS',
   'section.loyaltyTitle': 'Earn Points with Every Purchase',
   'section.loyaltyDesc': 'Buy, earn points, redeem for discounts, accessories, or free maintenance.',
@@ -417,7 +422,7 @@ export const en: Record<string, string> = {
   'section.step2': 'Order & Pay',
   'section.step3': 'Ride & Enjoy',
   'section.step1Desc': 'Explore our collection of electric bikes and scooters. Find the perfect match for your needs.',
-  'section.step2Desc': 'Place your order online with cash on delivery or card payment. Free shipping across Algeria.',
+  'section.step2Desc': 'Place your order online with cash on delivery or card payment. Free shipping worldwide.',
   'section.step3Desc': 'Get your vehicle delivered, charged and ready to go. Enjoy the freedom of electric mobility.',
   'section.subBadge': 'MAINTENANCE & WARRANTY',
   'section.subTitle': 'Protect Your Investment',
@@ -426,7 +431,7 @@ export const en: Record<string, string> = {
   'section.purchase': 'Purchase',
   'section.subscribe': 'Subscribe',
 
-  // Status
+  // Status,
   'status.completed': 'Completed',
   'status.processing': 'Processing',
   'status.pending': 'Pending',
@@ -434,7 +439,7 @@ export const en: Record<string, string> = {
   'status.canceled': 'Canceled',
   'status.refunded': 'Refunded',
 
-  // Misc
+  // Misc,
   'btn.save': 'Save',
   'btn.cancel': 'Cancel',
   'btn.edit': 'Edit',

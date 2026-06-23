@@ -11,9 +11,9 @@ const activeSubs = [
 ]
 
 const maintenanceRequests = [
-  { id: 1, customer: 'Ahmed Benali', product: 'Nexivora City Pro', issue: 'Battery not charging fully', status: 'scheduled', date: '2025-06-15', dealer: 'Nexivora Algiers' },
-  { id: 2, customer: 'Karim Hadj', product: 'Nexivora Trail Blazer', issue: 'Brake adjustment needed', status: 'completed', date: '2025-06-08', dealer: 'Nexivora Constantine' },
-  { id: 3, customer: 'Sofia M.', product: 'Nexivora Mountain X', issue: 'Motor noise', status: 'pending', date: '2025-06-12', dealer: 'Nexivora Algiers' },
+  { id: 1, customer: 'Ahmed Benali', product: 'Nexivora City Pro', issue: 'Battery not charging fully', status: 'scheduled', date: '2025-06-15', dealer: 'Nexivora HQ' },
+  { id: 2, customer: 'Karim Hadj', product: 'Nexivora Trail Blazer', issue: 'Brake adjustment needed', status: 'completed', date: '2025-06-08', dealer: 'Nexivora Paris' },
+  { id: 3, customer: 'Sofia M.', product: 'Nexivora Mountain X', issue: 'Motor noise', status: 'pending', date: '2025-06-12', dealer: 'Nexivora HQ' },
 ]
 
 const plans = [

@@ -13,9 +13,9 @@ const categoryColors: Record<string, string> = {
 
 // Fallback articles when API is unavailable
 const FALLBACK_ARTICLES = [
-  { id: 1, slug: 'choosing-your-first-e-bike', title: 'Choosing Your First E-Bike: A Complete Guide', excerpt: 'Everything you need to know before buying your first electric bike in Algeria. From motor types to battery range, we cover it all.', category: 'Guides', readTime: 8, featuredImage: '/article-guide.jpg' },
+  { id: 1, slug: 'choosing-your-first-e-bike', title: 'Choosing Your First E-Bike: A Complete Guide', excerpt: 'Everything you need to know before buying your first electric bike. From motor types to battery range, we cover it all.', category: 'Guides', readTime: 8, featuredImage: '/article-guide.jpg' },
   { id: 2, slug: 'battery-care-tips', title: 'E-Bike Battery Care: Extend Your Range', excerpt: 'Simple maintenance tips to double your battery lifespan and maximize range on every ride.', category: 'Maintenance', readTime: 5, featuredImage: '/article-battery.jpg' },
-  { id: 3, slug: 'algeria-electric-revolution', title: "Algeria's Electric Mobility Revolution", excerpt: 'How electric bikes and scooters are changing urban transportation across Algerian cities.', category: 'Industry News', readTime: 6, featuredImage: '/article-industry.jpg' },
+  { id: 3, slug: 'electric-mobility-revolution', title: "Electric Mobility Revolution", excerpt: 'How electric bikes and scooters are changing urban transportation across cities around the world.', category: 'Industry News', readTime: 6, featuredImage: '/article-industry.jpg' },
   { id: 4, slug: 'understanding-your-motor', title: 'Understanding Your E-Bike Motor', excerpt: 'A deep dive into how electric bike motors work and what to look for when choosing one.', category: 'Technology', readTime: 7, featuredImage: '/article-motor.jpg' },
 ]
 

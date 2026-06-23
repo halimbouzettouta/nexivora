@@ -103,21 +103,21 @@ export default function Contact() {
                   <MapPin size={20} className="text-[#01D7D5] flex-shrink-0 mt-0.5" />
                   <div>
                     <p className="text-white text-sm font-medium">{t('contact.addressLabel')}</p>
-                    <p className="text-[#8B949E] text-sm">123 Boulevard Mohamed VI, Algiers, Algeria</p>
+                    <p className="text-[#8B949E] text-sm">123 Innovation Boulevard, our headquarters</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
                   <Phone size={20} className="text-[#01D7D5] flex-shrink-0 mt-0.5" />
                   <div>
                     <p className="text-white text-sm font-medium">{t('contact.phoneInfo')}</p>
-                    <p className="text-[#8B949E] text-sm">+213 555 123 456</p>
+                    <p className="text-[#8B949E] text-sm">+1 (555) 123-4567</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
                   <Mail size={20} className="text-[#01D7D5] flex-shrink-0 mt-0.5" />
                   <div>
                     <p className="text-white text-sm font-medium">{t('contact.emailInfo')}</p>
-                    <p className="text-[#8B949E] text-sm">contact@nexivora-dz.com</p>
+                    <p className="text-[#8B949E] text-sm">contact@nexivora.com</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">

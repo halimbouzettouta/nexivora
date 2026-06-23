@@ -18,9 +18,18 @@ const rankReqKeys: Record<string, string> = {
   Diamond: 'rank.reqDiamond',
 }
 
+const FALLBACK_RANKS = [
+  { id: 1, name: 'Starter', color: '#8B949E', minSales: 0 },
+  { id: 2, name: 'Silver', color: '#C0C0C0', minSales: 500000 },
+  { id: 3, name: 'Gold', color: '#FFD700', minSales: 2000000 },
+  { id: 4, name: 'Platinum', color: '#E5E4E2', minSales: 5000000 },
+  { id: 5, name: 'Diamond', color: '#B9F2FF', minSales: 10000000 },
+]
+
 export default function RankSystem() {
-  const { data: ranks } = trpc.rank.list.useQuery()
+  const { data: apiRanks } = trpc.rank.list.useQuery()
   const { t } = useLanguage()
+  const ranks = apiRanks && apiRanks.length > 0 ? apiRanks : FALLBACK_RANKS
 
   return (
     <section id="ranks" className="w-full bg-black py-20 px-4 sm:px-6 lg:px-[5vw]">

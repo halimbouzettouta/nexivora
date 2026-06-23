@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Search, Eye, RefreshCw } from 'lucide-react'
 import StatusBadge from './StatusBadge'
 import { trpc } from '@/providers/trpc'
+import { getOrders } from '@/hooks/orderStore'
 
 const statusOptions = ['All', 'Pending', 'Processing', 'Shipped', 'Delivered', 'Completed', 'Canceled', 'Refunded']
 const statusTransitions: Record<string, string[]> = {
@@ -19,13 +20,15 @@ export default function OrdersTab() {
   const [search, setSearch] = useState('')
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null)
 
-  // Fetch orders from the REAL API
-  const { data: allOrders = [], isLoading, refetch } = trpc.order.list.useQuery(undefined, {
+  // Fetch orders from the REAL API (with localStorage fallback)
+  const { data: apiOrders = [], isLoading, refetch } = trpc.order.list.useQuery(undefined, {
     staleTime: 5000,
     refetchInterval: 10000, // Auto-refresh every 10 seconds
   })
 
-  const utils = trpc.useUtils()
+  // Fallback to localStorage orders when API returns empty (static deployment)
+  const localOrders = useMemo(() => getOrders(), [apiOrders])
+  const allOrders = apiOrders.length > 0 ? apiOrders : localOrders
 
   const stats = {
     total: allOrders.length,
@@ -45,7 +48,8 @@ export default function OrdersTab() {
     const matchStatus = statusFilter === 'All' || o.status === statusFilter.toLowerCase()
     const matchSearch = !search ||
       (o.orderNumber && o.orderNumber.toLowerCase().includes(search.toLowerCase())) ||
-      (o.shippingAddress && JSON.stringify(o.shippingAddress).toLowerCase().includes(search.toLowerCase()))
+      (o.shippingAddress && JSON.stringify(o.shippingAddress).toLowerCase().includes(search.toLowerCase())) ||
+      (o.customerName && o.customerName.toLowerCase().includes(search.toLowerCase()))
     return matchStatus && matchSearch
   })
 

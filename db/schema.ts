@@ -42,7 +42,7 @@ export type InsertUser = typeof users.$inferInsert;
 export const categories = mysqlTable("categories", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
-  slug: varchar("slug", { length: 255 }).notNull().unique(),
+  slug: varchar("slug", { length: 255 }).notNull(),
   parentId: bigint("parentId", { mode: "number", unsigned: true }),
   image: text("image"),
   description: text("description"),
@@ -117,7 +117,7 @@ export type OrderItem = typeof orderItems.$inferSelect;
 export const ranks = mysqlTable("ranks", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 100 }).notNull(),
-  slug: varchar("slug", { length: 100 }).notNull().unique(),
+  slug: varchar("slug", { length: 100 }).notNull(),
   color: varchar("color", { length: 7 }).notNull(),
   minPersonalSales: decimal("minPersonalSales", { precision: 14, scale: 2 }).default("0"),
   minTeamSales: decimal("minTeamSales", { precision: 14, scale: 2 }).default("0"),
@@ -226,7 +226,7 @@ export type Dealer = typeof dealers.$inferSelect;
 export const articles = mysqlTable("articles", {
   id: serial("id").primaryKey(),
   title: varchar("title", { length: 255 }).notNull(),
-  slug: varchar("slug", { length: 255 }).notNull().unique(),
+  slug: varchar("slug", { length: 255 }).notNull(),
   excerpt: text("excerpt"),
   content: text("content"),
   category: varchar("category", { length: 100 }).notNull(),

@@ -59,8 +59,8 @@ export default function Dealers() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="lg:col-span-1 space-y-3 max-h-[500px] overflow-y-auto pr-1">
-            {isLoading && <p className="text-[#484F58] text-sm text-center py-8">Loading dealers...</p>}
-            {!isLoading && filtered.length === 0 && <p className="text-[#484F58] text-sm text-center py-8">No dealers found.</p>}
+            {isLoading && <p className="text-[#484F58] text-sm text-center py-8">{isAr ? 'جار التحميل...' : isFr ? 'Chargement...' : 'Loading...'}</p>}
+            {!isLoading && filtered.length === 0 && <p className="text-[#484F58] text-sm text-center py-8">{isAr ? 'لا يوجد موزعون' : isFr ? 'Aucun concessionnaire' : 'No dealers found.'}</p>}
             {filtered.map((d: any) => (
               <div key={d.id} className="w-full text-left bg-[#161B22] border border-[#30363D] rounded-xl p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-[rgba(1,215,213,0.3)]">
                 <div className="flex items-center gap-2 mb-1">

@@ -1,20 +1,28 @@
-import { useState } from 'react'
-import { TrendingUp, DollarSign, ShoppingBag, BarChart3, Users } from 'lucide-react'
+import { useState, useMemo } from 'react'
+import { TrendingUp, DollarSign, ShoppingBag, Users } from 'lucide-react'
 import StatCard from './StatCard'
 import { trpc } from '@/providers/trpc'
-import { trpc as trpcClient } from '@/providers/trpc'
+import { getOrders } from '@/hooks/orderStore'
+import { getMarketerAccounts } from '@/hooks/marketerAuth'
 
 export default function SalesTab() {
   const [period, setPeriod] = useState('monthly')
 
-  // Fetch from REAL API
-  const { data: orders = [] } = trpc.order.list.useQuery(undefined, { staleTime: 10000 })
-  const { data: users = [] } = trpc.adminSetup.listUsers.useQuery(undefined, { staleTime: 30000 })
+  // Fetch from API with localStorage fallback
+  const { data: apiOrders = [] } = trpc.order.list.useQuery(undefined, { staleTime: 10000 })
+  const { data: apiUsers = [] } = trpc.adminSetup.listUsers.useQuery(undefined, { staleTime: 30000 })
+
+  const localOrders = useMemo(() => getOrders(), [apiOrders])
+  const orders = apiOrders.length > 0 ? apiOrders : localOrders
+
+  const localAccounts = useMemo(() => getMarketerAccounts(), [apiUsers])
+  const totalMarketers = apiUsers.length > 0
+    ? apiUsers.filter((u: any) => u.role === 'marketer' || u.role === 'admin').length
+    : localAccounts.length
 
   const totalRevenue = orders.reduce((sum: number, o: any) => sum + Number(o.total || 0), 0)
   const totalOrders = orders.length
   const avgOrder = totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0
-  const totalMarketers = users.filter((u: any) => u.role === 'marketer' || u.role === 'admin').length
 
   // Sales by city from real orders
   const citySales: Record<string, number> = {}

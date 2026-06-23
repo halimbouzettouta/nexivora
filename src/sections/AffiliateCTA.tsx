@@ -13,10 +13,10 @@ export default function AffiliateCTA() {
       : 'Join the Nexivora Community'
 
   const desc = isAr
-    ? 'كن جزءاً من مستقبل التنقل الكهربائي في الجزائر. تواصل معنا واكتشف المزيد.'
+    ? 'كن جزءاً من مستقبل التنقل الكهربائي مع نكسيفورا. تواصل معنا واكتشف المزيد.'
     : isFr
-      ? 'Faites partie de l\'avenir de la mobilité électrique en Algérie. Contactez-nous pour en savoir plus.'
-      : 'Be part of the future of electric mobility in Algeria. Connect with us to learn more.'
+      ? 'Faites partie de l\'avenir de la mobilité électrique avec Nexivora. Contactez-nous pour en savoir plus.'
+      : 'Be part of the future of electric mobility with Nexivora. Connect with us to learn more.'
 
   return (
     <section className="w-full bg-[#0A0A0A] py-24 px-4 sm:px-6 lg:px-[5vw] text-center">

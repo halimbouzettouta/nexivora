@@ -13,16 +13,21 @@ export const fr: Record<string, string> = {
   'nav.lang': 'EN / AR / FR',
 
   // Hero
-  'hero.badge': "⚡ L'AVENIR ÉLECTRIQUE DE L'ALGÉRIE",
+  'hero.badge': "⚡ L'AVENIR ÉLECTRIQUE",
   'hero.title': 'Roulez vers le Futur',
   'hero.subtitle': 'Vélos et trottinettes électriques premium. Rejoignez notre programme de parrainage et gagnez des commissions sur chaque vente.',
   'hero.shop': 'Acheter',
   'hero.join': 'Trouver un Concessionnaire',
 
+  // Featured Section
+  'featured.title': 'NOTRE COLLECTION',
+  'featured.subtitle': 'Vélos & Trottinettes Électriques',
+  'featured.viewAll': 'Voir Tous les Produits',
+
   // Products Section
   'products.title': 'NOTRE COLLECTION',
   'products.subtitle': 'Vélos & Trottinettes Électriques',
-  'products.desc': 'Découvrez notre sélection premium de véhicules de mobilité électrique, conçus pour les routes algériennes.',
+  'products.desc': 'Découvrez notre sélection premium de véhicules de mobilité électrique, conçus pour la route.',
   'products.viewAll': 'Voir Tous les Produits',
   'products.addToCart': 'Ajouter au Panier',
   'products.sale': 'SOLDES',
@@ -35,18 +40,18 @@ export const fr: Record<string, string> = {
 
   // Why Choose Us
   'why.badge': 'POURQUOI NEXIVORA',
-  'why.title': 'Conçu pour l\'Algérie',
-  'why.desc': 'Véhicules électriques premium avec support local, garantie complète et service national.',
+  'why.title': 'Conçu pour la Route',
+  'why.desc': 'Véhicules électriques premium avec support local, garantie complète et service mondial.',
   'why.electric': '100% Électrique',
   'why.electricDesc': 'Zéro émission, zéro coût de carburant. Chargez à domicile et roulez pour quelques centimes le kilomètre.',
   'why.range': 'Jusqu\'à 80km d\'Autonomie',
   'why.rangeDesc': 'Roulez jusqu\'à 80km sur une seule charge. Allez plus loin sans craindre de tomber en panne.',
   'why.shipping': 'Livraison Gratuite',
-  'why.shippingDesc': 'Livraison gratuite dans les 48 wilayas d\'Algérie. Paiement à la livraison disponible.',
+  'why.shippingDesc': 'Livraison gratuite à votre porte. Paiement à la livraison disponible.',
   'why.support': 'Support 24/7',
   'why.supportDesc': 'Notre équipe est toujours disponible par téléphone, WhatsApp ou email pour vous aider.',
   'why.quality': 'Qualité Européenne',
-  'why.qualityDesc': 'Composants des meilleurs fabricants européens. Conçus pour durer sur les routes algériennes.',
+  'why.qualityDesc': 'Composants des meilleurs fabricants européens. Conçus pour durer sur toutes les routes.',
   'why.fastCharge': 'Charge Rapide',
   'why.fastChargeDesc': 'Charge complète en seulement 3-4 heures. Branchez la nuit et roulez toute la journée.',
 
@@ -66,7 +71,7 @@ export const fr: Record<string, string> = {
 
   // Dealers Preview
   'dealers.title': 'TROUVER UN CONCESSIONNAIRE',
-  'dealers.subtitle': 'Concessionnaires Agréés en Algérie',
+  'dealers.subtitle': 'Concessionnaires Agréés dans le Monde',
   'dealers.desc': 'Visitez notre réseau de concessionnaires pour des essais, des achats et du service.',
   'dealers.viewMap': 'Voir la Carte Complète',
 
@@ -77,7 +82,7 @@ export const fr: Record<string, string> = {
   'articles.readMore': 'Lire la Suite',
 
   // Footer
-  'footer.tagline': "L'Avenir Électrique de l'Algérie",
+  'footer.tagline': "L'Avenir Électrique",
   'footer.shop': 'Boutique',
   'footer.company': 'Entreprise',
   'footer.support': 'Support',
@@ -88,7 +93,7 @@ export const fr: Record<string, string> = {
   'footer.shipping': 'Livraison & Retours',
   'footer.terms': 'Conditions d\'Utilisation',
   'footer.privacy': 'Politique de Confidentialité',
-  'footer.copyright': '© 2025 Nexivora Algérie. Tous droits réservés.',
+  'footer.copyright': '© 2025 Nexivora. Tous droits réservés.',
   'footer.powered': 'Propulsé par l\'énergie propre.',
 
   // Store Page
@@ -151,18 +156,18 @@ export const fr: Record<string, string> = {
 
   // About
   'about.title': 'À PROPOS D\'NEXIVORA',
-  'about.subtitle': "L'Avenir Électrique de l'Algérie",
+  'about.subtitle': "L'Avenir Électrique",
   'about.mission': 'Notre Mission',
-  'about.missionText': 'Accélérer la transition vers un transport durable en Algérie en fournissant des vélos et trottinettes électriques de haute qualité à des prix accessibles.',
+  'about.missionText': 'Accélérer la transition vers un transport durable dans le monde en fournissant des vélos et trottinettes électriques de haute qualité à des prix accessibles.',
   'about.vision': 'Notre Vision',
-  'about.visionText': 'Une Algérie plus propre et plus silencieuse où la mobilité électrique est la norme, pas l\'exception.',
+  'about.visionText': 'Un monde plus propre et plus silencieux où la mobilité électrique est la norme, pas l\'exception.',
   'about.values': 'Nos Valeurs',
   'about.sustainability': 'Durabilité',
   'about.sustainabilityText': 'Chaque trajet sur un véhicule Nexivora réduit les émissions de carbone et la pollution sonore.',
   'about.quality': 'Qualité',
   'about.qualityText': 'Nous ne sourçons que les meilleurs composants et testons rigoureusement chaque produit.',
   'about.community': 'Communauté',
-  'about.communityText': 'Notre programme de parrainage permet aux Algériens de créer des sources de revenus.',
+  'about.communityText': 'Notre programme de parrainage permet aux gens du monde entier de créer des sources de revenus.',
 
   // Blog
   'blog.title': 'APPRENDRE & ROULER',
@@ -333,7 +338,7 @@ export const fr: Record<string, string> = {
   'register.title': 'Rejoignez le Réseau Nexivora',
   'register.subtitle': 'Devenez Marketer',
   'register.noRef': 'Vous avez besoin d\'un lien de parrainage pour rejoindre notre réseau.',
-  'register.noRefDesc': 'Nexivora Algérie fonctionne exclusivement sur parrainage. Contactez un marketer existant pour obtenir votre lien d\'invitation.',
+  'register.noRefDesc': 'Nexivora fonctionne exclusivement sur parrainage. Contactez un marketer existant pour obtenir votre lien d\'invitation.',
   'register.noRefAction': 'Trouver un Marketer',
   'register.refFrom': 'Vous rejoignez via',
   'register.refNetwork': 'Marketer du réseau',
@@ -354,7 +359,7 @@ export const fr: Record<string, string> = {
 
   // Affiliate CTA
   'affiliate.title': 'Gagnez 5% de Commission sur Chaque Vente',
-  'affiliate.desc': 'Débloquez des bonus de performance d\'équipe en montant les rangs. Rejoignez des centaines de marketers qui gagnent avec Nexivora Algérie.',
+  'affiliate.desc': 'Débloquez des bonus de performance d\'équipe en montant les rangs. Rejoignez des centaines de marketers qui gagnent avec Nexivora.',
   'affiliate.learnMore': 'En Savoir Plus',
   'affiliate.tags': 'Commission Directe 5% · Bonus Équipe 5% · Paiements Hebdomadaires',
 
@@ -392,10 +397,10 @@ export const fr: Record<string, string> = {
   'edu.badge': 'APPRENDRE & ROULER',
 
   // Testimonials
-  'review.text1': 'Le X1 E-Bike est incroyable. Conduite douce, batterie longue durée et qualité de fabrication au top. Je fais 15km par jour à Alger et il gère les côtes sans effort.',
+  'review.text1': 'Le X1 E-Bike est incroyable. Conduite douce, batterie longue durée et qualité de fabrication au top. Je fais 15km par jour et il gère les côtes sans effort.',
   'review.text2': 'J\'ai acheté la Pro Scooter pour mon fils pour l\'université. Rapide, fiable et il l\'adore. Le service client a été très utile pour l\'installation. Fortement recommandé !',
   'review.text3': 'Design magnifique et performance solide. J\'étais inquiet pour la charge mais c\'est tellement facile - branchez simplement la nuit. Parfait pour se déplacer en ville.',
-  'review.text4': 'Le meilleur achat de l\'année. Le moteur électrique est silencieux et puissant. J\'économise tellement sur le carburant maintenant. La livraison à Oran a été rapide et gratuite.',
+  'review.text4': 'Le meilleur achat de l\'année. Le moteur électrique est silencieux et puissant. J\'économise tellement sur le carburant maintenant. La livraison a été rapide et gratuite.',
   'review.text5': 'La Lite Scooter est parfaite pour les courts trajets au marché et chez les amis. Légère, se plie facilement, et la batterie dure plus longtemps qu\'annoncé. J\'adore !',
   'review.text6': 'Excellente qualité pour le prix. La garantie m\'a rassuré. Quand j\'ai eu un petit problème avec les freins, le support a envoyé un technicien le lendemain. Service excellent.',
 
@@ -417,7 +422,7 @@ export const fr: Record<string, string> = {
   'section.step2': 'Commandez & Payez',
   'section.step3': 'Roulez & Profitez',
   'section.step1Desc': 'Explorez notre collection de vélos et trottinettes électriques. Trouvez celui qui vous convient.',
-  'section.step2Desc': 'Passez commande en ligne avec paiement à la livraison ou par carte. Livraison gratuite en Algérie.',
+  'section.step2Desc': 'Passez commande en ligne avec paiement à la livraison ou par carte. Livraison gratuite dans le monde.',
   'section.step3Desc': 'Recevez votre véhicule livré, chargé et prêt à partir. Profitez de la liberté de la mobilité électrique.',
   'section.subBadge': 'ENTRETIEN & GARANTIE',
   'section.subTitle': 'Protégez Votre Investissement',

@@ -2,14 +2,14 @@ import { useState } from 'react'
 import { Search, UserCircle, ShoppingBag, Star, Calendar, Mail, Phone } from 'lucide-react'
 
 const customers = [
-  { id: 1, name: 'Ahmed Benali', email: 'ahmed@email.com', phone: '+213 555 123 456', orders: 8, spent: '1,480,000', joined: '2023-10-15', lastOrder: '2025-06-05', segment: 'VIP', loyalty: 14800 },
-  { id: 2, name: 'Yasmine Djebbar', email: 'yasmine@email.com', phone: '+213 555 234 567', orders: 5, spent: '642,500', joined: '2024-01-20', lastOrder: '2025-06-04', segment: 'Regular', loyalty: 6425 },
-  { id: 3, name: 'Karim Hadj', email: 'karim@email.com', phone: '+213 555 345 678', orders: 12, spent: '3,108,000', joined: '2023-08-05', lastOrder: '2025-06-03', segment: 'VIP', loyalty: 31080 },
-  { id: 4, name: 'Sofia Mansouri', email: 'sofia@email.com', phone: '+213 555 456 789', orders: 3, spent: '656,500', joined: '2024-03-10', lastOrder: '2025-05-28', segment: 'Regular', loyalty: 6565 },
-  { id: 5, name: 'Omar Khalef', email: 'omar@email.com', phone: '+213 555 567 890', orders: 15, spent: '4,250,000', joined: '2023-06-01', lastOrder: '2025-06-05', segment: 'VIP', loyalty: 42500 },
-  { id: 6, name: 'Nadia Berrahal', email: 'nadia@email.com', phone: '+213 555 678 901', orders: 2, spent: '36,000', joined: '2025-04-15', lastOrder: '2025-05-20', segment: 'New', loyalty: 360 },
-  { id: 7, name: 'Farid Taleb', email: 'farid@email.com', phone: '+213 555 789 012', orders: 6, spent: '1,110,000', joined: '2024-02-01', lastOrder: '2025-06-01', segment: 'Regular', loyalty: 11100 },
-  { id: 8, name: 'Amel Chenouf', email: 'amel@email.com', phone: '+213 555 890 123', orders: 1, spent: '125,000', joined: '2025-05-20', lastOrder: '2025-05-25', segment: 'New', loyalty: 1250 },
+  { id: 1, name: 'John Mitchell', email: 'john@email.com', phone: '+1 555 123 4567', orders: 8, spent: '14,800', joined: '2023-10-15', lastOrder: '2025-06-05', segment: 'VIP', loyalty: 14800 },
+  { id: 2, name: 'Sarah Williams', email: 'sarah@email.com', phone: '+44 20 7946 0958', orders: 5, spent: '6,425', joined: '2024-01-20', lastOrder: '2025-06-04', segment: 'Regular', loyalty: 6425 },
+  { id: 3, name: 'David Chen', email: 'david@email.com', phone: '+1 415 555 7890', orders: 12, spent: '31,080', joined: '2023-08-05', lastOrder: '2025-06-03', segment: 'VIP', loyalty: 31080 },
+  { id: 4, name: 'Emma Dubois', email: 'emma@email.com', phone: '+33 1 42 86 82 00', orders: 3, spent: '6,565', joined: '2024-03-10', lastOrder: '2025-05-28', segment: 'Regular', loyalty: 6565 },
+  { id: 5, name: 'Michael Torres', email: 'michael@email.com', phone: '+1 212 555 3456', orders: 15, spent: '42,500', joined: '2023-06-01', lastOrder: '2025-06-05', segment: 'VIP', loyalty: 42500 },
+  { id: 6, name: 'Lisa Anderson', email: 'lisa@email.com', phone: '+61 2 9374 4000', orders: 2, spent: '360', joined: '2025-04-15', lastOrder: '2025-05-20', segment: 'New', loyalty: 360 },
+  { id: 7, name: 'James Wilson', email: 'james@email.com', phone: '+44 20 7123 4567', orders: 6, spent: '11,100', joined: '2024-02-01', lastOrder: '2025-06-01', segment: 'Regular', loyalty: 11100 },
+  { id: 8, name: 'Anna Schmidt', email: 'anna@email.com', phone: '+49 30 12345678', orders: 1, spent: '1,250', joined: '2025-05-20', lastOrder: '2025-05-25', segment: 'New', loyalty: 1250 },
 ]
 
 const segmentColors: Record<string, string> = {

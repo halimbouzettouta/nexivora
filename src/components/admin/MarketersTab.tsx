@@ -1,17 +1,31 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Search, UserCheck, UserX } from 'lucide-react'
 import { trpc } from '@/providers/trpc'
+import { getMarketerAccounts } from '@/hooks/marketerAuth'
 
 export default function MarketersTab() {
   const [search, setSearch] = useState('')
 
-  // Fetch users from the REAL API
-  const { data: users = [], isLoading, refetch } = trpc.adminSetup.listUsers.useQuery(undefined, {
+  // Fetch users from API with localStorage fallback
+  const { data: apiUsers = [], isLoading, refetch } = trpc.adminSetup.listUsers.useQuery(undefined, {
     staleTime: 5000,
     refetchInterval: 10000,
   })
 
-  const utils = trpc.useUtils()
+  // Fallback: read marketer accounts from localStorage
+  const localAccounts = useMemo(() => getMarketerAccounts(), [apiUsers])
+  const localUsers = localAccounts.map((a, idx) => ({
+    id: idx + 1,
+    name: a.name,
+    email: a.username,
+    role: 'marketer',
+    status: 'active',
+    createdAt: a.joinedAt,
+    referralCode: a.referralCode,
+    rank: a.rank,
+  }))
+
+  const users = apiUsers.length > 0 ? apiUsers : localUsers
 
   // Filter to show only marketers and admins
   const marketers = users.filter((u: any) =>
