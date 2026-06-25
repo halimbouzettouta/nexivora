@@ -6,27 +6,31 @@ import * as relations from "@db/relations";
 const fullSchema = { ...schema, ...relations };
 
 let instance: ReturnType<typeof drizzle<typeof fullSchema>> | null = null;
-let dbAvailable: boolean | null = null;
+let dbUnavailable = false;
+
+// Check if DB URL uses a private endpoint that won't work on Render
+const isPrivateEndpoint = env.databaseUrl.includes("privatelink") || 
+                          env.databaseUrl.includes("private.") ||
+                          env.databaseUrl.includes("internal.");
 
 export function getDb() {
-  // If we already know DB is unavailable, fail fast
-  if (dbAvailable === false) {
-    throw new Error("Database unavailable");
+  if (dbUnavailable || isPrivateEndpoint) {
+    throw new Error("Database unavailable: private endpoint not accessible from this server");
   }
   if (!instance) {
-    // Add connection timeout via URL parameter
-    const url = env.databaseUrl.includes("?")
-      ? `${env.databaseUrl}&connectTimeout=3000`
-      : `${env.databaseUrl}?connectTimeout=3000`;
-    instance = drizzle(url, {
-      mode: "planetscale",
-      schema: fullSchema,
-    });
+    try {
+      instance = drizzle(env.databaseUrl, {
+        mode: "planetscale",
+        schema: fullSchema,
+      });
+    } catch {
+      dbUnavailable = true;
+      throw new Error("Database connection failed");
+    }
   }
   return instance;
 }
 
-// Mark DB as unavailable so fallback triggers
 export function markDbUnavailable() {
-  dbAvailable = false;
+  dbUnavailable = true;
 }
