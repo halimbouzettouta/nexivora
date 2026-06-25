@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Electric Bikes",
+    "slug": "e-bikes",
+    "parentId": null,
+    "image": null,
+    "description": "Premium electric bicycles for every terrain",
+    "createdAt": "2026-06-17T18:33:07"
+  },
+  {
+    "id": 2,
+    "name": "E-Scooters",
+    "slug": "e-scooters",
+    "parentId": null,
+    "image": null,
+    "description": "Urban commuter and off-road electric scooters",
+    "createdAt": "2026-06-17T18:33:07"
+  },
+  {
+    "id": 3,
+    "name": "Accessories",
+    "slug": "accessories",
+    "parentId": null,
+    "image": null,
+    "description": "Helmets, locks, chargers, and more",
+    "createdAt": "2026-06-17T18:33:07"
+  },
+  {
+    "id": 4,
+    "name": "Parts",
+    "slug": "parts",
+    "parentId": null,
+    "image": null,
+    "description": "Replacement parts and upgrades",
+    "createdAt": "2026-06-17T18:33:07"
+  }
+]

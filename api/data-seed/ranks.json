@@ -1,0 +1,67 @@
+[
+  {
+    "id": 1,
+    "name": "Starter",
+    "slug": "starter",
+    "color": "#01D7D5",
+    "minPersonalSales": "0.00",
+    "minTeamSales": "0.00",
+    "minDirectSales": 0,
+    "rewardDescription": "Welcome Kit - Starter Pack",
+    "rewardImage": null,
+    "orderIdx": 1,
+    "createdAt": "2026-06-17T18:33:07"
+  },
+  {
+    "id": 2,
+    "name": "Silver",
+    "slug": "silver",
+    "color": "#C0C0C0",
+    "minPersonalSales": "500000.00",
+    "minTeamSales": "0.00",
+    "minDirectSales": 10,
+    "rewardDescription": "Shopping Voucher - DZD 10,000",
+    "rewardImage": null,
+    "orderIdx": 2,
+    "createdAt": "2026-06-17T18:33:07"
+  },
+  {
+    "id": 3,
+    "name": "Gold",
+    "slug": "gold",
+    "color": "#FFD700",
+    "minPersonalSales": "500000.00",
+    "minTeamSales": "2000000.00",
+    "minDirectSales": 25,
+    "rewardDescription": "Premium Smartphone",
+    "rewardImage": null,
+    "orderIdx": 3,
+    "createdAt": "2026-06-17T18:33:07"
+  },
+  {
+    "id": 4,
+    "name": "Platinum",
+    "slug": "platinum",
+    "color": "#E5E4E2",
+    "minPersonalSales": "500000.00",
+    "minTeamSales": "5000000.00",
+    "minDirectSales": 50,
+    "rewardDescription": "Electric Scooter",
+    "rewardImage": null,
+    "orderIdx": 4,
+    "createdAt": "2026-06-17T18:33:07"
+  },
+  {
+    "id": 5,
+    "name": "Diamond",
+    "slug": "diamond",
+    "color": "#B9F2FF",
+    "minPersonalSales": "500000.00",
+    "minTeamSales": "10000000.00",
+    "minDirectSales": 100,
+    "rewardDescription": "Luxury Trip or DZD 500,000 Cash Bonus",
+    "rewardImage": null,
+    "orderIdx": 5,
+    "createdAt": "2026-06-17T18:33:07"
+  }
+]
