@@ -26,13 +26,13 @@ export const productRouter = createRouter({
       }).optional()
     )
     .query(async ({ input }) => {
-      const db = getDb();
       const { category, search, sortBy, page, limit } = input || {};
       const pageNum = page || 1;
       const limitNum = limit || 12;
       const offset = (pageNum - 1) * limitNum;
 
       try {
+        const db = getDb();
         let query = db.select().from(products);
 
         const conditions = [];
