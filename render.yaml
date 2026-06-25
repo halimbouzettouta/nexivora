@@ -3,7 +3,7 @@ services:
     name: nexivora-backend
     runtime: node
     plan: free
-    buildCommand: npm install && npm run build
+    buildCommand: rm -rf dist && npm install && npm run build
     startCommand: npm start
     healthCheckPath: /api/trpc/ping
     envVars:
