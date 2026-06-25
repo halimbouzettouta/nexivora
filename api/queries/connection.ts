@@ -5,14 +5,23 @@ import * as relations from "@db/relations";
 
 const fullSchema = { ...schema, ...relations };
 
-let instance: ReturnType<typeof drizzle<typeof fullSchema>>;
+let instance: ReturnType<typeof drizzle<typeof fullSchema>> | null = null;
+let connectionFailed = false;
 
 export function getDb() {
+  if (connectionFailed) {
+    throw new Error("Database connection previously failed");
+  }
   if (!instance) {
-    instance = drizzle(env.databaseUrl, {
-      mode: "planetscale",
-      schema: fullSchema,
-    });
+    try {
+      instance = drizzle(env.databaseUrl, {
+        mode: "planetscale",
+        schema: fullSchema,
+      });
+    } catch {
+      connectionFailed = true;
+      throw new Error("Database connection failed");
+    }
   }
   return instance;
 }
