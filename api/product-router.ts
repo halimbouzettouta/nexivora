@@ -1,5 +1,5 @@
 import { createRouter, publicQuery } from "./middleware";
-import { getDb } from "./queries/connection";
+import { getDb, markDbUnavailable } from "./queries/connection";
 import { products, categories } from "@db/schema";
 import { seedData } from "./data-seed";
 import { eq, like, and, desc, asc } from "drizzle-orm";
@@ -10,6 +10,7 @@ async function withFallback<T>(dbFn: () => Promise<T>, fallback: T): Promise<T> 
   try {
     return await dbFn();
   } catch {
+    markDbUnavailable();
     return fallback;
   }
 }
